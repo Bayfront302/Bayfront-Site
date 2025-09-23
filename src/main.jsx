@@ -1,7 +1,5 @@
 import React from "react";
-import { createRoot } from "react-dom/client";
-import Site from "../App.jsx"; // uses your existing canvas code file at repo root
-
-const rootEl = document.getElementById("root");
-const root = createRoot(rootEl);
-root.render(<Site />);
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";          // or "./App.tsx"
+import "./index.css";                 // CSS is local to src
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
