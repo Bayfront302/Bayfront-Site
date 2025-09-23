@@ -412,7 +412,7 @@ export default function Site(){
     console.assert(isGallery('#/gallery') && !isGallery('#/'), 'isGallery works');
 
     // FB link constant looks sane
-    console.assert(/^https:\\/\\//.test(FB_URL) && FB_URL.includes('facebook.com'), 'FB_URL valid');
+    console.assert(/^https:\\/\\/.test(FB_URL) && FB_URL.includes('facebook.com'), 'FB_URL valid');
 
     // key dates present
     console.assert(RUSH_START==='December 1st' && CUTOFF_DATE==='December 10th', 'rush & cutoff dates set');
