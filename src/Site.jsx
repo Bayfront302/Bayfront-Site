@@ -385,8 +385,6 @@ function HomePage(){
 }
 
 export default function Site() {
-  const route = useRoute();
-
   return (
     <ThemeCtx.Provider value={{ tokens: TOKENS }}>
       {isGallery(route) ? <GalleryPage /> : <HomePage />}
@@ -425,4 +423,3 @@ export default function Site() {
 
 // Exports
 export default Site; // (ensure you don't already have a different default export)
-export { HeaderBar, Hero, Offerings, CTA, About, GalleryPage, HomePage };
