@@ -420,6 +420,3 @@ export default function Site() {
     console.assert(typeof CTA==='function' && typeof About==='function' && typeof GalleryPage==='function' && typeof HomePage==='function', 'components exist 2');
   }catch(e){ console.warn('Smoke test warn:', e); }
 })();
-
-// Exports
-export default Site; // (ensure you don't already have a different default export)
