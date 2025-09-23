@@ -384,13 +384,15 @@ function HomePage(){
   );
 }
 
-export default function Site(){
+export default function Site() {
   const route = useRoute();
-     <ThemeCtx.Provider value={{ tokens: TOKENS }}>
-    {isGallery(route) ? <GalleryPage /> : <HomePage />}
-  </ThemeCtx.Provider>
-); // <-- closes return(
-}  // <-- closes function Site
+
+  return (
+    <ThemeCtx.Provider value={{ tokens: TOKENS }}>
+      {isGallery(route) ? <GalleryPage /> : <HomePage />}
+    </ThemeCtx.Provider>
+  );
+}
 
 // -----------------------------------------------------------------------------
 // Smoke tests (lightweight runtime assertions)
