@@ -386,10 +386,12 @@ function HomePage(){
 
 export default function Site(){
   const route = useRoute();
-    <ThemeCtx.Provider value={{ tokens: TOKENS }}>
-      {isGallery(route) ? <GalleryPage /> : <HomePage />}
-    </ThemeCtx.Provider>
-    
+     <ThemeCtx.Provider value={{ tokens: TOKENS }}>
+    {isGallery(route) ? <GalleryPage /> : <HomePage />}
+  </ThemeCtx.Provider>
+); // <-- closes return(
+}  // <-- closes function Site
+
 // -----------------------------------------------------------------------------
 // Smoke tests (lightweight runtime assertions)
 // -----------------------------------------------------------------------------
@@ -419,5 +421,6 @@ export default function Site(){
   }catch(e){ console.warn('Smoke test warn:', e); }
 })();
 
-// Named exports (optional reuse/testing)
+// Exports
+export default Site; // (ensure you don't already have a different default export)
 export { HeaderBar, Hero, Offerings, CTA, About, GalleryPage, HomePage };
