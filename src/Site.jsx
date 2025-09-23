@@ -1,43 +1,42 @@
-// src/Site.jsx
-import React, { useState, useEffect, createContext, useContext } from "react"; 
+import React, { useState, useEffect, createContext, useContext } from "react";
 
 // -----------------------------------------------------------------------------
 // Theme tokens (dark, slate + amber)
 // -----------------------------------------------------------------------------
 const TOKENS = {
-  mainBg: 'bg-gray-900',
-  sectionBg: 'bg-gray-800',
-  cardBg: 'bg-gray-900',
-  border: 'border-gray-700',
-  text: 'text-white',
-  muted: 'text-gray-300',
-  accentBg: 'bg-amber-400',
-  accentTextOn: 'text-gray-900',
-  accentRing: 'ring-amber-400',
-  heading: 'font-serif',
+  mainBg: "bg-gray-900",
+  sectionBg: "bg-gray-800",
+  cardBg: "bg-gray-900",
+  border: "border-gray-700",
+  text: "text-white",
+  muted: "text-gray-300",
+  accentBg: "bg-amber-400",
+  accentTextOn: "text-gray-900",
+  accentRing: "ring-amber-400",
+  heading: "font-serif",
 };
 
 // -----------------------------------------------------------------------------
-// Fonts (Inter for body, Merriweather for headings/logo)
+// Fonts (Inter for body, Merriweather for headings/logo) – inject once
 // -----------------------------------------------------------------------------
 const fontCss = `
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Merriweather:wght@700;900&display=swap');
 body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
 .font-serif { font-family: 'Merriweather', Georgia, Cambria, 'Times New Roman', Times, serif; }
 `;
-if (typeof document !== 'undefined' && !document.getElementById('bayfront-fonts')) {
-  const style = document.createElement('style');
-  style.id = 'bayfront-fonts';
+if (typeof document !== "undefined" && !document.getElementById("bayfront-fonts")) {
+  const style = document.createElement("style");
+  style.id = "bayfront-fonts";
   style.innerHTML = fontCss;
   document.head.appendChild(style);
 }
 
 // -----------------------------------------------------------------------------
-// Constants (avoid stray/unterminated strings)
+// Constants
 // -----------------------------------------------------------------------------
-const FB_URL = 'https://www.facebook.com/bayfrontlighting';
-const RUSH_START = 'December 1st';
-const CUTOFF_DATE = 'December 10th';
+const FB_URL = "https://www.facebook.com/bayfrontlighting";
+const RUSH_START = "December 1st";
+const CUTOFF_DATE = "December 10th";
 
 // -----------------------------------------------------------------------------
 // Context & helpers
@@ -50,37 +49,43 @@ function encodePaths(files) {
   const out = [];
   const seen = new Set();
   for (const f of files || []) {
-    if (typeof f !== 'string') continue;
+    if (typeof f !== "string") continue;
     const trimmed = f.trim();
     if (!trimmed) continue;
     const key = trimmed.toLowerCase();
     if (seen.has(key)) continue;
     seen.add(key);
     const looksAbsolute =
-      /^\//.test(trimmed) || /^https?:/i.test(trimmed) || trimmed.startsWith('data:');
-    const withPrefix = looksAbsolute ? trimmed : ('/' + trimmed);
+      /^\//.test(trimmed) || /^https?:/i.test(trimmed) || trimmed.startsWith("data:");
+    const withPrefix = looksAbsolute ? trimmed : "/" + trimmed;
     out.push(encodeURI(withPrefix));
   }
   return out;
 }
 
-// 1x1 PNG fallback
-const BLANK_IMG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NkYGD4DwABNQEA3zV8KQAAAABJRU5ErkJggg==';
+const BLANK_IMG =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NkYGD4DwABNQEA3zV8KQAAAABJRU5ErkJggg==";
+
 function computeSlides(list) {
   const enc = encodePaths(list);
   return enc.length > 0 ? enc : [BLANK_IMG];
 }
 
-function isGallery(hash) { return typeof hash === 'string' && hash.startsWith('#/gallery'); }
+function isGallery(hash) {
+  return typeof hash === "string" && hash.startsWith("#/gallery");
+}
 
 function useRoute() {
-  const initial = (typeof window !== 'undefined' && window.location) ? (window.location.hash || '#/') : '#/';
+  const initial =
+    typeof window !== "undefined" && window.location
+      ? window.location.hash || "#/"
+      : "#/";
   const [route, setRoute] = useState(initial);
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const onHash = () => setRoute(window.location.hash || '#/');
-    window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
+    if (typeof window === "undefined") return;
+    const onHash = () => setRoute(window.location.hash || "#/");
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
   }, []);
   return route;
 }
@@ -97,31 +102,59 @@ function HeaderBar() {
     <header className={`sticky top-0 z-50 border-b ${tokens.border} ${TOKENS.cardBg}`}>
       <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
         <a href="#/" className="flex flex-col items-center text-center">
-          <span className={`text-4xl ${tokens.heading} text-amber-400 drop-shadow`}>Bayfront Lighting</span>
+          <span className={`text-4xl ${tokens.heading} text-amber-400 drop-shadow`}>
+            Bayfront Lighting
+          </span>
           <hr className="border-t border-gray-600 w-full my-1" />
-          <span className={`text-base ${tokens.muted} ${tokens.heading}`}>Holiday Illumination Specialists</span>
+          <span className={`text-base ${tokens.muted} ${tokens.heading}`}>
+            Holiday Illumination Specialists
+          </span>
         </a>
         <nav className={`hidden md:flex items-center gap-6 ${tokens.muted}`}>
-          {!inGallery && (<>
-            <a href="#offerings" className="hover:opacity-90">What We Offer</a>
-            <a href="#estimate" className="hover:opacity-90">Free Estimate</a>
-            <a href="#about" className="hover:opacity-90">About</a>
-          </>)}
-          <a href="#/gallery" className="hover:opacity-90">Gallery</a>
+          {!inGallery && (
+            <>
+              <a href="#offerings" className="hover:opacity-90">
+                What We Offer
+              </a>
+              <a href="#estimate" className="hover:opacity-90">
+                Free Estimate
+              </a>
+              <a href="#about" className="hover:opacity-90">
+                About
+              </a>
+            </>
+          )}
+          <a href="#/gallery" className="hover:opacity-90">
+            Gallery
+          </a>
         </nav>
-        <button className="md:hidden rounded-md px-3 py-2 ring-1 ring-gray-600 hover:bg-gray-700" onClick={()=>setOpen(o=>!o)} aria-label="Toggle menu">
+        <button
+          className="md:hidden rounded-md px-3 py-2 ring-1 ring-gray-600 hover:bg-gray-700"
+          onClick={() => setOpen((o) => !o)}
+          aria-label="Toggle menu"
+        >
           ☰
         </button>
       </div>
       {open && (
         <div className={`md:hidden border-t ${tokens.border}`}>
           <div className={`px-6 py-4 flex flex-col gap-3 ${tokens.muted}`}>
-            {!inGallery && (<>
-              <a href="#offerings" onClick={()=>setOpen(false)}>What We Offer</a>
-              <a href="#estimate" onClick={()=>setOpen(false)}>Free Estimate</a>
-              <a href="#about" onClick={()=>setOpen(false)}>About</a>
-            </>)}
-            <a href="#/gallery" onClick={()=>setOpen(false)}>Gallery</a>
+            {!inGallery && (
+              <>
+                <a href="#offerings" onClick={() => setOpen(false)}>
+                  What We Offer
+                </a>
+                <a href="#estimate" onClick={() => setOpen(false)}>
+                  Free Estimate
+                </a>
+                <a href="#about" onClick={() => setOpen(false)}>
+                  About
+                </a>
+              </>
+            )}
+            <a href="#/gallery" onClick={() => setOpen(false)}>
+              Gallery
+            </a>
           </div>
         </div>
       )}
@@ -134,31 +167,42 @@ function HeaderBar() {
 // -----------------------------------------------------------------------------
 function Hero() {
   const slideFiles = [
-    'wreath-on-house.jpeg',
-    'house-with-light7.jpeg',
-    'bush-with-light2.jpeg',
-    'bush-with-light1.jpeg',
+    "wreath-on-house.jpeg",
+    "house-with-light7.jpeg",
+    "bush-with-light2.jpeg",
+    "bush-with-light1.jpeg",
   ];
   const slides = computeSlides(slideFiles);
   const [i, setI] = useState(0);
   const many = slides.length > 1;
-  useEffect(()=>{
-    if (!many) return; // only auto-cycle with 2+ slides
-    const id = setInterval(()=> setI(v => (v+1)%slides.length), 5000);
-    return ()=>clearInterval(id);
-  },[many, slides.length]);
-  const next=()=> many && setI(v => (v+1)%slides.length);
-  const prev=()=> many && setI(v => (v-1+slides.length)%slides.length);
+
+  useEffect(() => {
+    if (!many) return;
+    const id = setInterval(() => setI((v) => (v + 1) % slides.length), 5000);
+    return () => clearInterval(id);
+  }, [many, slides.length]);
+
+  const next = () => many && setI((v) => (v + 1) % slides.length);
+  const prev = () => many && setI((v) => (v - 1 + slides.length) % slides.length);
+
   return (
-    <section className={`relative h:[70vh] md:h:[80vh] w-full flex items-center justify-center text-center px-6 ${TOKENS.sectionBg} overflow-hidden`}>
+    <section
+      className={`relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center px-6 ${TOKENS.sectionBg} overflow-hidden`}
+    >
       <div className="absolute inset-0 -z-10">
         {slides.map((src, idx) => (
           <img
-            key={src+idx}
+            key={src + idx}
             src={src}
             alt="Bayfront Lighting background"
-            onError={(e)=>{ e.currentTarget.onerror=null; e.currentTarget.src = BLANK_IMG; e.currentTarget.classList.add('opacity-0'); }}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i===idx?'opacity-100':'opacity-0'}`}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = BLANK_IMG;
+              e.currentTarget.classList.add("opacity-0");
+            }}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+              i === idx ? "opacity-100" : "opacity-0"
+            }`}
           />
         ))}
         <div className="absolute inset-0 bg-black/55" />
@@ -166,19 +210,37 @@ function Hero() {
       </div>
       {many && (
         <>
-          <button aria-label="Prev" onClick={prev} className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900">‹</button>
-          <button aria-label="Next" onClick={next} className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900">›</button>
+          <button
+            aria-label="Prev"
+            onClick={prev}
+            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900"
+          >
+            ‹
+          </button>
+          <button
+            aria-label="Next"
+            onClick={next}
+            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900"
+          >
+            ›
+          </button>
         </>
       )}
       <div>
         <h1 className={`text-white text-4xl md:text-6xl font-bold leading-tight ${TOKENS.heading}`}>
-          <span className="text-red-400">Holiday</span> <span className="text-green-400">lighting</span> without the hassle
+          <span className="text-red-400">Holiday</span>{" "}
+          <span className="text-green-400">lighting</span> without the hassle
         </h1>
         <p className={`mt-4 ${TOKENS.muted} text-lg md:text-xl`}>
           Design, installation, in-season service, and end-of-season removal — we store your lights free.
         </p>
         <div className="mt-8 flex flex-wrap gap-4 justify-center">
-          <a href="#estimate" className={`rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-6 py-4 shadow hover:opacity-90 text-lg`}>Request Free Estimate</a>
+          <a
+            href="#estimate"
+            className={`rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-6 py-4 shadow hover:opacity-90 text-lg`}
+          >
+            Request Free Estimate
+          </a>
         </div>
       </div>
     </section>
@@ -188,7 +250,7 @@ function Hero() {
 // -----------------------------------------------------------------------------
 // Offerings
 // -----------------------------------------------------------------------------
-function Offerings(){
+function Offerings() {
   return (
     <section id="offerings" className="mx-auto max-w-7xl px-6 py-16">
       <div className="text-center">
@@ -204,7 +266,7 @@ function Offerings(){
     </section>
   );
 }
-function OfferCard({title, text}){
+function OfferCard({ title, text }) {
   return (
     <div className={`rounded-xl p-6 shadow-sm ring-1 ${TOKENS.accentRing} ${TOKENS.cardBg}`}>
       <div className={`text-base uppercase tracking-wide ${TOKENS.muted}`}>{title}</div>
@@ -214,17 +276,158 @@ function OfferCard({title, text}){
 }
 
 // -----------------------------------------------------------------------------
-// CTA (Estimate form)
+// CTA (Estimate)
 // -----------------------------------------------------------------------------
-function CTA(){
+function CTA() {
   return (
     <section id="estimate" className={`border-t ${TOKENS.border} ${TOKENS.sectionBg} text-lg`}>
       <div className="mx-auto max-w-7xl px-6 py-16 grid md:grid-cols-2 gap-12 items-start">
         <div>
           <div className="text-center md:text-left">
             <div className={`text-sm uppercase tracking-[.22em] ${TOKENS.muted}`}>Free estimate</div>
-            <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white mt-2`}>Tell us about your property</h2>
-            <p className={`mt-3 ${TOKENS.muted} max-w-xl`}>We'll respond within one business day with next steps.</p>
+            <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white mt-2`}>
+              Tell us about your property
+            </h2>
+            <p className={`mt-3 ${TOKENS.muted} max-w-xl`}>
+              We'll respond within one business day with next steps.
+            </p>
             <div className="mt-5 flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-2 rounded-full bg-gray-900/60 ring-1 ring-white/10 px-3 py-1 text-sm"><span>✅</span>Fully Insured</span>
-              <span className="inline-fl
+              <span className="inline-flex items-center gap-2 rounded-full bg-gray-900/60 ring-1 ring-white/10 px-3 py-1 text-sm">
+                <span>✅</span>Fully Insured
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full bg-gray-900/60 ring-1 ring-white/10 px-3 py-1 text-sm">
+                <span>⚡</span>Rush installs start {RUSH_START}
+              </span>
+            </div>
+          </div>
+          <a
+            href="https://forms.gle/"
+            target="_blank"
+            rel="noreferrer"
+            className={`inline-block mt-8 rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-6 py-4 shadow hover:opacity-90`}
+          >
+            Get My Free Estimate
+          </a>
+          <p className={`mt-4 ${TOKENS.muted} text-sm`}>
+            Cutoff for guaranteed installation is {CUTOFF_DATE}.
+          </p>
+        </div>
+
+        {/* Simple form (non-submitting demo) */}
+        <form className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10 space-y-4">
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Name</label>
+            <input className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
+          </div>
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Email</label>
+            <input type="email" className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
+          </div>
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Address / Area</label>
+            <input className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
+          </div>
+          <button
+            type="button"
+            className={`w-full rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-4 py-3`}
+            onClick={() => alert("Thanks! We'll be in touch soon.")}
+          >
+            Request quote
+          </button>
+        </form>
+      </div>
+    </section>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// About + Footer (short)
+// -----------------------------------------------------------------------------
+function About() {
+  return (
+    <section id="about" className="mx-auto max-w-7xl px-6 py-16">
+      <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white`}>About</h2>
+      <p className={`${TOKENS.muted} mt-4 max-w-3xl`}>
+        Local, insured, and focused on clean installs with premium LEDs. We handle everything:
+        design, installation, quick service, and removal/storage.
+      </p>
+      <a className="inline-flex items-center gap-2 text-amber-400 mt-4" href={FB_URL} target="_blank" rel="noreferrer">
+        Find us on Facebook →
+      </a>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="border-t border-gray-700 py-8 text-center text-gray-400">
+      <div className="mx-auto max-w-7xl px-6">
+        © {new Date().getFullYear()} Bayfront Lighting. All rights reserved.
+      </div>
+    </footer>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Gallery Page (very simple placeholder)
+// -----------------------------------------------------------------------------
+function GalleryPage() {
+  const slides = computeSlides([
+    "bush-with-light1.jpeg",
+    "bush-with-light2.jpeg",
+    "house-with-light7.jpeg",
+    "wreath-on-house.jpeg",
+  ]);
+  return (
+    <main className={`${TOKENS.text}`}>
+      <HeaderBar />
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <h1 className={`${TOKENS.heading} text-4xl md:text-5xl font-bold`}>Gallery</h1>
+        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {slides.map((src, i) => (
+            <img
+              key={src + i}
+              src={src}
+              alt=""
+              className="w-full h-56 object-cover rounded-lg ring-1 ring-white/10"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = BLANK_IMG;
+                e.currentTarget.classList.add("opacity-50");
+              }}
+            />
+          ))}
+        </div>
+      </section>
+      <Footer />
+    </main>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Home Page
+// -----------------------------------------------------------------------------
+function HomePage() {
+  return (
+    <main className={`${TOKENS.text}`}>
+      <HeaderBar />
+      <Hero />
+      <Offerings />
+      <CTA />
+      <About />
+      <Footer />
+    </main>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Root
+// -----------------------------------------------------------------------------
+export default function Site() {
+  const route = useRoute();
+  return (
+    <ThemeCtx.Provider value={{ tokens: TOKENS }}>
+      {isGallery(route) ? <GalleryPage /> : <HomePage />}
+    </ThemeCtx.Provider>
+  );
+}
