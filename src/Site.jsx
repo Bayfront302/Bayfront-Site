@@ -55,7 +55,7 @@ function encodePaths(files) {
     const key = trimmed.toLowerCase();
     if (seen.has(key)) continue;
     seen.add(key);
-    const looksAbsolute = /^\\//.test(trimmed) || /^https?:/i.test(trimmed) || trimmed.startsWith('data:');
+    const looksAbsolute = /^\\//test(trimmed) || /^https?:/i.test(trimmed) || trimmed.startsWith('data:');
     const withPrefix = looksAbsolute ? trimmed : ('/' + trimmed);
     out.push(encodeURI(withPrefix));
   }
