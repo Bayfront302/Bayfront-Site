@@ -132,10 +132,10 @@ function HeaderBar() {
 // -----------------------------------------------------------------------------
 function Hero() {
   const slideFiles = [
-    'wreath on house.jpeg',
-    'house with light7.jpeg',
-    'bush with light2.jpeg',
-    'bush with light1.jpeg',
+    'wreath-on-house.jpeg',
+    'house-with-light7.jpeg',
+    'bush-with-light2.jpeg',
+    'bush-with-light1.jpeg',
   ];
   const slides = computeSlides(slideFiles);
   const [i, setI] = useState(0);
@@ -318,18 +318,18 @@ function About(){
 // -----------------------------------------------------------------------------
 function GalleryPage(){
   const images = computeSlides([
-    'tree with light2.png',
-    'house with light8.jpeg',
-    'house with light7.jpeg',
-    'bush with light2.jpeg',
-    'bush with light1.jpeg',
-    'house with light6.jpeg',
-    'house with light5.jpeg',
-    'house with light4.jpg',
-    'house with light3.jpg',
-    'house with light2.jpg',
-    'house with light1.jpg',
-    'wreath on house.jpeg',
+    'tree-with-light2.png',
+    'house-with-light8.jpeg',
+    'house-with-light7.jpeg',
+    'bush-with-light2.jpeg',
+    'bush-with-light1.jpeg',
+    'house-with-light6.jpeg',
+    'house-with-light5.jpeg',
+    'house-with-light4.jpg',
+    'house-with-light3.jpg',
+    'house-with-light2.jpg',
+    'house-with-light1.jpg',
+    'wreath-on-house.jpeg',
   ]);
   return (
     <div className={`${TOKENS.mainBg} ${TOKENS.text}`}>
