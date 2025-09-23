@@ -1,4 +1,5 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
+// src/Site.jsx
+import React, { useState, useEffect, createContext, useContext } from "react"; 
 
 // -----------------------------------------------------------------------------
 // Theme tokens (dark, slate + amber)
@@ -56,7 +57,7 @@ function encodePaths(files) {
     if (seen.has(key)) continue;
     seen.add(key);
     const looksAbsolute =
-  /^\//.test(trimmed) || /^https?:/i.test(trimmed) || trimmed.startsWith('data:');
+      /^\//.test(trimmed) || /^https?:/i.test(trimmed) || trimmed.startsWith('data:');
     const withPrefix = looksAbsolute ? trimmed : ('/' + trimmed);
     out.push(encodeURI(withPrefix));
   }
@@ -149,7 +150,7 @@ function Hero() {
   const next=()=> many && setI(v => (v+1)%slides.length);
   const prev=()=> many && setI(v => (v-1+slides.length)%slides.length);
   return (
-    <section className={`relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center px-6 ${TOKENS.sectionBg} overflow-hidden`}>
+    <section className={`relative h:[70vh] md:h:[80vh] w-full flex items-center justify-center text-center px-6 ${TOKENS.sectionBg} overflow-hidden`}>
       <div className="absolute inset-0 -z-10">
         {slides.map((src, idx) => (
           <img
@@ -226,200 +227,4 @@ function CTA(){
             <p className={`mt-3 ${TOKENS.muted} max-w-xl`}>We'll respond within one business day with next steps.</p>
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <span className="inline-flex items-center gap-2 rounded-full bg-gray-900/60 ring-1 ring-white/10 px-3 py-1 text-sm"><span>✅</span>Fully Insured</span>
-              <span className="inline-flex items-center gap-2 rounded-full bg-gray-900/60 ring-1 ring-white/10 px-3 py-1 text-sm"><span>✅</span>Locally Owned</span>
-              <span className="inline-flex items-center gap-2 rounded-full bg-gray-900/60 ring-1 ring-white/10 px-3 py-1 text-sm"><span>✅</span>Satisfaction Guaranteed</span>
-            </div>
-          </div>
-          <ul className={`mt-6 text-base md:text-lg ${TOKENS.text} space-y-2`}>
-            <li>• Typical response in one business day</li>
-            <li>• Earlier bookings get priority install dates</li>
-            <li>• Removal at season's end</li>
-            <li>• Serving Horseshoe Bay, Marble Falls & the Hill Country</li>
-          </ul>
-        </div>
-        <EstimateForm />
-      </div>
-    </section>
-  );
-}
-function EstimateForm(){
-  const onSubmit=(e)=>{e.preventDefault(); alert("Thanks! We'll be in touch within one business day.");};
-  return (
-    <form className={`${TOKENS.cardBg} rounded-xl shadow p-8 grid gap-5`} onSubmit={onSubmit}>
-      <Field label="Name"><input className={`rounded-md border ${TOKENS.border} ${TOKENS.cardBg} ${TOKENS.text} px-4 py-3`} placeholder="Jane Doe" /></Field>
-      <Field label="Email"><input type="email" className={`rounded-md border ${TOKENS.border} ${TOKENS.cardBg} ${TOKENS.text} px-4 py-3`} placeholder="you@example.com" /></Field>
-      <Field label="Phone"><input className={`rounded-md border ${TOKENS.border} ${TOKENS.cardBg} ${TOKENS.text} px-4 py-3`} placeholder="(830) 220-7315" /></Field>
-      <div className="grid md:grid-cols-2 gap-4">
-        <Field label="Preferred Install Window"><input className={`rounded-md border ${TOKENS.border} ${TOKENS.cardBg} ${TOKENS.text} px-4 py-3`} placeholder="Week of Nov 25"/></Field>
-        <Field label="City"><input className={`rounded-md border ${TOKENS.border} ${TOKENS.cardBg} ${TOKENS.text} px-4 py-3`} placeholder="Horseshoe Bay"/></Field>
-      </div>
-      <Field label="Notes (optional)"><textarea rows={4} className={`rounded-md border ${TOKENS.border} ${TOKENS.cardBg} ${TOKENS.text} px-4 py-3`} placeholder="Roofline ~120 ft, 2 trees, shrubs, warm white"/></Field>
-      <div className="mt-2 flex items-start gap-3 text-sm"><span>⚡</span><p className={`${TOKENS.muted}`}>Rush installs start <span className="text-white font-semibold">{RUSH_START}</span>. Limited install slots left before <span className="text-white font-semibold">{CUTOFF_DATE}</span> — book now for priority scheduling.</p></div>
-      <button type="submit" className={`mt-3 rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} px-6 py-4 font-semibold hover:opacity-90 text-lg`}>Request Free Estimate</button>
-      <p className={`text-sm ${TOKENS.muted}`}>By submitting, you agree to be contacted about your project.</p>
-    </form>
-  );
-}
-function Field({label, children}){
-  return (
-    <label className="grid gap-1 text-base">
-      <span className="text-gray-200">{label}</span>
-      {children}
-    </label>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// About
-// -----------------------------------------------------------------------------
-function About(){
-  return (
-    <section id="about" className={`border-t ${TOKENS.border} ${TOKENS.sectionBg}`}>
-      <div className="mx-auto max-w-7xl px-6 py-12">
-        <div className="text-center">
-          <h2 className={`${TOKENS.heading} text-2xl md:text-3xl font-bold text-white`}>Locally Owned & Proud</h2>
-          <p className={`${TOKENS.muted} mt-2 max-w-2xl mx-auto text-base md:text-lg`}>Proud to serve the Texas Hill Country — Horseshoe Bay, Marble Falls, and nearby communities.</p>
-        </div>
-        <div className="mt-6 grid md:grid-cols-2 gap-6">
-          <div className={`rounded-xl p-4 ring-1 ${TOKENS.accentRing} ${TOKENS.cardBg}`}>
-            <h3 className={`${TOKENS.heading} text-xl font-semibold text-white`}>Contact</h3>
-            <ul className="mt-3 space-y-2">
-              <li><a href="tel:+18302207315" className="hover:opacity-90">📞 (830)-220-7315</a></li>
-              <li><a href="mailto:info@bayfrontlighting.com" className="hover:opacity-90">✉️ info@bayfrontlighting.com</a></li>
-              <li>
-                <a href={FB_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-90">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                    <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.333v21.333C0 23.403.597 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.464.099 2.795.143v3.24h-1.918c-1.504 0-1.797.715-1.797 1.764v2.314h3.587l-.467 3.622h-3.12V24h6.116C23.403 24 24 23.403 24 22.667V1.333C24 .597 23.403 0 22.675 0z" />
-                  </svg>
-                  @bayfrontlighting
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className={`rounded-xl p-4 ring-1 ring-gray-700 ${TOKENS.cardBg}`}>
-            <h3 className={`${TOKENS.heading} text-xl font-semibold text-white`}>Local Pride</h3>
-            <p className={`${TOKENS.muted}`}>
-              We live and work here, too. From lighting lakefront rooflines to wrapping oaks and riverwalks,
-              we treat every job like it's our own home.
-            </p>
-            <ul className="mt-3 space-y-2 list-disc list-inside">
-              <li>Locally owned & operated</li>
-              <li>Fully insured</li>
-              <li>Texas Hill Country specialists</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Gallery Page (masonry)
-// -----------------------------------------------------------------------------
-function GalleryPage(){
-  const images = computeSlides([
-    'tree-with-light2.png',
-    'house-with-light8.jpeg',
-    'house-with-light7.jpeg',
-    'bush-with-light2.jpeg',
-    'bush-with-light1.jpeg',
-    'house-with-light6.jpeg',
-    'house-with-light5.jpeg',
-    'house-with-light4.jpg',
-    'house-with-light3.jpg',
-    'house-with-light2.jpg',
-    'house-with-light1.jpg',
-    'wreath-on-house.jpeg',
-  ]);
-  return (
-    <div className={`${TOKENS.mainBg} ${TOKENS.text}`}>
-      <HeaderBar />
-      <section className="mx-auto max-w-7xl px-6 py-10">
-        <h1 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold`}>Gallery</h1>
-        <div className="mt-8 columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
-          {images.map((src, i) => (
-            <figure key={i} className="mb-4 break-inside-avoid rounded-xl overflow-hidden ring-1 ring-white/10 bg-slate-800">
-              <img
-                src={src}
-                alt={`Bayfront Lighting project ${i+1}`}
-                className="w-full h-auto object-cover"
-                loading="lazy"
-                onError={(e)=>{ e.currentTarget.onerror=null; e.currentTarget.src=BLANK_IMG; e.currentTarget.closest('figure')?.classList.add('hidden'); }}
-              />
-            </figure>
-          ))}
-        </div>
-      </section>
-      <Footer />
-    </div>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Footer
-// -----------------------------------------------------------------------------
-function Footer(){
-  return (
-    <footer className={`border-t ${TOKENS.border} ${TOKENS.cardBg}`}>
-      <div className={`mx-auto max-w-7xl px-6 py-8 text-sm md:text-base ${TOKENS.text}`}>
-        © {new Date().getFullYear()} Bayfront Lighting — Texas Hill Country
-      </div>
-    </footer>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Home & Root
-// -----------------------------------------------------------------------------
-function HomePage(){
-  return (
-    <div className={`${TOKENS.mainBg} ${TOKENS.text}`}>
-      <HeaderBar />
-      <Hero />
-      <Offerings />
-      <CTA />
-      <About />
-      <Footer />
-    </div>
-  );
-}
-
-export default function Site() {
-  const route = useroute(); //
-  
-  return (
-    <ThemeCtx.Provider value={{ tokens: TOKENS }}>
-      {isGallery(route) ? <GalleryPage /> : <HomePage />}
-    </ThemeCtx.Provider>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Smoke tests (lightweight runtime assertions)
-// -----------------------------------------------------------------------------
-(function tests(){
-  try{
-    // encodePaths: filters empty, dedupes (case-insensitive), encodes spaces, keeps absolute/http
-    const enc = encodePaths(['', 'house with light1.jpg', 'HOUSE WITH LIGHT1.jpg', null, '/abs.png', 'http://x/y.jpg']);
-    console.assert(enc.length === 3, 'encodePaths length');
-    console.assert(enc.some(p=>p.includes('%20')), 'encodePaths encodes spaces');
-    console.assert(enc.some(p=>p.startsWith('/')), 'encodePaths absolute-like');
-
-    // computeSlides fallback safety
-    const emptySlides = computeSlides([]);
-    console.assert(emptySlides.length===1 && emptySlides[0].startsWith('data:image/png'), 'computeSlides fallback');
-
-    // route helper
-    console.assert(isGallery('#/gallery') && !isGallery('#/'), 'isGallery works');
-
-    // FB link constant looks sane
-    console.assert(/^https:\/\//.test(FB_URL) && FB_URL.includes('facebook.com'), 'FB_URL valid');
-    // key dates present
-    console.assert(RUSH_START==='December 1st' && CUTOFF_DATE==='December 10th', 'rush & cutoff dates set');
-
-    // components exist
-    console.assert(typeof HeaderBar==='function' && typeof Hero==='function' && typeof Offerings==='function', 'components exist 1');
-    console.assert(typeof CTA==='function' && typeof About==='function' && typeof GalleryPage==='function' && typeof HomePage==='function', 'components exist 2');
-  }catch(e){ console.warn('Smoke test warn:', e); }
-})();
+              <span className="inline-fl
