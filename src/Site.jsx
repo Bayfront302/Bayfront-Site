@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import { FaEnvelope, FaFacebook } from "react-icons/fa"; // icons for Contact
+import { FaEnvelope, FaFacebook, FaPhone } from "react-icons/fa";
 
 // -----------------------------------------------------------------------------
 // Theme tokens (dark, slate + amber)
@@ -482,7 +482,7 @@ function FAQ() {
 }
 
 // -----------------------------------------------------------------------------
-// About + Footer (Contact has brand-color hover on icons)
+// About + Footer (About shows email + FB + Phone)
 // -----------------------------------------------------------------------------
 function About() {
   return (
@@ -490,28 +490,36 @@ function About() {
       <div className="grid md:grid-cols-2 gap-8 items-start">
         {/* Left: About text */}
         <div>
-          <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white`}>About</h2>
+          <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white`}>
+            About
+          </h2>
           <p className={`${TOKENS.muted} mt-4 max-w-3xl`}>
-            Local, insured, and focused on clean installs with premium LEDs. We handle everything:
-            design, installation, quick service, and removal/storage.
+            Local, insured, and focused on clean installs with premium LEDs. 
+            We handle everything: design, installation, quick service, and 
+            removal/storage.
           </p>
         </div>
 
         {/* Right: Contact block */}
         <div className="md:text-right">
-          <h3 className={`${TOKENS.heading} text-2xl font-bold text-white`}>Contact</h3>
+          <h3 className={`${TOKENS.heading} text-2xl font-bold text-white`}>
+            Contact
+          </h3>
           <div className="mt-3 space-y-3">
+            {/* Email */}
             <p>
               <a
-                href={`mailto:${EMAIL}`}
+                href={`mailto:info@bayfrontlighting.com?subject=Free%20Estimate%20Request%20—%20Bayfront%20Lighting&body=Hi%20Bayfront%20Lighting,%0D%0A%0D%0AI'd%20like%20a%20free%20estimate%20for%20holiday%20lighting.%0D%0AName:%0D%0AAddress/Area:%0D%0APhone%20(optional):%0D%0ADetails:%0D%0A%0D%0AThanks!`}
                 className="inline-flex items-center gap-2 text-amber-400 hover:text-[#DD4B39] transition-colors duration-200"
               >
-                <FaEnvelope size={20} /> {EMAIL}
+                <FaEnvelope size={20} /> info@bayfrontlighting.com
               </a>
             </p>
+
+            {/* Facebook */}
             <p>
               <a
-                href={FB_URL}
+                href="https://www.facebook.com/bayfrontlighting"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 text-amber-400 hover:text-[#1877F2] transition-colors duration-200"
@@ -519,20 +527,20 @@ function About() {
                 <FaFacebook size={20} /> Bayfront Lighting
               </a>
             </p>
+
+            {/* Phone */}
+            <p>
+              <a
+                href="tel:+18302207315"
+                className="inline-flex items-center gap-2 text-amber-400 hover:text-[#10B981] transition-colors duration-200"
+              >
+                <FaPhone size={20} /> (830) 220-7315
+              </a>
+            </p>
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="border-t border-gray-700 py-8 text-center text-gray-400">
-      <div className="mx-auto max-w-7xl px-6">
-        © {new Date().getFullYear()} Bayfront Lighting. All rights reserved.
-      </div>
-    </footer>
   );
 }
 
