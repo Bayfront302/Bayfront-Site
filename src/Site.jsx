@@ -269,6 +269,7 @@ function CTA() {
   return (
     <section id="estimate" className={`border-t ${TOKENS.border} ${TOKENS.sectionBg} text-lg`}>
       <div className="mx-auto max-w-7xl px-6 py-16 grid md:grid-cols-2 gap-12 items-start">
+        {/* Left column: heading, badges, cutoff note, and BIG circle logo */}
         <div>
           <div className="text-center md:text-left">
             <div className={`text-sm uppercase tracking-[.22em] ${TOKENS.muted}`}>Free estimate</div>
@@ -287,12 +288,24 @@ function CTA() {
               </span>
             </div>
           </div>
+
           <p className={`mt-4 ${TOKENS.muted} text-sm`}>
             Cutoff for guaranteed installation is {CUTOFF_DATE}.
           </p>
+
+          {/* 🔵 Big circular logo to fill space */}
+          <div className="mt-8 flex justify-center md:justify-start">
+            <div className="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 ring-2 ring-amber-400 shadow-lg shadow-black/40 bg-gray-900">
+              <img
+                src="/bayfront-logo.jpg"  /* <-- put your file in /public as this name */
+                alt="Bayfront Lighting logo"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
         </div>
 
-        {/* Netlify Forms */}
+        {/* Right column: Netlify form */}
         <form
           name="estimate"
           method="POST"
@@ -301,12 +314,9 @@ function CTA() {
           data-netlify-honeypot="bot-field"
           className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10 space-y-4"
         >
-          {/* Netlify required hidden fields */}
           <input type="hidden" name="form-name" value="estimate" />
           <p className="hidden">
-            <label>
-              Don’t fill this out: <input name="bot-field" />
-            </label>
+            <label>Don’t fill this out: <input name="bot-field" /></label>
           </p>
 
           <div>
@@ -330,7 +340,6 @@ function CTA() {
             />
           </div>
 
-          {/* Phone (optional) */}
           <div>
             <label className="block text-sm text-gray-300 mb-1">Phone (optional)</label>
             <input
@@ -360,7 +369,6 @@ function CTA() {
             />
           </div>
 
-          {/* Notes */}
           <div>
             <label className="block text-sm text-gray-300 mb-1">Notes</label>
             <textarea
@@ -449,6 +457,7 @@ function GalleryPage() {
     "house-with-light2.jpg",
     "house-with-light3.jpg",
     "house-with-light4.jpg",
+    "house-with-light9.jpeg",
   ]);
   return (
     <main className={`${TOKENS.text}`}>
