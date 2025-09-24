@@ -93,6 +93,7 @@ function useRoute() {
 // -----------------------------------------------------------------------------
 // HeaderBar
 // -----------------------------------------------------------------------------
+import lightsUrl from "./assets/lights-divider.svg?url";
 function HeaderBar() {
   const { tokens } = useTheme();
   const [open, setOpen] = useState(false);
@@ -144,14 +145,18 @@ function HeaderBar() {
           </div>
         )}
       </header>
+      
+{/* 🎄 Image-based lights divider */}
+<div className="w-full bg-gray-900">
+  <div
+    className="h-16 bg-center bg-repeat-x"
+    style={{
+      backgroundImage: `url(${lightsUrl})`,
+      backgroundSize: "auto 64px"
+    }}
+  />
+</div>
 
-      {/* 🎄 Image-based lights divider */}
-      <div className="w-full bg-gray-900">
-        <div
-          className="h-16 bg-center bg-repeat-x"
-          style={{ backgroundImage: "url('/lights-divider.svg')", backgroundSize: "auto 64px" }}
-        />
-      </div>
     </>
   );
 }
