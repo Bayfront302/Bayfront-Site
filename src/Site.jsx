@@ -429,29 +429,30 @@ function About() {
         </div>
 
         {/* Right: Contact block */}
-      <div className="md:text-right">
-  <h3 className={`${TOKENS.heading} text-2xl font-bold text-white`}>Contact</h3>
-  <div className="mt-3 space-y-3">
-    <p>
-      <a
-        href={`mailto:${EMAIL}`}
-        className="inline-flex items-center gap-2 text-amber-400 hover:text-[#DD4B39] transition-colors duration-200"
-      >
-        <FaEnvelope size={20} /> {EMAIL}
-      </a>
-    </p>
-    <p>
-      <a
-        href={FB_URL}
-        target="_blank"
-        rel="noreferrer"
-        className="inline-flex items-center gap-2 text-amber-400 hover:text-[#1877F2] transition-colors duration-200"
-      >
-        <FaFacebook size={20} /> Bayfront Lighting
-      </a>
-    </p>
-  </div>
-</div>
+        <div className="md:text-right">
+          <h3 className={`${TOKENS.heading} text-2xl font-bold text-white`}>Contact</h3>
+          <div className="mt-3 space-y-3">
+            <p>
+              <a
+                href={`mailto:${EMAIL}`}
+                className="inline-flex items-center gap-2 text-amber-400 hover:text-[#DD4B39] transition-colors duration-200"
+              >
+                <FaEnvelope size={20} /> {EMAIL}
+              </a>
+            </p>
+            <p>
+              <a
+                href={FB_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-amber-400 hover:text-[#1877F2] transition-colors duration-200"
+              >
+                <FaFacebook size={20} /> Bayfront Lighting
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
