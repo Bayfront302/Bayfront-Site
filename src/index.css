@@ -1,6 +1,13 @@
+/* -------------------------------------------------------------------------- */
+/* Tailwind base imports                                                      */
+/* -------------------------------------------------------------------------- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* -------------------------------------------------------------------------- */
+/* Custom twinkling lights styles                                             */
+/* -------------------------------------------------------------------------- */
 @keyframes twinkle {
   0%, 100% {
     opacity: 1;
@@ -14,15 +21,41 @@
 
 .bulb {
   display: inline-block;
-  width: 18px;       /* size of bulb */
-  height: 28px;
-  border-radius: 50% 50% 45% 45%;  /* makes it look like a bulb */
-  margin: 0 6px;
+  width: 18px;             /* bulb width */
+  height: 28px;            /* bulb height */
+  border-radius: 50% 50% 45% 45%;  /* bulb shape */
+  margin: 0 6px;           /* space between bulbs */
   animation: twinkle 2s infinite ease-in-out;
 }
 
-/* different bulb colors */
-.bulb.red { background: #e63946; color: #e63946; animation-delay: 0s; }
-.bulb.green { background: #2a9d8f; color: #2a9d8f; animation-delay: 0.5s; }
-.bulb.yellow { background: #f4a261; color: #f4a261; animation-delay: 1s; }
-.bulb.blue { background: #457b9d; color: #457b9d; animation-delay: 1.5s; }
+/* Color variations (each has its own delay so they don’t all blink together) */
+.bulb.red {
+  background: #e63946;
+  color: #e63946;
+  animation-delay: 0s;
+}
+.bulb.green {
+  background: #2a9d8f;
+  color: #2a9d8f;
+  animation-delay: 0.5s;
+}
+.bulb.yellow {
+  background: #f4a261;
+  color: #f4a261;
+  animation-delay: 1s;
+}
+.bulb.blue {
+  background: #457b9d;
+  color: #457b9d;
+  animation-delay: 1.5s;
+}
+
+/* Strip container stretches bulbs across the full divider */
+.lights-strip {
+  display: flex;
+  justify-content: space-between; /* spread bulbs edge to edge */
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  padding: 0 1rem;
+}
