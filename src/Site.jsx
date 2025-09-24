@@ -95,11 +95,16 @@ function useRoute() {
 // -----------------------------------------------------------------------------
 // HeaderBar
 // -----------------------------------------------------------------------------
+
 function HeaderBar() {
   const { tokens } = useTheme();
   const [open, setOpen] = useState(false);
   const route = useRoute();
   const inGallery = isGallery(route);
+
+  // When you're on #/gallery, section links must use "#/offerings" etc.
+  // On the home page they can be "#offerings".
+  const base = inGallery ? "#/" : "#";
 
   return (
     <>
@@ -112,13 +117,9 @@ function HeaderBar() {
           </a>
 
           <nav className={`hidden md:flex items-center gap-6 ${tokens.muted}`}>
-            {!inGallery && (
-              <>
-                <a href="#offerings" className="hover:opacity-90">What We Offer</a>
-                <a href="#estimate" className="hover:opacity-90">Free Estimate</a>
-                <a href="#about" className="hover:opacity-90">About</a>
-              </>
-            )}
+            <a href={`${base}offerings`} className="hover:opacity-90">What We Offer</a>
+            <a href={`${base}estimate`} className="hover:opacity-90">Free Estimate</a>
+            <a href={`${base}about`} className="hover:opacity-90">About</a>
             <a href="#/gallery" className="hover:opacity-90">Gallery</a>
           </nav>
 
@@ -134,14 +135,10 @@ function HeaderBar() {
         {open && (
           <div className={`md:hidden border-t ${tokens.border}`}>
             <div className={`px-6 py-4 flex flex-col gap-3 ${tokens.muted}`}>
-              {!inGallery && (
-                <>
-                  <a href="#offerings" onClick={()=>setOpen(false)}>What We Offer</a>
-                  <a href="#estimate" onClick={()=>setOpen(false)}>Free Estimate</a>
-                  <a href="#about" onClick={()=>setOpen(false)}>About</a>
-                </>
-              )}
-              <a href="#/gallery" onClick={()=>setOpen(false)}>Gallery</a>
+              <a href={`${base}offerings`} onClick={() => setOpen(false)}>What We Offer</a>
+              <a href={`${base}estimate`} onClick={() => setOpen(false)}>Free Estimate</a>
+              <a href={`${base}about`} onClick={() => setOpen(false)}>About</a>
+              <a href="#/gallery" onClick={() => setOpen(false)}>Gallery</a>
             </div>
           </div>
         )}
