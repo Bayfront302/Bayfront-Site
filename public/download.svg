@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="64" viewBox="0 0 600 64">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"></feGaussianBlur>
+      <feMerge>
+        <feMergeNode in="coloredBlur"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- wire -->
+  <path d="M0,24 C80,8 120,40 200,24 S320,8 400,24 520,40 600,24" fill="none" stroke="#2f3b4a" stroke-width="4"></path>
+
+  <!-- bulbs group template (we'll repeat across the width) -->
+  <!-- Each bulb: socket + bulb with slight glow -->
+
+  <!-- 1 -->
+  <g transform="translate(30,24)">
+    <rect x="-6" y="-4" width="12" height="8" rx="2" fill="#25303d"></rect>
+    <ellipse cx="0" cy="10" rx="8" ry="12" fill="#ff4d4d" filter="url(#glow)"></ellipse>
+  </g>
+
+  <!-- 2 -->
+  <g transform="translate(110,18)">
+    <rect x="-6" y="-4" width="12" height="8" rx="2" fill="#25303d"></rect>
+    <ellipse cx="0" cy="10" rx="8" ry="12" fill="#4dff77" filter="url(#glow)"></ellipse>
+  </g>
+
+  <!-- 3 -->
+  <g transform="translate(190,28)">
+    <rect x="-6" y="-4" width="12" height="8" rx="2" fill="#25303d"></rect>
+    <ellipse cx="0" cy="10" rx="8" ry="12" fill="#ffd24d" filter="url(#glow)"></ellipse>
+  </g>
+
+  <!-- 4 -->
+  <g transform="translate(270,20)">
+    <rect x="-6" y="-4" width="12" height="8" rx="2" fill="#25303d"></rect>
+    <ellipse cx="0" cy="10" rx="8" ry="12" fill="#4db8ff" filter="url(#glow)"></ellipse>
+  </g>
+
+  <!-- 5 -->
+  <g transform="translate(350,30)">
+    <rect x="-6" y="-4" width="12" height="8" rx="2" fill="#25303d"></rect>
+    <ellipse cx="0" cy="10" rx="8" ry="12" fill="#ff4d4d" filter="url(#glow)"></ellipse>
+  </g>
+
+  <!-- 6 -->
+  <g transform="translate(430,18)">
+    <rect x="-6" y="-4" width="12" height="8" rx="2" fill="#25303d"></rect>
+    <ellipse cx="0" cy="10" rx="8" ry="12" fill="#4dff77" filter="url(#glow)"></ellipse>
+  </g>
+
+  <!-- 7 -->
+  <g transform="translate(510,28)">
+    <rect x="-6" y="-4" width="12" height="8" rx="2" fill="#25303d"></rect>
+    <ellipse cx="0" cy="10" rx="8" ry="12" fill="#ffd24d" filter="url(#glow)"></ellipse>
+  </g>
+</svg>
