@@ -38,7 +38,7 @@ if (typeof document !== "undefined" && !document.getElementById("bayfront-fonts"
 const FB_URL = "https://www.facebook.com/bayfrontlighting";
 const RUSH_START = "December 1st";
 const CUTOFF_DATE = "December 10th";
-const EMAIL = "info@bayfrontlighting";
+const EMAIL = "info@bayfrontlighting.com";
 
 // -----------------------------------------------------------------------------
 // Context & helpers
@@ -89,6 +89,12 @@ function useRoute() {
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
   return route;
+}
+
+// helper to build a safe mailto link
+function mailtoHref(to, subject, body) {
+  const q = new URLSearchParams({ subject, body }).toString();
+  return `mailto:${to}?${q}`;
 }
 
 // -----------------------------------------------------------------------------
@@ -482,17 +488,9 @@ function FAQ() {
 }
 
 // -----------------------------------------------------------------------------
-// About + Footer (About shows email + FB + Phone)
-// -----------------------------------------------------------------------------
-// helper to build a safe mailto link
-function mailtoHref(to, subject, body) {
-  const q = new URLSearchParams({ subject, body }).toString();
-  return `mailto:${to}?${q}`;
-}
-
+// About (Contact has email, FB, phone with brand-color hovers)
 // -----------------------------------------------------------------------------
 function About() {
-  const EMAIL = "info@bayfrontlighting.com";
   const subject = "Free Estimate Request — Bayfront Lighting";
   const body = [
     "Hi Bayfront Lighting,",
@@ -511,9 +509,7 @@ function About() {
       <div className="grid md:grid-cols-2 gap-8 items-start">
         {/* Left: About text */}
         <div>
-          <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white`}>
-            About
-          </h2>
+          <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white`}>About</h2>
           <p className={`${TOKENS.muted} mt-4 max-w-3xl`}>
             Local, insured, and focused on clean installs with premium LEDs.
             We handle everything: design, installation, quick service, and removal/storage.
@@ -537,7 +533,7 @@ function About() {
             {/* Facebook */}
             <p>
               <a
-                href="https://www.facebook.com/bayfrontlighting"
+                href={FB_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 text-amber-400 hover:text-[#1877F2] transition-colors duration-200"
@@ -559,6 +555,19 @@ function About() {
         </div>
       </div>
     </section>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Footer (THIS WAS MISSING BEFORE — caused the crash)
+// -----------------------------------------------------------------------------
+function Footer() {
+  return (
+    <footer className="border-t border-gray-700 py-8 text-center text-gray-400">
+      <div className="mx-auto max-w-7xl px-6">
+        © {new Date().getFullYear()} Bayfront Lighting. All rights reserved.
+      </div>
+    </footer>
   );
 }
 
@@ -635,4 +644,3 @@ export default function Site() {
     </ThemeCtx.Provider>
   );
 }
-
