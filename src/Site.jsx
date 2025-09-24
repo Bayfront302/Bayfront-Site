@@ -166,16 +166,13 @@ function HeaderBar() {
 // Hero (manual/auto slideshow with safe fallbacks)
 // -----------------------------------------------------------------------------
 function Hero() {
-  const slideNames = [
-    'wreath-on-house.jpeg',
-    'house-with-light7.jpeg',
-    'bush-with-light2.jpeg',
-    'bush-with-light1.jpeg',
-    // remote fallbacks for preview environments
-    'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=1600&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1512203492609-8f204098bb57?q=80&w=1600&auto=format&fit=crop',
+  const slideFiles = [
+    "wreath-on-house.jpeg",
+    "house-with-light7.jpeg",
+    "bush-with-light2.jpeg",
+    "bush-with-light1.jpeg",
   ];
-  const slides = slideNames.map(candidatesFor);      // <-- array of candidate arrays
+  const slides = computeSlides(slideFiles);
   const [i, setI] = useState(0);
   const many = slides.length > 1;
 
@@ -189,42 +186,66 @@ function Hero() {
   const prev = () => many && setI((v) => (v - 1 + slides.length) % slides.length);
 
   return (
-    <section className={`relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center px-6 ${TOKENS.sectionBg} overflow-hidden`}>
-      <div className="absolute inset-0 -z-20 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
+    <section
+      className={`relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center px-6 ${TOKENS.sectionBg} overflow-hidden`}
+    >
       <div className="absolute inset-0 -z-10">
-        {slides.map((cands, idx) => (
-          <SmartImg
-            key={idx}
-            candidates={cands}
+        {slides.map((src, idx) => (
+          <img
+            key={src + idx}
+            src={src}
             alt="Bayfront Lighting background"
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === idx ? 'opacity-100' : 'opacity-0'}`}
-            onFinalError={(e) => e.currentTarget.classList.add('opacity-0')}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = BLANK_IMG;
+              e.currentTarget.classList.add("opacity-0");
+            }}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+              i === idx ? "opacity-100" : "opacity-0"
+            }`}
           />
         ))}
-        <div className="absolute inset-0 bg-black/45" />
+        <div className="absolute inset-0 bg-black/55" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/70 to-transparent" />
       </div>
       {many && (
         <>
-          <button aria-label="Prev" onClick={prev} className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900">‹</button>
-          <button aria-label="Next" onClick={next} className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900">›</button>
+          <button
+            aria-label="Prev"
+            onClick={prev}
+            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900"
+          >
+            ‹
+          </button>
+          <button
+            aria-label="Next"
+            onClick={next}
+            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900"
+          >
+            ›
+          </button>
         </>
       )}
       <div>
         <h1 className={`text-white text-4xl md:text-6xl font-bold leading-tight ${TOKENS.heading}`}>
-          <span className="text-red-400">Holiday</span> <span className="text-green-400">lighting</span> without the hassle
+          <span className="text-red-400">Holiday</span>{" "}
+          <span className="text-green-400">lighting</span> without the hassle
         </h1>
         <p className={`mt-4 ${TOKENS.muted} text-lg md:text-xl`}>
           Design, installation, in-season service, and end-of-season removal — we store your lights free.
         </p>
         <div className="mt-8 flex flex-wrap gap-4 justify-center">
-          <a href="#estimate" className={`rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-6 py-4 shadow hover:opacity-90 text-lg`}>Request Free Estimate</a>
+          <a
+            href="#estimate"
+            className={`rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-6 py-4 shadow hover:opacity-90 text-lg`}
+          >
+            Request Free Estimate
+          </a>
         </div>
       </div>
     </section>
   );
 }
-
 
 // -----------------------------------------------------------------------------
 // Offerings
@@ -351,50 +372,37 @@ function Footer() {
 // Gallery Page (very simple placeholder)
 // -----------------------------------------------------------------------------
 function GalleryPage() {
-  const fileNames = [
-    'tree-with-light1.png',
-    'house-with-light8.jpeg',
-    'house-with-light7.jpeg',
-    'bush-with-light2.jpeg',
-    'bush-with-light1.jpeg',
-    'house-with-light6.jpeg',
-    'house-with-light5.jpeg',
-    'house-with-light4.jpg',
-    'house-with-light3.jpg',
-    'house-with-light2.jpg',
-    'house-with-light1.jpg',
-    'wreath-on-house.jpeg',
-    // remote preview fallbacks
-    'https://images.unsplash.com/photo-1482192596544-9eb780fc7f66?q=80&w=1200&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1451481454041-104482d8e284?q=80&w=1200&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1482517967863-00e15c9b44be?q=80&w=1200&auto=format&fit=crop',
-  ];
-  const images = fileNames.map(candidatesFor);
-
+  const slides = computeSlides([
+    "bush-with-light1.jpeg",
+    "bush-with-light2.jpeg",
+    "house-with-light7.jpeg",
+    "wreath-on-house.jpeg",
+  ]);
   return (
-    <div className={`${TOKENS.mainBg} ${TOKENS.text}`}>
+    <main className={`${TOKENS.text}`}>
       <HeaderBar />
-      <section className="mx-auto max-w-7xl px-6 py-10">
-        <h1 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold`}>Gallery</h1>
-        <div className="mt-8 columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
-          {images.map((cands, i) => (
-            <figure key={i} className="mb-4 break-inside-avoid rounded-xl overflow-hidden ring-1 ring-white/10 bg-slate-800">
-              <SmartImg
-                candidates={cands}
-                alt={`Bayfront Lighting project ${i + 1}`}
-                className="w-full h-auto object-cover"
-                loading="lazy"
-                onFinalError={(e) => e.currentTarget.closest('figure')?.classList.add('hidden')}
-              />
-            </figure>
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <h1 className={`${TOKENS.heading} text-4xl md:text-5xl font-bold`}>Gallery</h1>
+        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {slides.map((src, i) => (
+            <img
+              key={src + i}
+              src={src}
+              alt=""
+              className="w-full h-56 object-cover rounded-lg ring-1 ring-white/10"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = BLANK_IMG;
+                e.currentTarget.classList.add("opacity-50");
+              }}
+            />
           ))}
         </div>
       </section>
       <Footer />
-    </div>
+    </main>
   );
 }
-
 
 // -----------------------------------------------------------------------------
 // Home Page
@@ -423,3 +431,4 @@ export default function Site() {
     </ThemeCtx.Provider>
   );
 }
+
