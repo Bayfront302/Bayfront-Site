@@ -463,11 +463,7 @@ function FAQ() {
     {
       q: "Do you remove and store the lights?",
       a: "Yes. We remove your lights at season’s end and store them for you at no extra cost."
-    },
-    {
-      q: "Are you insured?",
-      a: "Yes—fully insured. We also work with safety checks and tidy cable routing."
-    },
+    },  
   ];
 
   return (
