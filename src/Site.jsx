@@ -169,7 +169,7 @@ function HeaderBar() {
 }
 
 // -----------------------------------------------------------------------------
-// Hero (manual/auto slideshow with safe fallbacks)
+// Hero (fixed z-index so slides are visible)
 // -----------------------------------------------------------------------------
 function Hero() {
   const slideFiles = [
@@ -193,44 +193,56 @@ function Hero() {
 
   return (
     <section
-      className={`relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center px-6 ${TOKENS.sectionBg} overflow-hidden`}
+      className={`relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center px-6 overflow-hidden`} // removed ${TOKENS.sectionBg}
     >
-      <div className="absolute inset-0 -z-10">
+      {/* Slide layer */}
+      <div className="absolute inset-0 z-0">
         {slides.map((src, idx) => (
           <img
             key={src + idx}
             src={src}
             alt="Bayfront Lighting background"
+            loading={idx === 0 ? "eager" : "lazy"}
             onError={(e) => {
               e.currentTarget.onerror = null;
               e.currentTarget.src = BLANK_IMG;
               e.currentTarget.classList.add("opacity-0");
             }}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === idx ? "opacity-100" : "opacity-0"}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+              i === idx ? "opacity-100" : "opacity-0"
+            }`}
           />
         ))}
+      </div>
+
+      {/* Overlays above images */}
+      <div className="absolute inset-0 z-10 pointer-events-none">
         <div className="absolute inset-0 bg-black/55" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/70 to-transparent" />
       </div>
+
+      {/* Controls */}
       {many && (
         <>
           <button
             aria-label="Prev"
             onClick={prev}
-            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900"
+            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900 z-20"
           >
             ‹
           </button>
           <button
             aria-label="Next"
             onClick={next}
-            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900"
+            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900 z-20"
           >
             ›
           </button>
         </>
       )}
-      <div>
+
+      {/* Text content */}
+      <div className="relative z-20">
         <h1 className={`text-white text-4xl md:text-6xl font-bold leading-tight ${TOKENS.heading}`}>
           <span className="text-red-400">Holiday</span>{" "}
           <span className="text-green-400">lighting</span> without the hassle
@@ -238,7 +250,6 @@ function Hero() {
         <p className={`mt-4 ${TOKENS.muted} text-lg md:text-xl`}>
           Design, installation, in-season service, and end-of-season removal — we store your lights free.
         </p>
-        {/* Intentionally no button here per earlier discussion; add back if you want */}
       </div>
     </section>
   );
