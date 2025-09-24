@@ -484,7 +484,28 @@ function FAQ() {
 // -----------------------------------------------------------------------------
 // About + Footer (About shows email + FB + Phone)
 // -----------------------------------------------------------------------------
+// helper to build a safe mailto link
+function mailtoHref(to, subject, body) {
+  const q = new URLSearchParams({ subject, body }).toString();
+  return `mailto:${to}?${q}`;
+}
+
+// -----------------------------------------------------------------------------
 function About() {
+  const EMAIL = "info@bayfrontlighting.com";
+  const subject = "Free Estimate Request — Bayfront Lighting";
+  const body = [
+    "Hi Bayfront Lighting,",
+    "",
+    "I'd like a free estimate for holiday lighting.",
+    "Name:",
+    "Address/Area:",
+    "Phone (optional):",
+    "Details (roofline length, trees/shrubs, color preferences):",
+    "",
+    "Thanks!",
+  ].join("\n");
+
   return (
     <section id="about" className="mx-auto max-w-7xl px-6 py-16">
       <div className="grid md:grid-cols-2 gap-8 items-start">
@@ -494,25 +515,22 @@ function About() {
             About
           </h2>
           <p className={`${TOKENS.muted} mt-4 max-w-3xl`}>
-            Local, insured, and focused on clean installs with premium LEDs. 
-            We handle everything: design, installation, quick service, and 
-            removal/storage.
+            Local, insured, and focused on clean installs with premium LEDs.
+            We handle everything: design, installation, quick service, and removal/storage.
           </p>
         </div>
 
         {/* Right: Contact block */}
         <div className="md:text-right">
-          <h3 className={`${TOKENS.heading} text-2xl font-bold text-white`}>
-            Contact
-          </h3>
+          <h3 className={`${TOKENS.heading} text-2xl font-bold text-white`}>Contact</h3>
           <div className="mt-3 space-y-3">
             {/* Email */}
             <p>
               <a
-                href={`mailto:info@bayfrontlighting.com?subject=Free%20Estimate%20Request%20—%20Bayfront%20Lighting&body=Hi%20Bayfront%20Lighting,%0D%0A%0D%0AI'd%20like%20a%20free%20estimate%20for%20holiday%20lighting.%0D%0AName:%0D%0AAddress/Area:%0D%0APhone%20(optional):%0D%0ADetails:%0D%0A%0D%0AThanks!`}
+                href={mailtoHref(EMAIL, subject, body)}
                 className="inline-flex items-center gap-2 text-amber-400 hover:text-[#DD4B39] transition-colors duration-200"
               >
-                <FaEnvelope size={20} /> info@bayfrontlighting.com
+                <FaEnvelope size={20} /> {EMAIL}
               </a>
             </p>
 
