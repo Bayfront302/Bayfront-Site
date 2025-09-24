@@ -27,7 +27,21 @@
   margin: 0 6px;
   animation: twinkle 2s infinite ease-in-out;
   position: relative;
-  z-index: 2; /* bulbs in front of wire */
+  z-index: 2; /* bulbs sit in front of wire */
+}
+
+/* 🎄 Stem / clip for each bulb */
+.bulb::before {
+  content: "";
+  position: absolute;
+  top: -8px;            /* above the bulb */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 8px;
+  background: #444;     /* stem color */
+  border-radius: 1px;
+  z-index: 1;
 }
 
 /* Bulb color variations */
@@ -36,7 +50,7 @@
 .bulb.yellow { background: #f4a261; color: #f4a261; animation-delay: 1s; }
 .bulb.blue   { background: #457b9d; color: #457b9d; animation-delay: 1.5s; }
 
-/* Strip container stretches bulbs across */
+/* Strip container */
 .lights-strip {
   display: flex;
   justify-content: space-between;
@@ -51,13 +65,14 @@
 .lights-strip::before {
   content: "";
   position: absolute;
-  top: 6px;            /* height above bulbs */
+  top: 4px;             /* slightly above stems */
   left: 0;
   right: 0;
   height: 4px;
   background: transparent;
   border-top: 3px solid #444; /* wire color */
-  border-radius: 50%;         /* gives a gentle curve */
-  z-index: 1;
+  border-radius: 50%;         /* gives a gentle arc */
+  z-index: 0;
 }
+
 
