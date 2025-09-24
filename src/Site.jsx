@@ -169,8 +169,8 @@ function Hero() {
   const slideFiles = [
     "wreath-on-house.jpeg",
     "house-with-light7.jpeg",
-    "bush-with-light2.jpeg",
-    "bush-with-light1.jpeg",
+    "house-with-light2.jpg",
+    "house-with-light1.jpeg",
   ];
   const slides = computeSlides(slideFiles);
   const [i, setI] = useState(0);
@@ -381,10 +381,10 @@ function GalleryPage() {
     "house-with-light6.jpeg",
     "house-with-light8.jpeg",
     "tree-with-light1.png",
-    "house-with-light1.jpeg",
-    "house-with-light2.jpeg",
-    "house-with-light3.jpeg",
-    "house-with-light4.jpeg",
+    "house-with-light1.jpg",
+    "house-with-light2.jpg",
+    "house-with-light3.jpg",
+    "house-with-light4.jpg",
   ]);
   return (
     <main className={`${TOKENS.text}`}>
