@@ -21,41 +21,43 @@
 
 .bulb {
   display: inline-block;
-  width: 18px;             /* bulb width */
-  height: 28px;            /* bulb height */
-  border-radius: 50% 50% 45% 45%;  /* bulb shape */
-  margin: 0 6px;           /* space between bulbs */
+  width: 18px;
+  height: 28px;
+  border-radius: 50% 50% 45% 45%; /* bulb shape */
+  margin: 0 6px;
   animation: twinkle 2s infinite ease-in-out;
+  position: relative;
+  z-index: 2; /* bulbs in front of wire */
 }
 
-/* Color variations (each has its own delay so they don’t all blink together) */
-.bulb.red {
-  background: #e63946;
-  color: #e63946;
-  animation-delay: 0s;
-}
-.bulb.green {
-  background: #2a9d8f;
-  color: #2a9d8f;
-  animation-delay: 0.5s;
-}
-.bulb.yellow {
-  background: #f4a261;
-  color: #f4a261;
-  animation-delay: 1s;
-}
-.bulb.blue {
-  background: #457b9d;
-  color: #457b9d;
-  animation-delay: 1.5s;
-}
+/* Bulb color variations */
+.bulb.red    { background: #e63946; color: #e63946; animation-delay: 0s; }
+.bulb.green  { background: #2a9d8f; color: #2a9d8f; animation-delay: 0.5s; }
+.bulb.yellow { background: #f4a261; color: #f4a261; animation-delay: 1s; }
+.bulb.blue   { background: #457b9d; color: #457b9d; animation-delay: 1.5s; }
 
-/* Strip container stretches bulbs across the full divider */
+/* Strip container stretches bulbs across */
 .lights-strip {
   display: flex;
-  justify-content: space-between; /* spread bulbs edge to edge */
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
   width: 100%;
   max-width: 100%;
   padding: 0 1rem;
+  position: relative;
 }
+
+/* 🎄 Wire above bulbs */
+.lights-strip::before {
+  content: "";
+  position: absolute;
+  top: 6px;            /* height above bulbs */
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: transparent;
+  border-top: 3px solid #444; /* wire color */
+  border-radius: 50%;         /* gives a gentle curve */
+  z-index: 1;
+}
+
