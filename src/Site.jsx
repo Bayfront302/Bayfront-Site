@@ -1,5 +1,5 @@
-import lightsUrl from "./assets/lights-divider.svg?url";
 import React, { useState, useEffect, createContext, useContext } from "react";
+import lightsUrl from "./assets/lights-divider.svg?url"; // 🎄 divider image
 
 // -----------------------------------------------------------------------------
 // Theme tokens (dark, slate + amber)
@@ -38,6 +38,7 @@ if (typeof document !== "undefined" && !document.getElementById("bayfront-fonts"
 const FB_URL = "https://www.facebook.com/bayfrontlighting";
 const RUSH_START = "December 1st";
 const CUTOFF_DATE = "December 10th";
+const EMAIL = "info@bayfrontlighting"; // per your request
 
 // -----------------------------------------------------------------------------
 // Context & helpers
@@ -105,13 +106,9 @@ function HeaderBar() {
       <header className={`sticky top-0 z-50 border-b ${tokens.border} ${TOKENS.cardBg}`}>
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
           <a href="#/" className="flex flex-col items-center text-center">
-            <span className={`text-4xl ${tokens.heading} text-amber-400 drop-shadow`}>
-              Bayfront Lighting
-            </span>
+            <span className={`text-4xl ${tokens.heading} text-amber-400 drop-shadow`}>Bayfront Lighting</span>
             <hr className="border-t border-gray-600 w-full my-1" />
-            <span className={`text-base ${tokens.muted} ${tokens.heading}`}>
-              Holiday Illumination Specialists
-            </span>
+            <span className={`text-base ${tokens.muted} ${tokens.heading}`}>Holiday Illumination Specialists</span>
           </a>
 
           <nav className={`hidden md:flex items-center gap-6 ${tokens.muted}`}>
@@ -139,12 +136,12 @@ function HeaderBar() {
             <div className={`px-6 py-4 flex flex-col gap-3 ${tokens.muted}`}>
               {!inGallery && (
                 <>
-                  <a href="#offerings" onClick={() => setOpen(false)}>What We Offer</a>
-                  <a href="#estimate" onClick={() => setOpen(false)}>Free Estimate</a>
-                  <a href="#about" onClick={() => setOpen(false)}>About</a>
+                  <a href="#offerings" onClick={()=>setOpen(false)}>What We Offer</a>
+                  <a href="#estimate" onClick={()=>setOpen(false)}>Free Estimate</a>
+                  <a href="#about" onClick={()=>setOpen(false)}>About</a>
                 </>
               )}
-              <a href="#/gallery" onClick={() => setOpen(false)}>Gallery</a>
+              <a href="#/gallery" onClick={()=>setOpen(false)}>Gallery</a>
             </div>
           </div>
         )}
@@ -154,10 +151,7 @@ function HeaderBar() {
       <div className="w-full bg-gray-900">
         <div
           className="h-16 bg-center bg-repeat-x"
-          style={{
-            backgroundImage: `url(${lightsUrl})`,
-            backgroundSize: "auto 64px"
-          }}
+          style={{ backgroundImage: `url(${lightsUrl})`, backgroundSize: "auto 64px" }}
         />
       </div>
     </>
@@ -202,9 +196,7 @@ function Hero() {
               e.currentTarget.src = BLANK_IMG;
               e.currentTarget.classList.add("opacity-0");
             }}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-              i === idx ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === idx ? "opacity-100" : "opacity-0"}`}
           />
         ))}
         <div className="absolute inset-0 bg-black/55" />
@@ -236,14 +228,7 @@ function Hero() {
         <p className={`mt-4 ${TOKENS.muted} text-lg md:text-xl`}>
           Design, installation, in-season service, and end-of-season removal — we store your lights free.
         </p>
-        <div className="mt-8 flex flex-wrap gap-4 justify-center">
-          <a
-            href="#estimate"
-            className={`rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-6 py-4 shadow hover:opacity-90 text-lg`}
-          >
-            Request Free Estimate
-          </a>
-        </div>
+        {/* Intentionally no button here per earlier discussion; add back if you want */}
       </div>
     </section>
   );
@@ -278,7 +263,7 @@ function OfferCard({ title, text }) {
 }
 
 // -----------------------------------------------------------------------------
-// CTA (Estimate) — Netlify Forms enabled
+// CTA (Estimate) — Netlify Forms enabled (with Phone + Notes + placeholders)
 // -----------------------------------------------------------------------------
 function CTA() {
   return (
@@ -311,9 +296,9 @@ function CTA() {
         <form
           name="estimate"
           method="POST"
-          action="/thanks.html"             // optional: create this page (next step)
-          data-netlify="true"               // required for JS-rendered forms
-          data-netlify-honeypot="bot-field" // spam protection
+          action="/thanks.html"
+          data-netlify="true"
+          data-netlify-honeypot="bot-field"
           className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10 space-y-4"
         >
           {/* Netlify required hidden fields */}
@@ -326,26 +311,71 @@ function CTA() {
 
           <div>
             <label className="block text-sm text-gray-300 mb-1">Name</label>
-            <input name="name" required className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
+            <input
+              name="name"
+              required
+              placeholder="John Smith"
+              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
+            />
           </div>
 
           <div>
             <label className="block text-sm text-gray-300 mb-1">Email</label>
-            <input name="email" type="email" required className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
+            <input
+              name="email"
+              type="email"
+              required
+              placeholder="you@example.com"
+              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
+            />
+          </div>
+
+          {/* Phone (optional) */}
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Phone (optional)</label>
+            <input
+              name="phone"
+              type="tel"
+              placeholder="(123) 456-7890"
+              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
+            />
           </div>
 
           <div>
             <label className="block text-sm text-gray-300 mb-1">Address / Area</label>
-            <input name="address" className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
+            <input
+              name="address"
+              placeholder="123 Main St, Hill Country"
+              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
+            />
           </div>
 
           <div>
             <label className="block text-sm text-gray-300 mb-1">Details</label>
-            <textarea name="details" rows="4" className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
+            <textarea
+              name="details"
+              rows="3"
+              placeholder="Two-story house, about 60ft of roofline"
+              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
+            />
           </div>
 
-          <button type="submit" className={`w-full rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-4 py-3`}>
-            Request quote
+          {/* Notes */}
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Notes</label>
+            <textarea
+              name="notes"
+              rows="3"
+              placeholder="Any special requests, color preferences, trees or shrubs to include..."
+              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className={`w-full rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-4 py-3`}
+          >
+            Get My Free Estimate
           </button>
         </form>
       </div>
@@ -353,21 +383,41 @@ function CTA() {
   );
 }
 
-
 // -----------------------------------------------------------------------------
-// About + Footer (short)
+// About + Footer (About shows email + FB on right)
 // -----------------------------------------------------------------------------
 function About() {
   return (
     <section id="about" className="mx-auto max-w-7xl px-6 py-16">
-      <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white`}>About</h2>
-      <p className={`${TOKENS.muted} mt-4 max-w-3xl`}>
-        Local, insured, and focused on clean installs with premium LEDs. We handle everything:
-        design, installation, quick service, and removal/storage.
-      </p>
-      <a className="inline-flex items-center gap-2 text-amber-400 mt-4" href={FB_URL} target="_blank" rel="noreferrer">
-        Find us on Facebook →
-      </a>
+      <div className="grid md:grid-cols-2 gap-8 items-start">
+        {/* Left: About text */}
+        <div>
+          <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white`}>About</h2>
+          <p className={`${TOKENS.muted} mt-4 max-w-3xl`}>
+            Local, insured, and focused on clean installs with premium LEDs. We handle everything:
+            design, installation, quick service, and removal/storage.
+          </p>
+        </div>
+
+        {/* Right: Contact block */}
+        <div className="md:text-right">
+          <h3 className={`${TOKENS.heading} text-2xl font-bold text-white`}>Contact</h3>
+          <div className="mt-3 space-y-2">
+            <p className={TOKENS.muted}>
+              Email:{" "}
+              <a href={`mailto:${EMAIL}`} className="text-amber-400 hover:underline">
+                {EMAIL}
+              </a>
+            </p>
+            <p className={TOKENS.muted}>
+              Facebook:{" "}
+              <a href={FB_URL} target="_blank" rel="noreferrer" className="text-amber-400 hover:underline">
+                Bayfront Lighting
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
@@ -383,7 +433,7 @@ function Footer() {
 }
 
 // -----------------------------------------------------------------------------
-// Gallery Page (very simple placeholder)
+// Gallery Page
 // -----------------------------------------------------------------------------
 function GalleryPage() {
   const slides = computeSlides([
@@ -453,4 +503,3 @@ export default function Site() {
     </ThemeCtx.Provider>
   );
 }
-
