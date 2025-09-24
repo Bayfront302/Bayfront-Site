@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import lightsUrl from "./assets/lights-divider.svg?url"; // 🎄 divider image
+import { FaEnvelope, FaFacebook } from "react-icons/fa"; // icons for About section
 
 // -----------------------------------------------------------------------------
 // Theme tokens (dark, slate + amber)
@@ -38,7 +38,7 @@ if (typeof document !== "undefined" && !document.getElementById("bayfront-fonts"
 const FB_URL = "https://www.facebook.com/bayfrontlighting";
 const RUSH_START = "December 1st";
 const CUTOFF_DATE = "December 10th";
-const EMAIL = "info@bayfrontlighting"; // per your request
+const EMAIL = "info@bayfrontlighting";
 
 // -----------------------------------------------------------------------------
 // Context & helpers
@@ -147,23 +147,23 @@ function HeaderBar() {
         )}
       </header>
 
-    {/* 🎄 Animated lights divider */}
-<div className="w-full bg-gray-900 py-3">
-  <div className="lights-strip">
-    <span className="bulb red"></span>
-    <span className="bulb green"></span>
-    <span className="bulb yellow"></span>
-    <span className="bulb blue"></span>
-    <span className="bulb red"></span>
-    <span className="bulb green"></span>
-    <span className="bulb yellow"></span>
-    <span className="bulb blue"></span>
-    <span className="bulb red"></span>
-    <span className="bulb green"></span>
-    <span className="bulb yellow"></span>
-    <span className="bulb blue"></span>
-  </div>
-</div>
+      {/* 🎄 Animated lights divider (CSS-driven) */}
+      <div className="w-full bg-gray-900 py-3">
+        <div className="lights-strip">
+          <span className="bulb red"></span>
+          <span className="bulb green"></span>
+          <span className="bulb yellow"></span>
+          <span className="bulb blue"></span>
+          <span className="bulb red"></span>
+          <span className="bulb green"></span>
+          <span className="bulb yellow"></span>
+          <span className="bulb blue"></span>
+          <span className="bulb red"></span>
+          <span className="bulb green"></span>
+          <span className="bulb yellow"></span>
+          <span className="bulb blue"></span>
+        </div>
+      </div>
     </>
   );
 }
@@ -192,9 +192,7 @@ function Hero() {
   const prev = () => many && setI((v) => (v - 1 + slides.length) % slides.length);
 
   return (
-    <section
-      className={`relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center px-6 overflow-hidden`} // removed ${TOKENS.sectionBg}
-    >
+    <section className={`relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center px-6 overflow-hidden`}>
       {/* Slide layer */}
       <div className="absolute inset-0 z-0">
         {slides.map((src, idx) => (
@@ -318,7 +316,7 @@ function CTA() {
           <div className="mt-8 flex justify-center md:justify-start">
             <div className="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 ring-2 ring-amber-400 shadow-lg shadow-black/40 bg-gray-900">
               <img
-                src="/bayfront-logo.jpg"  /* <-- put your file in /public as this name */
+                src="/bayfront-logo.jpg"
                 alt="Bayfront Lighting logo"
                 className="w-full h-full object-cover"
               />
@@ -413,7 +411,7 @@ function CTA() {
 }
 
 // -----------------------------------------------------------------------------
-// About + Footer (About shows email + FB on right)
+// About + Footer (About shows email + FB on right, brand-color hover)
 // -----------------------------------------------------------------------------
 function About() {
   return (
@@ -484,7 +482,6 @@ function GalleryPage() {
     "house-with-light2.jpg",
     "house-with-light3.jpg",
     "house-with-light4.jpg",
-
   ]);
   return (
     <main className={`${TOKENS.text}`}>
