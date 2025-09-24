@@ -507,7 +507,7 @@ function About() {
         <div>
           <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white`}>About</h2>
           <p className={`${TOKENS.muted} mt-4 max-w-3xl`}>
-            Local, insured, and focused on clean installs with premium LEDs.
+            Local, insured, and focused on clean installs with premium C9 bulbs.
             We handle everything: design, installation, quick service, and removal/storage.
           </p>
         </div>
