@@ -276,7 +276,7 @@ function OfferCard({ title, text }) {
 }
 
 // -----------------------------------------------------------------------------
-// CTA (Estimate)
+// CTA (Estimate) — Netlify Forms enabled
 // -----------------------------------------------------------------------------
 function CTA() {
   return (
@@ -300,38 +300,49 @@ function CTA() {
               </span>
             </div>
           </div>
-          <a
-            href="https://forms.gle/"
-            target="_blank"
-            rel="noreferrer"
-            className={`inline-block mt-8 rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-6 py-4 shadow hover:opacity-90`}
-          >
-            Get My Free Estimate
-          </a>
           <p className={`mt-4 ${TOKENS.muted} text-sm`}>
             Cutoff for guaranteed installation is {CUTOFF_DATE}.
           </p>
         </div>
 
-        {/* Simple form (non-submitting demo) */}
-        <form className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10 space-y-4">
+        {/* Netlify Forms */}
+        <form
+          name="estimate"
+          method="POST"
+          action="/thanks.html"             // optional: create this page (next step)
+          data-netlify="true"               // required for JS-rendered forms
+          data-netlify-honeypot="bot-field" // spam protection
+          className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10 space-y-4"
+        >
+          {/* Netlify required hidden fields */}
+          <input type="hidden" name="form-name" value="estimate" />
+          <p className="hidden">
+            <label>
+              Don’t fill this out: <input name="bot-field" />
+            </label>
+          </p>
+
           <div>
             <label className="block text-sm text-gray-300 mb-1">Name</label>
-            <input className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
+            <input name="name" required className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
           </div>
+
           <div>
             <label className="block text-sm text-gray-300 mb-1">Email</label>
-            <input type="email" className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
+            <input name="email" type="email" required className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
           </div>
+
           <div>
             <label className="block text-sm text-gray-300 mb-1">Address / Area</label>
-            <input className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
+            <input name="address" className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
           </div>
-          <button
-            type="button"
-            className={`w-full rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-4 py-3`}
-            onClick={() => alert("Thanks! We'll be in touch soon.")}
-          >
+
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Details</label>
+            <textarea name="details" rows="4" className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white" />
+          </div>
+
+          <button type="submit" className={`w-full rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-4 py-3`}>
             Request quote
           </button>
         </form>
@@ -339,6 +350,7 @@ function CTA() {
     </section>
   );
 }
+
 
 // -----------------------------------------------------------------------------
 // About + Footer (short)
