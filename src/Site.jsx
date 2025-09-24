@@ -166,13 +166,16 @@ function HeaderBar() {
 // Hero (manual/auto slideshow with safe fallbacks)
 // -----------------------------------------------------------------------------
 function Hero() {
-  const slideFiles = [
-    "wreath-on-house.jpeg",
-    "house-with-light7.jpeg",
-    "bush-with-light2.jpeg",
-    "bush-with-light1.jpeg",
+  const slideNames = [
+    'wreath-on-house.jpeg',
+    'house-with-light7.jpeg',
+    'bush-with-light2.jpeg',
+    'bush-with-light1.jpeg',
+    // remote fallbacks for preview environments
+    'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=1600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1512203492609-8f204098bb57?q=80&w=1600&auto=format&fit=crop',
   ];
-  const slides = computeSlides(slideFiles);
+  const slides = slideNames.map(candidatesFor);      // <-- array of candidate arrays
   const [i, setI] = useState(0);
   const many = slides.length > 1;
 
@@ -186,66 +189,42 @@ function Hero() {
   const prev = () => many && setI((v) => (v - 1 + slides.length) % slides.length);
 
   return (
-    <section
-      className={`relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center px-6 ${TOKENS.sectionBg} overflow-hidden`}
-    >
+    <section className={`relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center px-6 ${TOKENS.sectionBg} overflow-hidden`}>
+      <div className="absolute inset-0 -z-20 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
       <div className="absolute inset-0 -z-10">
-        {slides.map((src, idx) => (
-          <img
-            key={src + idx}
-            src={src}
+        {slides.map((cands, idx) => (
+          <SmartImg
+            key={idx}
+            candidates={cands}
             alt="Bayfront Lighting background"
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = BLANK_IMG;
-              e.currentTarget.classList.add("opacity-0");
-            }}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-              i === idx ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === idx ? 'opacity-100' : 'opacity-0'}`}
+            onFinalError={(e) => e.currentTarget.classList.add('opacity-0')}
           />
         ))}
-        <div className="absolute inset-0 bg-black/55" />
+        <div className="absolute inset-0 bg-black/45" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/70 to-transparent" />
       </div>
       {many && (
         <>
-          <button
-            aria-label="Prev"
-            onClick={prev}
-            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900"
-          >
-            ‹
-          </button>
-          <button
-            aria-label="Next"
-            onClick={next}
-            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900"
-          >
-            ›
-          </button>
+          <button aria-label="Prev" onClick={prev} className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900">‹</button>
+          <button aria-label="Next" onClick={next} className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900">›</button>
         </>
       )}
       <div>
         <h1 className={`text-white text-4xl md:text-6xl font-bold leading-tight ${TOKENS.heading}`}>
-          <span className="text-red-400">Holiday</span>{" "}
-          <span className="text-green-400">lighting</span> without the hassle
+          <span className="text-red-400">Holiday</span> <span className="text-green-400">lighting</span> without the hassle
         </h1>
         <p className={`mt-4 ${TOKENS.muted} text-lg md:text-xl`}>
           Design, installation, in-season service, and end-of-season removal — we store your lights free.
         </p>
         <div className="mt-8 flex flex-wrap gap-4 justify-center">
-          <a
-            href="#estimate"
-            className={`rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-6 py-4 shadow hover:opacity-90 text-lg`}
-          >
-            Request Free Estimate
-          </a>
+          <a href="#estimate" className={`rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-6 py-4 shadow hover:opacity-90 text-lg`}>Request Free Estimate</a>
         </div>
       </div>
     </section>
   );
 }
+
 
 // -----------------------------------------------------------------------------
 // Offerings
