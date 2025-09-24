@@ -457,7 +457,7 @@ function GalleryPage() {
     "house-with-light2.jpg",
     "house-with-light3.jpg",
     "house-with-light4.jpg",
-    "house-with-light9.jpeg",
+
   ]);
   return (
     <main className={`${TOKENS.text}`}>
