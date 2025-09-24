@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import { FaEnvelope, FaFacebook } from "react-icons/fa"; // icons for About section
+import { FaEnvelope, FaFacebook } from "react-icons/fa"; // icons for Contact
 
 // -----------------------------------------------------------------------------
 // Theme tokens (dark, slate + amber)
@@ -46,7 +46,6 @@ const EMAIL = "info@bayfrontlighting";
 const ThemeCtx = createContext({ tokens: TOKENS });
 const useTheme = () => useContext(ThemeCtx);
 
-// Encode and harden image paths
 function encodePaths(files) {
   const out = [];
   const seen = new Set();
@@ -93,17 +92,13 @@ function useRoute() {
 }
 
 // -----------------------------------------------------------------------------
-// HeaderBar
+// HeaderBar (shows all links even on gallery; section links work from either)
 // -----------------------------------------------------------------------------
-
 function HeaderBar() {
   const { tokens } = useTheme();
   const [open, setOpen] = useState(false);
   const route = useRoute();
   const inGallery = isGallery(route);
-
-  // When you're on #/gallery, section links must use "#/offerings" etc.
-  // On the home page they can be "#offerings".
   const base = inGallery ? "#/" : "#";
 
   return (
@@ -166,7 +161,7 @@ function HeaderBar() {
 }
 
 // -----------------------------------------------------------------------------
-// Hero (fixed z-index so slides are visible)
+// Hero (slides + CTA button)
 // -----------------------------------------------------------------------------
 function Hero() {
   const slideFiles = [
@@ -210,7 +205,7 @@ function Hero() {
         ))}
       </div>
 
-      {/* Overlays above images */}
+      {/* Overlays */}
       <div className="absolute inset-0 z-10 pointer-events-none">
         <div className="absolute inset-0 bg-black/55" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/70 to-transparent" />
@@ -236,7 +231,7 @@ function Hero() {
         </>
       )}
 
-      {/* Text content */}
+      {/* Text + CTA */}
       <div className="relative z-20">
         <h1 className={`text-white text-4xl md:text-6xl font-bold leading-tight ${TOKENS.heading}`}>
           <span className="text-red-400">Holiday</span>{" "}
@@ -245,6 +240,14 @@ function Hero() {
         <p className={`mt-4 ${TOKENS.muted} text-lg md:text-xl`}>
           Design, installation, in-season service, and end-of-season removal — we store your lights free.
         </p>
+        <div className="mt-8 flex flex-wrap gap-4 justify-center">
+          <a
+            href="#estimate"
+            className={`rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-6 py-4 shadow hover:opacity-90 text-lg`}
+          >
+            Get My Free Estimate
+          </a>
+        </div>
       </div>
     </section>
   );
@@ -279,7 +282,34 @@ function OfferCard({ title, text }) {
 }
 
 // -----------------------------------------------------------------------------
-// CTA (Estimate) — Netlify Forms enabled (with Phone + Notes + placeholders)
+// Referral Offer ($50 off)
+// -----------------------------------------------------------------------------
+function ReferralOffer() {
+  return (
+    <section className={`border-t ${TOKENS.border} ${TOKENS.sectionBg}`}>
+      <div className="mx-auto max-w-7xl px-6 py-8">
+        <div className="rounded-xl bg-gray-900/60 ring-1 ring-white/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h3 className={`${TOKENS.heading} text-2xl font-bold text-white`}>Refer a Neighbor — You Both Save $50</h3>
+            <p className={`${TOKENS.muted} mt-2`}>
+              Share Bayfront Lighting with a friend nearby. If both projects are booked this season,{" "}
+              we’ll take <span className="text-amber-400 font-semibold">$50 off</span> each invoice.
+            </p>
+            <p className="text-xs text-gray-400 mt-2">
+              *Valid for residential installs this season. One discount per household. Neighbor must be within our service area.
+            </p>
+          </div>
+          <a href="#estimate" className={`inline-flex justify-center items-center rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-5 py-3 shadow hover:opacity-90`}>
+            Get My Free Estimate
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// CTA (Estimate) — Netlify Forms enabled
 // -----------------------------------------------------------------------------
 function CTA() {
   return (
@@ -408,7 +438,51 @@ function CTA() {
 }
 
 // -----------------------------------------------------------------------------
-// About + Footer (About shows email + FB on right, brand-color hover)
+// FAQ (simple, accessible <details> accordions)
+// -----------------------------------------------------------------------------
+function FAQ() {
+  const QA = [
+    {
+      q: "How much does holiday lighting cost?",
+      a: "Pricing depends on roofline length, complexity, and yard features. Most homes fall between $500–$2,000 installed. Every job includes design, install, in-season service, removal, and free storage."
+    },
+    {
+      q: "Do you provide the lights?",
+      a: "Yes. We install premium commercial LEDs and professional clips/timers for the best look and reliability."
+    },
+    {
+      q: "What happens if a bulb goes out?",
+      a: "In-season service is included. If something fails, we fix it fast—no extra charge."
+    },
+    {
+      q: "Do you remove and store the lights?",
+      a: "Yes. We remove your lights at season’s end and store them for you at no extra cost."
+    },
+    {
+      q: "Are you insured?",
+      a: "Yes—fully insured. We also work with safety checks and tidy cable routing."
+    },
+  ];
+
+  return (
+    <section className="mx-auto max-w-7xl px-6 py-16">
+      <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white text-center`}>FAQs</h2>
+      <div className="mt-8 grid gap-4">
+        {QA.map(({ q, a }, idx) => (
+          <details key={idx} className={`rounded-lg ${TOKENS.cardBg} ring-1 ring-white/10 p-4`}>
+            <summary className="cursor-pointer select-none font-semibold text-white">
+              {q}
+            </summary>
+            <p className={`mt-2 ${TOKENS.muted}`}>{a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// About + Footer (Contact has brand-color hover on icons)
 // -----------------------------------------------------------------------------
 function About() {
   return (
@@ -515,7 +589,9 @@ function HomePage() {
       <HeaderBar />
       <Hero />
       <Offerings />
+      <ReferralOffer />
       <CTA />
+      <FAQ />
       <About />
       <Footer />
     </main>
@@ -533,3 +609,4 @@ export default function Site() {
     </ThemeCtx.Provider>
   );
 }
+
