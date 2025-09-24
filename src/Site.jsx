@@ -1,4 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
+import lightsUrl from "./assets/lights-divider.svg?url";
 
 // -----------------------------------------------------------------------------
 // Theme tokens (dark, slate + amber)
