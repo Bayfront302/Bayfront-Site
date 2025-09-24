@@ -265,7 +265,7 @@ function Offerings() {
       </div>
       <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
         <OfferCard title="Design" text="Tailored plans for rooflines, trees, shrubs, and walkways." />
-        <OfferCard title="Installation" text="Premium LEDs, pro clips, tidy cable routing." />
+        <OfferCard title="Installation" text="Premium C9 bulbs, pro clips, tidy cable routing." />
         <OfferCard title="In-season service" text="If something fails, we fix it fast — guaranteed." />
         <OfferCard title="Removal & storage" text="We remove and store at season's end for no extra charge." />
       </div>
@@ -448,7 +448,7 @@ function FAQ() {
     },
     {
       q: "Do you provide the lights?",
-      a: "Yes. We install premium commercial LEDs and professional clips/timers for the best look and reliability."
+      a: "Yes. We install premium commercial C9 bulbs and professional clips/timers for the best look and reliability."
     },
     {
       q: "What happens if a bulb goes out?",
