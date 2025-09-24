@@ -377,14 +377,14 @@ function GalleryPage() {
     "bush-with-light2.jpeg",
     "house-with-light7.jpeg",
     "wreath-on-house.jpeg",
-    "house-with-light1.jpeg",
-    "house-with-light2.jpeg",
-    "house-with-light3.jpeg",
-    "house-with-light4.jpeg",
     "house-with-light5.jpeg",
     "house-with-light6.jpeg",
     "house-with-light8.jpeg",
     "tree-with-light1.png",
+    "house-with-light1.jpeg",
+    "house-with-light2.jpeg",
+    "house-with-light3.jpeg",
+    "house-with-light4.jpeg",
   ]);
   return (
     <main className={`${TOKENS.text}`}>
