@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 4px currentColor);
+  }
+  50% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 12px currentColor);
+  }
+}
+
+.bulb {
+  display: inline-block;
+  width: 18px;       /* size of bulb */
+  height: 28px;
+  border-radius: 50% 50% 45% 45%;  /* makes it look like a bulb */
+  margin: 0 6px;
+  animation: twinkle 2s infinite ease-in-out;
+}
+
+/* different bulb colors */
+.bulb.red { background: #e63946; color: #e63946; animation-delay: 0s; }
+.bulb.green { background: #2a9d8f; color: #2a9d8f; animation-delay: 0.5s; }
+.bulb.yellow { background: #f4a261; color: #f4a261; animation-delay: 1s; }
+.bulb.blue { background: #457b9d; color: #457b9d; animation-delay: 1.5s; }
