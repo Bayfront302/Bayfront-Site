@@ -372,37 +372,50 @@ function Footer() {
 // Gallery Page (very simple placeholder)
 // -----------------------------------------------------------------------------
 function GalleryPage() {
-  const slides = computeSlides([
-    "bush-with-light1.jpeg",
-    "bush-with-light2.jpeg",
-    "house-with-light7.jpeg",
-    "wreath-on-house.jpeg",
-  ]);
+  const fileNames = [
+    'tree-with-light1.png',
+    'house-with-light8.jpeg',
+    'house-with-light7.jpeg',
+    'bush-with-light2.jpeg',
+    'bush-with-light1.jpeg',
+    'house-with-light6.jpeg',
+    'house-with-light5.jpeg',
+    'house-with-light4.jpg',
+    'house-with-light3.jpg',
+    'house-with-light2.jpg',
+    'house-with-light1.jpg',
+    'wreath-on-house.jpeg',
+    // remote preview fallbacks
+    'https://images.unsplash.com/photo-1482192596544-9eb780fc7f66?q=80&w=1200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1451481454041-104482d8e284?q=80&w=1200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1482517967863-00e15c9b44be?q=80&w=1200&auto=format&fit=crop',
+  ];
+  const images = fileNames.map(candidatesFor);
+
   return (
-    <main className={`${TOKENS.text}`}>
+    <div className={`${TOKENS.mainBg} ${TOKENS.text}`}>
       <HeaderBar />
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <h1 className={`${TOKENS.heading} text-4xl md:text-5xl font-bold`}>Gallery</h1>
-        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {slides.map((src, i) => (
-            <img
-              key={src + i}
-              src={src}
-              alt=""
-              className="w-full h-56 object-cover rounded-lg ring-1 ring-white/10"
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = BLANK_IMG;
-                e.currentTarget.classList.add("opacity-50");
-              }}
-            />
+      <section className="mx-auto max-w-7xl px-6 py-10">
+        <h1 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold`}>Gallery</h1>
+        <div className="mt-8 columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
+          {images.map((cands, i) => (
+            <figure key={i} className="mb-4 break-inside-avoid rounded-xl overflow-hidden ring-1 ring-white/10 bg-slate-800">
+              <SmartImg
+                candidates={cands}
+                alt={`Bayfront Lighting project ${i + 1}`}
+                className="w-full h-auto object-cover"
+                loading="lazy"
+                onFinalError={(e) => e.currentTarget.closest('figure')?.classList.add('hidden')}
+              />
+            </figure>
           ))}
         </div>
       </section>
       <Footer />
-    </main>
+    </div>
   );
 }
+
 
 // -----------------------------------------------------------------------------
 // Home Page
