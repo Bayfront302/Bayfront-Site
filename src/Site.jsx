@@ -148,15 +148,21 @@ function HeaderBar() {
       </header>
 
     {/* 🎄 Animated lights divider */}
-<div className="w-full bg-gray-900 py-3 flex justify-center">
-  <span className="bulb red"></span>
-  <span className="bulb green"></span>
-  <span className="bulb yellow"></span>
-  <span className="bulb blue"></span>
-  <span className="bulb red"></span>
-  <span className="bulb green"></span>
-  <span className="bulb yellow"></span>
-  <span className="bulb blue"></span>
+<div className="w-full bg-gray-900 py-3">
+  <div className="lights-strip">
+    <span className="bulb red"></span>
+    <span className="bulb green"></span>
+    <span className="bulb yellow"></span>
+    <span className="bulb blue"></span>
+    <span className="bulb red"></span>
+    <span className="bulb green"></span>
+    <span className="bulb yellow"></span>
+    <span className="bulb blue"></span>
+    <span className="bulb red"></span>
+    <span className="bulb green"></span>
+    <span className="bulb yellow"></span>
+    <span className="bulb blue"></span>
+  </div>
 </div>
     </>
   );
