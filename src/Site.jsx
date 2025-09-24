@@ -147,13 +147,17 @@ function HeaderBar() {
         )}
       </header>
 
-      {/* 🎄 Image-based lights divider */}
-      <div className="w-full bg-gray-900">
-        <div
-          className="h-16 bg-center bg-repeat-x"
-          style={{ backgroundImage: `url(${lightsUrl})`, backgroundSize: "auto 64px" }}
-        />
-      </div>
+    {/* 🎄 Animated lights divider */}
+<div className="w-full bg-gray-900 py-3 flex justify-center">
+  <span className="bulb red"></span>
+  <span className="bulb green"></span>
+  <span className="bulb yellow"></span>
+  <span className="bulb blue"></span>
+  <span className="bulb red"></span>
+  <span className="bulb green"></span>
+  <span className="bulb yellow"></span>
+  <span className="bulb blue"></span>
+</div>
     </>
   );
 }
