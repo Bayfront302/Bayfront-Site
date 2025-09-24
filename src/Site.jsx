@@ -98,67 +98,61 @@ function HeaderBar() {
   const [open, setOpen] = useState(false);
   const route = useRoute();
   const inGallery = isGallery(route);
+
   return (
-    <header className={`sticky top-0 z-50 border-b ${tokens.border} ${TOKENS.cardBg}`}>
-      <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-        <a href="#/" className="flex flex-col items-center text-center">
-          <span className={`text-4xl ${tokens.heading} text-amber-400 drop-shadow`}>
-            Bayfront Lighting
-          </span>
-          <hr className="border-t border-gray-600 w-full my-1" />
-          <span className={`text-base ${tokens.muted} ${tokens.heading}`}>
-            Holiday Illumination Specialists
-          </span>
-        </a>
-        <nav className={`hidden md:flex items-center gap-6 ${tokens.muted}`}>
-          {!inGallery && (
-            <>
-              <a href="#offerings" className="hover:opacity-90">
-                What We Offer
-              </a>
-              <a href="#estimate" className="hover:opacity-90">
-                Free Estimate
-              </a>
-              <a href="#about" className="hover:opacity-90">
-                About
-              </a>
-            </>
-          )}
-          <a href="#/gallery" className="hover:opacity-90">
-            Gallery
+    <>
+      <header className={`sticky top-0 z-50 border-b ${tokens.border} ${TOKENS.cardBg}`}>
+        <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+          <a href="#/" className="flex flex-col items-center text-center">
+            <span className={`text-4xl ${tokens.heading} text-amber-400 drop-shadow`}>Bayfront Lighting</span>
+            <hr className="border-t border-gray-600 w-full my-1" />
+            <span className={`text-base ${tokens.muted} ${tokens.heading}`}>Holiday Illumination Specialists</span>
           </a>
-        </nav>
-        <button
-          className="md:hidden rounded-md px-3 py-2 ring-1 ring-gray-600 hover:bg-gray-700"
-          onClick={() => setOpen((o) => !o)}
-          aria-label="Toggle menu"
-        >
-          ☰
-        </button>
-      </div>
-      {open && (
-        <div className={`md:hidden border-t ${tokens.border}`}>
-          <div className={`px-6 py-4 flex flex-col gap-3 ${tokens.muted}`}>
+
+          <nav className={`hidden md:flex items-center gap-6 ${tokens.muted}`}>
             {!inGallery && (
               <>
-                <a href="#offerings" onClick={() => setOpen(false)}>
-                  What We Offer
-                </a>
-                <a href="#estimate" onClick={() => setOpen(false)}>
-                  Free Estimate
-                </a>
-                <a href="#about" onClick={() => setOpen(false)}>
-                  About
-                </a>
+                <a href="#offerings" className="hover:opacity-90">What We Offer</a>
+                <a href="#estimate" className="hover:opacity-90">Free Estimate</a>
+                <a href="#about" className="hover:opacity-90">About</a>
               </>
             )}
-            <a href="#/gallery" onClick={() => setOpen(false)}>
-              Gallery
-            </a>
-          </div>
+            <a href="#/gallery" className="hover:opacity-90">Gallery</a>
+          </nav>
+
+          <button
+            className="md:hidden rounded-md px-3 py-2 ring-1 ring-gray-600 hover:bg-gray-700"
+            onClick={() => setOpen(o => !o)}
+            aria-label="Toggle menu"
+          >
+            ☰
+          </button>
         </div>
-      )}
-    </header>
+
+        {open && (
+          <div className={`md:hidden border-t ${tokens.border}`}>
+            <div className={`px-6 py-4 flex flex-col gap-3 ${tokens.muted}`}>
+              {!inGallery && (
+                <>
+                  <a href="#offerings" onClick={()=>setOpen(false)}>What We Offer</a>
+                  <a href="#estimate" onClick={()=>setOpen(false)}>Free Estimate</a>
+                  <a href="#about" onClick={()=>setOpen(false)}>About</a>
+                </>
+              )}
+              <a href="#/gallery" onClick={()=>setOpen(false)}>Gallery</a>
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* 🎄 Image-based lights divider */}
+      <div className="w-full bg-gray-900">
+        <div
+          className="h-16 bg-center bg-repeat-x"
+          style={{ backgroundImage: "url('/lights-divider.svg')", backgroundSize: "auto 64px" }}
+        />
+      </div>
+    </>
   );
 }
 
