@@ -323,8 +323,8 @@ function EstimateSection() {
 
   const encode = (data) =>
     Object.keys(data)
-      .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
-      .join('&');
+      .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(data[k]))
+      .join("&");
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -335,10 +335,10 @@ function EstimateSection() {
     fd.forEach((v, k) => (payload[k] = String(v)));
 
     try {
-      await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode({ 'form-name': 'estimate', ...payload }),
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({ "form-name": "estimate", ...payload }),
       });
       setSent(true);
       e.currentTarget.reset();
@@ -349,7 +349,7 @@ function EstimateSection() {
 
   if (sent) {
     return (
-      <section id="estimate" className="mx-auto max-w-3xl px-6 py-16">
+      <section id="estimate" className="mx-auto max-w-7xl px-6 py-16">
         <div className="rounded-xl p-6 ring-1 ring-gray-700 bg-gray-900">
           <h2 className="text-white text-2xl font-bold">Thanks! Your request was sent.</h2>
           <p className="text-gray-300">
@@ -361,89 +361,121 @@ function EstimateSection() {
   }
 
   return (
-    <section id="estimate" className="mx-auto max-w-3xl px-6 py-16">
-      <div className="rounded-xl p-6 ring-1 ring-gray-700 bg-gray-900">
-        <h2 className="text-white text-3xl font-bold">Get My Free Estimate</h2>
+    <section id="estimate" className="mx-auto max-w-7xl px-6 py-16">
+      <div className="grid md:grid-cols-2 gap-8 items-stretch">
+        {/* LEFT: Preferred Service + Guarantees + Logo badge */}
+        <div className="relative">
+          <div className="relative rounded-xl p-6 md:p-8 ring-1 ring-gray-700 bg-gray-900 overflow-visible">
+            <h3 className={`${TOKENS.heading} text-2xl font-bold text-white`}>
+              Preferred Service
+            </h3>
+            <p className={`${TOKENS.muted} mt-2`}>
+              Tell us what you’re envisioning. Here are popular options:
+            </p>
 
-        <form
-          name="estimate"
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"   // ← correct attribute (not data-)
-          onSubmit={onSubmit}
-          className="mt-6 grid grid-cols-1 gap-4"
-        >
-          <input type="hidden" name="form-name" value="estimate" />
-          <p className="hidden">
-            <label>Don’t fill this out: <input name="bot-field" /></label>
-          </p>
+            {/* Example chips */}
+            <div className="mt-4 flex flex-wrap gap-2">
+              {["Roofline", "Trees", "Shrubs", "Walkways"].map((label) => (
+                <span
+                  key={label}
+                  className="px-3 py-1 rounded-full text-sm bg-gray-800 text-amber-300 ring-1 ring-amber-400/40"
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            <input name="name" required placeholder="Full name" className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700" />
-            <input name="phone" required placeholder="Phone" className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700" />
+            {/* Guarantees */}
+            <div className="mt-8">
+              <h4 className={`${TOKENS.heading} text-xl font-semibold text-white`}>
+                Customer Satisfaction Guarantees
+              </h4>
+              <ul className="mt-3 space-y-2 text-gray-300 list-disc list-inside">
+                <li>Licensed & insured installs</li>
+                <li>Fast in-season service if anything fails</li>
+                <li>Removal & free storage after the season</li>
+                <li>Transparent pricing — no surprise fees</li>
+              </ul>
+            </div>
+
+            {/* Amber logo badge (lower-left) */}
+            <div className="pointer-events-none">
+              <div className="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-amber-400 ring-4 ring-gray-900 flex items-center justify-center shadow-lg">
+                <img
+                  src="/bayfront-logo.jpg"
+                  alt="Bayfront Lighting logo"
+                  className="h-14 w-14 object-contain"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              </div>
+            </div>
           </div>
+        </div>
 
-          <input name="email" type="email" placeholder="Email" className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700" />
-          <input name="address" placeholder="Address" className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700" />
+        {/* RIGHT: Form */}
+        <div className="rounded-xl p-6 ring-1 ring-gray-700 bg-gray-900">
+          <h2 className="text-white text-3xl font-bold">Get My Free Estimate</h2>
 
-          <select name="service" className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700">
-            <option value="">What do you need?</option>
-            <option>Roofline</option>
-            <option>Trees & Shrubs</option>
-            <option>Pathway/Accent</option>
-            <option>Whole Property</option>
-          </select>
-
-          <textarea name="notes" rows={4} placeholder="Notes (colors, timeline, etc.)" className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700" />
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="rounded-md bg-amber-400 text-gray-900 font-semibold px-6 py-3 hover:opacity-90 disabled:opacity-50"
+          <form
+            name="estimate"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            onSubmit={onSubmit}
+            className="mt-6 grid grid-cols-1 gap-4"
           >
-            {loading ? 'Sending…' : 'Get My Free Estimate'}
-          </button>
-        </form>
-      </div>
-    </section>
-  );
-}
+            <input type="hidden" name="form-name" value="estimate" />
+            <p className="hidden">
+              <label>
+                Don’t fill this out: <input name="bot-field" />
+              </label>
+            </p>
 
-// -----------------------------------------------------------------------------
-// FAQ (simple, accessible <details> accordions)
-// -----------------------------------------------------------------------------
-function FAQ() {
-  const QA = [
-    {
-      q: "How much does holiday lighting cost?",
-      a: "Pricing depends on roofline length, complexity, and yard features. Most homes fall between $500–$2,000 installed. Every job includes design, install, in-season service, removal, and free storage."
-    },
-    {
-      q: "Do you provide the lights?",
-      a: "Yes. We install premium commercial C9 bulbs and professional clips/timers for the best look and reliability."
-    },
-    {
-      q: "What happens if a bulb goes out?",
-      a: "In-season service is included. If something fails, we fix it fast—no extra charge."
-    },
-    {
-      q: "Do you remove and store the lights?",
-      a: "Yes. We remove your lights at season’s end and store them for you at no extra cost."
-    },  
-  ];
+            <div className="grid md:grid-cols-2 gap-4">
+              <input
+                name="name"
+                required
+                placeholder="Full name"
+                className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700"
+              />
+              <input
+                name="phone"
+                required
+                placeholder="Phone"
+                className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700"
+              />
+            </div>
 
-  return (
-    <section className="mx-auto max-w-7xl px-6 py-16">
-      <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white text-center`}>FAQs</h2>
-      <div className="mt-8 grid gap-4">
-        {QA.map(({ q, a }, idx) => (
-          <details key={idx} className={`rounded-lg ${TOKENS.cardBg} ring-1 ring-white/10 p-4`}>
-            <summary className="cursor-pointer select-none font-semibold text-white">
-              {q}
-            </summary>
-            <p className={`mt-2 ${TOKENS.muted}`}>{a}</p>
-          </details>
-        ))}
+            <input
+              name="email"
+              type="email"
+              placeholder="Email"
+              className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700"
+            />
+            <input
+              name="address"
+              placeholder="Address"
+              className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700"
+            />
+
+            <textarea
+              name="notes"
+              rows={5}
+              placeholder="Notes — e.g., Roofline + 2 trees, warm white, install date window"
+              className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700"
+            />
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="rounded-md bg-amber-400 text-gray-900 font-semibold px-6 py-3 hover:opacity-90 disabled:opacity-50"
+            >
+              {loading ? "Sending…" : "Get My Free Estimate"}
+            </button>
+          </form>
+        </div>
       </div>
     </section>
   );
