@@ -16,17 +16,19 @@
     rel="stylesheet"
   />
 </head>
-  <body class="bg-gray-900">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-    <form name="estimate" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="hidden" name="form-name" value="estimate" />
-  <input name="name" />
-  <input name="phone" />
-  <input name="email" />
-  <input name="address" />
-  <input name="service" />
-  <textarea name="notes"></textarea>
-</form>
-  </body>
+<body class="bg-gray-900">
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+
+  <!-- Hidden Netlify registration form -->
+  <form name="estimate" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="estimate" />
+    <input name="name" />
+    <input name="phone" />
+    <input name="email" />
+    <input name="address" />
+    <input name="service" />
+    <textarea name="notes"></textarea>
+  </form>
+</body>
 </html>
