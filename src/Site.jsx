@@ -332,7 +332,7 @@ function CTA() {
     setError("");
     setLoading(true);
 
-    const fd = new FormData(e.currentTarget); 
+    const fd = new FormData(e.currentTarget);
     const payload = {};
     fd.forEach((v, k) => (payload[k] = String(v)));
 
@@ -353,16 +353,12 @@ function CTA() {
   return (
     <section id="estimate" className={`border-t ${TOKENS.border} ${TOKENS.sectionBg} text-lg`}>
       <div className="mx-auto max-w-7xl px-6 py-16 grid md:grid-cols-2 gap-12 items-start">
-        {/* Left column */}
         <div>
           <div className="text-center md:text-left">
             <div className={`text-sm uppercase tracking-[.22em] ${TOKENS.muted}`}>Free estimate</div>
-
-            {/* Heading */}
             <h2 className="mt-2 text-2xl font-bold text-amber-400 text-center md:text-left">
               Tell us about your property
             </h2>
-
             <p className={`mt-3 ${TOKENS.muted} max-w-xl`}>
               We'll respond within one business day with next steps.
             </p>
@@ -380,7 +376,6 @@ function CTA() {
             Cutoff for guaranteed installation is {CUTOFF_DATE}.
           </p>
 
-          {/* Logo + Call Us */}
           <div className="mt-8 flex flex-col items-center">
             <div className="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 ring-2 ring-amber-400 shadow-lg shadow-black/40 bg-gray-900">
               <img
@@ -406,105 +401,6 @@ function CTA() {
           </div>
         </div>
 
-        {/* Right column: Netlify form */}
-        {sent ? (
-          <div className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10">
-            <h3 className="text-white text-2xl font-bold">Thanks! Your request was sent.</h3>
-            <p className="text-gray-300 mt-2">
-              We’ll email you shortly. For urgent installs call (830) 220-7315.
-            </p>
-          </div>
-        ) : (
-          <form
-            name="estimate"
-            method="POST"
-            data-netlify="true"
-            netlify-honeypot="bot-field"
-            onSubmit={onSubmit}
-            className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10 space-y-4"
-          >
-            <input type="hidden" name="form-name" value="estimate" />
-            <p className="hidden">
-              <label>Don’t fill this out: <input name="bot-field" /></label>
-            </p>
-
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Name</label>
-              <input
-                name="name"
-                required
-                placeholder="John Smith"
-                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Email</label>
-              <input
-                name="email"
-                type="email"
-                required
-                placeholder="you@example.com"
-                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Phone (optional)</label>
-              <input
-                name="phone"
-                type="tel"
-                placeholder="(123) 456-7890"
-                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Address / Area</label>
-              <input
-                name="address"
-                placeholder="123 Main St, Hill Country"
-                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Details</label>
-              <textarea
-                name="details"
-                rows="3"
-                placeholder="Two-story house, about 60ft of roofline"
-                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Notes</label>
-              <textarea
-                name="notes"
-                rows="3"
-                placeholder="Any special requests, color preferences, trees or shrubs to include..."
-                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-              />
-            </div>
-
-            {error && <p className="text-red-400 text-sm">{error}</p>}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className={`w-full rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-4 py-3 disabled:opacity-50`}
-            >
-              {loading ? "Sending…" : "Get My Free Estimate"}
-            </button>
-          </form>
-        )}
-      </div>
-    </section>
-  );
-}
-
-        {/* Right column: Netlify form */}
         {sent ? (
           <div className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10">
             <h3 className="text-white text-2xl font-bold">Thanks! Your request was sent.</h3>
