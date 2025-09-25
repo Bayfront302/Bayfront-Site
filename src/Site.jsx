@@ -315,21 +315,23 @@ function ReferralOffer() {
 }
 
 // -----------------------------------------------------------------------------
-// CTA (Estimate) — Netlify Forms enabled
+// CTA (Estimate) — Netlify Forms enabled (JS version)
 // -----------------------------------------------------------------------------
 function EstimateSection() {
-  const [sent, setSent] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
-  const encode = (data: Record<string, string>) =>
-    Object.keys(data).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(data[k])}`).join('&');
+  const encode = (data) =>
+    Object.keys(data)
+      .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
+      .join('&');
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     const fd = new FormData(e.currentTarget);
-    const payload: Record<string, string> = {};
+    const payload = {};
     fd.forEach((v, k) => (payload[k] = String(v)));
 
     try {
@@ -350,7 +352,9 @@ function EstimateSection() {
       <section id="estimate" className="mx-auto max-w-3xl px-6 py-16">
         <div className="rounded-xl p-6 ring-1 ring-gray-700 bg-gray-900">
           <h2 className="text-white text-2xl font-bold">Thanks! Your request was sent.</h2>
-          <p className="text-gray-300">We’ll email you shortly. For urgent installs call (830) 220-7315.</p>
+          <p className="text-gray-300">
+            We’ll email you shortly. For urgent installs call (830) 220-7315.
+          </p>
         </div>
       </section>
     );
@@ -365,7 +369,7 @@ function EstimateSection() {
           name="estimate"
           method="POST"
           data-netlify="true"
-          data-netlify-honeypot="bot-field"
+          netlify-honeypot="bot-field"   // ← correct attribute (not data-)
           onSubmit={onSubmit}
           className="mt-6 grid grid-cols-1 gap-4"
         >
@@ -392,8 +396,11 @@ function EstimateSection() {
 
           <textarea name="notes" rows={4} placeholder="Notes (colors, timeline, etc.)" className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700" />
 
-          <button type="submit" disabled={loading}
-                  className="rounded-md bg-amber-400 text-gray-900 font-semibold px-6 py-3 hover:opacity-90 disabled:opacity-50">
+          <button
+            type="submit"
+            disabled={loading}
+            className="rounded-md bg-amber-400 text-gray-900 font-semibold px-6 py-3 hover:opacity-90 disabled:opacity-50"
+          >
             {loading ? 'Sending…' : 'Get My Free Estimate'}
           </button>
         </form>
