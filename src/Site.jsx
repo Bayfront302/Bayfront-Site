@@ -332,7 +332,7 @@ function CTA() {
     setError("");
     setLoading(true);
 
-    const fd = new FormData(e.currentTarget);
+    const fd = new FormData(e.currentTarget);  
     const payload = {};
     fd.forEach((v, k) => (payload[k] = String(v)));
 
@@ -353,10 +353,11 @@ function CTA() {
   return (
     <section id="estimate" className={`border-t ${TOKENS.border} ${TOKENS.sectionBg} text-lg`}>
       <div className="mx-auto max-w-7xl px-6 py-16 grid md:grid-cols-2 gap-12 items-start">
+        {/* Left column: heading, badges, cutoff note, and BIG circle logo */}
         <div>
           <div className="text-center md:text-left">
             <div className={`text-sm uppercase tracking-[.22em] ${TOKENS.muted}`}>Free estimate</div>
-            <h2 className="mt-2 text-2xl font-bold text-amber-400 text-center md:text-left">
+            <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white mt-2`}>
               Tell us about your property
             </h2>
             <p className={`mt-3 ${TOKENS.muted} max-w-xl`}>
@@ -376,6 +377,7 @@ function CTA() {
             Cutoff for guaranteed installation is {CUTOFF_DATE}.
           </p>
 
+          {/* Logo + Call Us */}
           <div className="mt-8 flex flex-col items-center">
             <div className="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 ring-2 ring-amber-400 shadow-lg shadow-black/40 bg-gray-900">
               <img
@@ -386,14 +388,12 @@ function CTA() {
             </div>
 
             <div className="mt-6 text-center">
-              <p className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white`}>
+              <p className="text-white font-semibold text-lg">
                 Or call us now to quickly schedule a free in-person quote
               </p>
-              <p className="mt-3">
-                <a
-                  href="tel:+18302207315"
-                  className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white hover:text-amber-400 transition-colors`}
-                >
+              {/* ✅ Centered phone number */}
+              <p className="mt-2 text-2xl font-bold text-amber-400 text-center">
+                <a href="tel:+18302207315" className="hover:underline">
                   (830) 220-7315
                 </a>
               </p>
@@ -401,6 +401,7 @@ function CTA() {
           </div>
         </div>
 
+        {/* Right column: Netlify form */}
         {sent ? (
           <div className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10">
             <h3 className="text-white text-2xl font-bold">Thanks! Your request was sent.</h3>
@@ -417,6 +418,7 @@ function CTA() {
             onSubmit={onSubmit}
             className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10 space-y-4"
           >
+            {/* Required for Netlify forms */}
             <input type="hidden" name="form-name" value="estimate" />
             <p className="hidden">
               <label>Don’t fill this out: <input name="bot-field" /></label>
