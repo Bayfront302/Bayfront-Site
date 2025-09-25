@@ -317,125 +317,84 @@ function ReferralOffer() {
 // -----------------------------------------------------------------------------
 // CTA (Estimate) — Netlify Forms enabled
 // -----------------------------------------------------------------------------
-function CTA() {
-  return (
-    <section id="estimate" className={`border-t ${TOKENS.border} ${TOKENS.sectionBg} text-lg`}>
-      <div className="mx-auto max-w-7xl px-6 py-16 grid md:grid-cols-2 gap-12 items-start">
-        {/* Left column: heading, badges, cutoff note, and BIG circle logo */}
-        <div>
-          <div className="text-center md:text-left">
-            <div className={`text-sm uppercase tracking-[.22em] ${TOKENS.muted}`}>Free estimate</div>
-            <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white mt-2`}>
-              Tell us about your property
-            </h2>
-            <p className={`mt-3 ${TOKENS.muted} max-w-xl`}>
-              We'll respond within one business day with next steps.
-            </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-2 rounded-full bg-gray-900/60 ring-1 ring-white/10 px-3 py-1 text-sm">
-                <span>✅</span>Fully Insured
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full bg-gray-900/60 ring-1 ring-white/10 px-3 py-1 text-sm">
-                <span>⚡</span>Rush installs start {RUSH_START}
-              </span>
-            </div>
-          </div>
+function EstimateSection() {
+  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-          <p className={`mt-4 ${TOKENS.muted} text-sm`}>
-            Cutoff for guaranteed installation is {CUTOFF_DATE}.
-          </p>
+  const encode = (data: Record<string, string>) =>
+    Object.keys(data).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(data[k])}`).join('&');
 
-          {/* 🔵 Big circular logo to fill space */}
-          <div className="mt-8 flex justify-center md:justify-start">
-            <div className="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 ring-2 ring-amber-400 shadow-lg shadow-black/40 bg-gray-900">
-              <img
-                src="/bayfront-logo.jpg"
-                alt="Bayfront Lighting logo"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const fd = new FormData(e.currentTarget);
+    const payload: Record<string, string> = {};
+    fd.forEach((v, k) => (payload[k] = String(v)));
+
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encode({ 'form-name': 'estimate', ...payload }),
+      });
+      setSent(true);
+      e.currentTarget.reset();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (sent) {
+    return (
+      <section id="estimate" className="mx-auto max-w-3xl px-6 py-16">
+        <div className="rounded-xl p-6 ring-1 ring-gray-700 bg-gray-900">
+          <h2 className="text-white text-2xl font-bold">Thanks! Your request was sent.</h2>
+          <p className="text-gray-300">We’ll email you shortly. For urgent installs call (830) 220-7315.</p>
         </div>
+      </section>
+    );
+  }
 
-        {/* Right column: Netlify form */}
+  return (
+    <section id="estimate" className="mx-auto max-w-3xl px-6 py-16">
+      <div className="rounded-xl p-6 ring-1 ring-gray-700 bg-gray-900">
+        <h2 className="text-white text-3xl font-bold">Get My Free Estimate</h2>
+
         <form
           name="estimate"
           method="POST"
-          action="/thanks.html"
           data-netlify="true"
           data-netlify-honeypot="bot-field"
-          className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10 space-y-4"
+          onSubmit={onSubmit}
+          className="mt-6 grid grid-cols-1 gap-4"
         >
           <input type="hidden" name="form-name" value="estimate" />
           <p className="hidden">
             <label>Don’t fill this out: <input name="bot-field" /></label>
           </p>
 
-          <div>
-            <label className="block text-sm text-gray-300 mb-1">Name</label>
-            <input
-              name="name"
-              required
-              placeholder="John Smith"
-              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-            />
+          <div className="grid md:grid-cols-2 gap-4">
+            <input name="name" required placeholder="Full name" className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700" />
+            <input name="phone" required placeholder="Phone" className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700" />
           </div>
 
-          <div>
-            <label className="block text-sm text-gray-300 mb-1">Email</label>
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder="you@example.com"
-              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-            />
-          </div>
+          <input name="email" type="email" placeholder="Email" className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700" />
+          <input name="address" placeholder="Address" className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700" />
 
-          <div>
-            <label className="block text-sm text-gray-300 mb-1">Phone (optional)</label>
-            <input
-              name="phone"
-              type="tel"
-              placeholder="(123) 456-7890"
-              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-            />
-          </div>
+          <select name="service" className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700">
+            <option value="">What do you need?</option>
+            <option>Roofline</option>
+            <option>Trees & Shrubs</option>
+            <option>Pathway/Accent</option>
+            <option>Whole Property</option>
+          </select>
 
-          <div>
-            <label className="block text-sm text-gray-300 mb-1">Address / Area</label>
-            <input
-              name="address"
-              placeholder="123 Main St, Hill Country"
-              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-            />
-          </div>
+          <textarea name="notes" rows={4} placeholder="Notes (colors, timeline, etc.)" className="px-4 py-3 rounded-md bg-gray-800 text-white ring-1 ring-gray-700" />
 
-          <div>
-            <label className="block text-sm text-gray-300 mb-1">Details</label>
-            <textarea
-              name="details"
-              rows="3"
-              placeholder="Two-story house, about 60ft of roofline"
-              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-300 mb-1">Notes</label>
-            <textarea
-              name="notes"
-              rows="3"
-              placeholder="Any special requests, color preferences, trees or shrubs to include..."
-              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className={`w-full rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-4 py-3`}
-          >
-            Get My Free Estimate
+          <button type="submit" disabled={loading}
+                  className="rounded-md bg-amber-400 text-gray-900 font-semibold px-6 py-3 hover:opacity-90 disabled:opacity-50">
+            {loading ? 'Sending…' : 'Get My Free Estimate'}
           </button>
         </form>
       </div>
