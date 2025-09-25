@@ -587,7 +587,7 @@ function HomePage() {
       <Hero />
       <Offerings />
       <ReferralOffer />
-      <CTA />
+      <EstimateSection />
       <FAQ />
       <About />
       <Footer />
