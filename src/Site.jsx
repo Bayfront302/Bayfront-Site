@@ -543,6 +543,7 @@ function FAQ() {
 // -----------------------------------------------------------------------------
 // About (Contact has email, FB, phone with brand-color hovers)
 // -----------------------------------------------------------------------------
+
 function About() {
   const subject = "Free Estimate Request — Bayfront Lighting";
   const body = [
@@ -557,15 +558,21 @@ function About() {
     "Thanks!",
   ].join("\n");
 
+  // Use a direct profile ID link so it's always accessible
+  const FB_URL = "https://www.facebook.com/profile.php/?id=61580332635472";
+
   return (
     <section id="about" className="mx-auto max-w-7xl px-6 py-16">
       <div className="grid md:grid-cols-2 gap-8 items-start">
         {/* Left: About text */}
         <div>
-          <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white`}>About</h2>
+          <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white`}>
+            About
+          </h2>
           <p className={`${TOKENS.muted} mt-4 max-w-3xl`}>
             Local, insured, and focused on clean installs with premium LEDs.
-            We handle everything: design, installation, quick service, and removal/storage.
+            We handle everything: design, installation, quick service, and
+            removal/storage.
           </p>
         </div>
 
@@ -588,7 +595,7 @@ function About() {
               <a
                 href={FB_URL}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-amber-400 hover:text-[#1877F2] transition-colors duration-200"
               >
                 <FaFacebook size={20} /> Bayfront Lighting
