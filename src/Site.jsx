@@ -380,7 +380,8 @@ function CTA() {
             Cutoff for guaranteed installation is {CUTOFF_DATE}.
           </p>
 
-          <div className="mt-8 flex justify-center md:justify-start">
+          {/* 🔵 Big circular logo and call us message */}
+          <div className="mt-8 flex flex-col items-center md:items-start">
             <div className="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 ring-2 ring-amber-400 shadow-lg shadow-black/40 bg-gray-900">
               <img
                 src="/bayfront-logo.jpg"
@@ -388,10 +389,19 @@ function CTA() {
                 className="w-full h-full object-cover"
               />
             </div>
+
+            <div className="mt-6 text-center md:text-left">
+              <p className="text-white font-semibold text-lg">
+                Or call us now to quickly schedule a free in-person quote
+              </p>
+              <p className="mt-2 text-2xl font-bold text-amber-400">
+                <a href="tel:+18302207315" className="hover:underline">(830) 220-7315</a>
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Right column: Netlify form (JS-posted to /) */}
+        {/* Right column: Netlify form */}
         {sent ? (
           <div className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10">
             <h3 className="text-white text-2xl font-bold">Thanks! Your request was sent.</h3>
