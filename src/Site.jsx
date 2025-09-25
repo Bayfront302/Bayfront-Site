@@ -343,9 +343,6 @@ function CTA() {
         body: encode({ "form-name": "estimate", ...payload }),
       });
       setSent(true);
-
-      // If you want a redirect instead of inline success, uncomment:
-      // window.location.href = "/thanks.html";
     } catch (err) {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -356,13 +353,16 @@ function CTA() {
   return (
     <section id="estimate" className={`border-t ${TOKENS.border} ${TOKENS.sectionBg} text-lg`}>
       <div className="mx-auto max-w-7xl px-6 py-16 grid md:grid-cols-2 gap-12 items-start">
-        {/* Left column: heading, badges, cutoff note, and BIG circle logo */}
+        {/* Left column */}
         <div>
           <div className="text-center md:text-left">
             <div className={`text-sm uppercase tracking-[.22em] ${TOKENS.muted}`}>Free estimate</div>
-            <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white mt-2`}>
+
+            {/* Heading */}
+            <h2 className="mt-2 text-2xl font-bold text-amber-400 text-center md:text-left">
               Tell us about your property
             </h2>
+
             <p className={`mt-3 ${TOKENS.muted} max-w-xl`}>
               We'll respond within one business day with next steps.
             </p>
@@ -380,8 +380,8 @@ function CTA() {
             Cutoff for guaranteed installation is {CUTOFF_DATE}.
           </p>
 
-          {/* 🔵 Big circular logo and call us message */}
-          <div className="mt-8 flex flex-col items-center md:items-start">
+          {/* Logo + Call Us */}
+          <div className="mt-8 flex flex-col items-center">
             <div className="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 ring-2 ring-amber-400 shadow-lg shadow-black/40 bg-gray-900">
               <img
                 src="/bayfront-logo.jpg"
@@ -390,11 +390,11 @@ function CTA() {
               />
             </div>
 
-            <div className="mt-6 text-center md:text-left">
-              <p className="text-white font-semibold text-lg">
+            <div className="mt-6 text-center">
+              <p className="text-amber-400 font-bold text-2xl">
                 Or call us now to quickly schedule a free in-person quote
               </p>
-              <p className="mt-2 text-2xl font-bold text-amber-400">
+              <p className="mt-3 text-amber-400 font-bold text-2xl">
                 <a href="tel:+18302207315" className="hover:underline">(830) 220-7315</a>
               </p>
             </div>
@@ -418,7 +418,6 @@ function CTA() {
             onSubmit={onSubmit}
             className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10 space-y-4"
           >
-            {/* Required for Netlify forms */}
             <input type="hidden" name="form-name" value="estimate" />
             <p className="hidden">
               <label>Don’t fill this out: <input name="bot-field" /></label>
