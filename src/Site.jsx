@@ -358,8 +358,8 @@ function CTA() {
           <div className="text-center md:text-left">
             <div className={`text-sm uppercase tracking-[.22em] ${TOKENS.muted}`}>Free estimate</div>
 
-            {/* Heading */}
-            <h2 className="mt-2 text-2xl font-bold text-amber-400 text-center md:text-left">
+            {/* Heading in white header style */}
+            <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white mt-2 text-center md:text-left`}>
               Tell us about your property
             </h2>
 
@@ -391,11 +391,16 @@ function CTA() {
             </div>
 
             <div className="mt-6 text-center">
-              <p className="text-amber-400 font-bold text-2xl">
+              <p className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white`}>
                 Or call us now to quickly schedule a free in-person quote
               </p>
-              <p className="mt-3 text-amber-400 font-bold text-2xl">
-                <a href="tel:+18302207315" className="hover:underline">(830) 220-7315</a>
+              <p className="mt-3">
+                <a
+                  href="tel:+18302207315"
+                  className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white hover:text-amber-400 transition-colors`}
+                >
+                  (830) 220-7315
+                </a>
               </p>
             </div>
           </div>
