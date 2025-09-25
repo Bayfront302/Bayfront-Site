@@ -318,6 +318,41 @@ function ReferralOffer() {
 // CTA (Estimate) — Netlify Forms enabled
 // -----------------------------------------------------------------------------
 function CTA() {
+  const [sent, setSent] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
+
+  const encode = (data) =>
+    Object.keys(data)
+      .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(data[k]))
+      .join("&");
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    const fd = new FormData(e.currentTarget);
+    const payload = {};
+    fd.forEach((v, k) => (payload[k] = String(v)));
+
+    try {
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({ "form-name": "estimate", ...payload }),
+      });
+      setSent(true);
+
+      // If you want a redirect instead of inline success, uncomment:
+      // window.location.href = "/thanks.html";
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <section id="estimate" className={`border-t ${TOKENS.border} ${TOKENS.sectionBg} text-lg`}>
       <div className="mx-auto max-w-7xl px-6 py-16 grid md:grid-cols-2 gap-12 items-start">
@@ -345,7 +380,6 @@ function CTA() {
             Cutoff for guaranteed installation is {CUTOFF_DATE}.
           </p>
 
-          {/* 🔵 Big circular logo to fill space */}
           <div className="mt-8 flex justify-center md:justify-start">
             <div className="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 ring-2 ring-amber-400 shadow-lg shadow-black/40 bg-gray-900">
               <img
@@ -357,87 +391,100 @@ function CTA() {
           </div>
         </div>
 
-        {/* Right column: Netlify form */}
-        <form
-          name="estimate"
-          method="POST"
-          action="/thanks.html"
-          data-netlify="true"
-          data-netlify-honeypot="bot-field"
-          className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10 space-y-4"
-        >
-          <input type="hidden" name="form-name" value="estimate" />
-          <p className="hidden">
-            <label>Don’t fill this out: <input name="bot-field" /></label>
-          </p>
-
-          <div>
-            <label className="block text-sm text-gray-300 mb-1">Name</label>
-            <input
-              name="name"
-              required
-              placeholder="John Smith"
-              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-            />
+        {/* Right column: Netlify form (JS-posted to /) */}
+        {sent ? (
+          <div className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10">
+            <h3 className="text-white text-2xl font-bold">Thanks! Your request was sent.</h3>
+            <p className="text-gray-300 mt-2">
+              We’ll email you shortly. For urgent installs call (830) 220-7315.
+            </p>
           </div>
-
-          <div>
-            <label className="block text-sm text-gray-300 mb-1">Email</label>
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder="you@example.com"
-              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-300 mb-1">Phone (optional)</label>
-            <input
-              name="phone"
-              type="tel"
-              placeholder="(123) 456-7890"
-              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-300 mb-1">Address / Area</label>
-            <input
-              name="address"
-              placeholder="123 Main St, Hill Country"
-              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-300 mb-1">Details</label>
-            <textarea
-              name="details"
-              rows="3"
-              placeholder="Two-story house, about 60ft of roofline"
-              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-300 mb-1">Notes</label>
-            <textarea
-              name="notes"
-              rows="3"
-              placeholder="Any special requests, color preferences, trees or shrubs to include..."
-              className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className={`w-full rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-4 py-3`}
+        ) : (
+          <form
+            name="estimate"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            onSubmit={onSubmit}
+            className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10 space-y-4"
           >
-            Get My Free Estimate
-          </button>
-        </form>
+            {/* Required for Netlify forms */}
+            <input type="hidden" name="form-name" value="estimate" />
+            <p className="hidden">
+              <label>Don’t fill this out: <input name="bot-field" /></label>
+            </p>
+
+            <div>
+              <label className="block text-sm text-gray-300 mb-1">Name</label>
+              <input
+                name="name"
+                required
+                placeholder="John Smith"
+                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm text-gray-300 mb-1">Email</label>
+              <input
+                name="email"
+                type="email"
+                required
+                placeholder="you@example.com"
+                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm text-gray-300 mb-1">Phone (optional)</label>
+              <input
+                name="phone"
+                type="tel"
+                placeholder="(123) 456-7890"
+                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm text-gray-300 mb-1">Address / Area</label>
+              <input
+                name="address"
+                placeholder="123 Main St, Hill Country"
+                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm text-gray-300 mb-1">Details</label>
+              <textarea
+                name="details"
+                rows="3"
+                placeholder="Two-story house, about 60ft of roofline"
+                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm text-gray-300 mb-1">Notes</label>
+              <textarea
+                name="notes"
+                rows="3"
+                placeholder="Any special requests, color preferences, trees or shrubs to include..."
+                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
+              />
+            </div>
+
+            {error && <p className="text-red-400 text-sm">{error}</p>}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-4 py-3 disabled:opacity-50`}
+            >
+              {loading ? "Sending…" : "Get My Free Estimate"}
+            </button>
+          </form>
+        )}
       </div>
     </section>
   );
@@ -463,10 +510,6 @@ function FAQ() {
     {
       q: "Do you remove and store the lights?",
       a: "Yes. We remove your lights at season’s end and store them for you at no extra cost."
-    },
-    {
-      q: "Are you insured?",
-      a: "Yes—fully insured. We also work with safety checks and tidy cable routing."
     },
   ];
 
