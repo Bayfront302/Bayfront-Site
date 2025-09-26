@@ -389,7 +389,7 @@ function CTA() {
 
             <div className="mt-6 text-center">
               <p className="text-white font-semibold text-lg">
-                Or call us now to quickly schedule a free in-person quote
+                Or call or text us now to quickly schedule a free in-person quote
               </p>
               {/* ✅ Centered phone number */}
               <p className="mt-2 text-2xl font-bold text-amber-400 text-center">
