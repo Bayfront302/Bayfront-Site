@@ -636,6 +636,11 @@ function Footer() {
 // -----------------------------------------------------------------------------
 function GalleryPage() {
   const slides = computeSlides([
+    "house-with-light1.jpg",
+    "house-with-light2.jpg",
+    "house-with-light3.jpg",
+    "house-with-light4.jpg",
+    "house-with-light9.jpeg",
     "bush-with-light1.jpeg",
     "bush-with-light2.jpeg",
     "house-with-light7.jpeg",
@@ -644,11 +649,6 @@ function GalleryPage() {
     "house-with-light6.jpeg",
     "house-with-light8.jpeg",
     "tree-with-light1.png",
-    "house-with-light1.jpg",
-    "house-with-light2.jpg",
-    "house-with-light3.jpg",
-    "house-with-light4.jpg",
-    "house-with-light9.jpeg",
   ]);
   return (
     <main className={`${TOKENS.text}`}>
