@@ -342,6 +342,16 @@ function CTA() {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: encode({ "form-name": "estimate", ...payload }),
       });
+
+     // ✅ Google Ads Conversion Event
+      if (window.gtag) {
+        window.gtag('event', 'conversion', {
+          send_to: 'AW-17611390609/ID3QCPyJmqQbEJH94c1B',
+          value: 1.0,
+          currency: 'USD'
+        });
+      }
+      
       setSent(true);
     } catch (err) {
       setError("Something went wrong. Please try again.");
