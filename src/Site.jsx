@@ -296,10 +296,10 @@ function ReferralOffer() {
       <div className="mx-auto max-w-7xl px-6 py-8">
         <div className="rounded-xl bg-gray-900/60 ring-1 ring-white/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h3 className={`${TOKENS.heading} text-2xl font-bold text-white`}>Refer a Neighbor — You Both Save $50</h3>
+            <h3 className={`${TOKENS.heading} text-2xl font-bold text-white`}>Refer a Neighbor — You Both Save 15%</h3>
             <p className={`${TOKENS.muted} mt-2`}>
               Share Bayfront Lighting with a friend nearby. If both projects are booked this season,{" "}
-              we’ll take <span className="text-amber-400 font-semibold">$50 off</span> each invoice.
+              we’ll take <span className="text-amber-400 font-semibold">15% off</span> each invoice.
             </p>
             <p className="text-xs text-gray-400 mt-2">
               *Valid for residential installs this season. One discount per household. Neighbor must be within our service area.
