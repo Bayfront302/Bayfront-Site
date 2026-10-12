@@ -4,17 +4,15 @@ import './site-modern.css';
 // Drop-in replacement for the existing Bayfront React/Vite site.
 // Image files are already in the existing repository's /public directory.
 const PHOTO = {
-  hero: '/house-with-light7.jpeg',
-  roof: '/house-with-light1.jpg',
+  hero: '/bayfront-hero-stone-estate.webp',
+  roof: '/bayfront-modern-farmhouse.webp',
   landscape: '/tree-with-light1.png',
   wreath: '/wreath-on-house.jpeg',
   gallery: [
-    '/house-with-light7.jpeg',
-    '/house-with-light2.jpg',
-    '/wreath-on-house.jpeg',
-    '/house-with-light1.jpg',
-    '/house-with-light3.jpg',
-    '/house-with-light4.jpg',
+    '/bayfront-hero-stone-estate.webp',
+    '/bayfront-modern-farmhouse.webp',
+    '/bayfront-festive-estate.webp',
+    '/bayfront-lake-travis-estate.webp',
   ],
 };
 const PHONE = '(830) 220-7315';
