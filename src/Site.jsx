@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './site-modern.css';
+import './dark-theme.css';
 
 // Drop-in replacement for the existing Bayfront React/Vite site.
 // Image files are already in the existing repository's /public directory.
@@ -55,11 +56,11 @@ function Header() {
 
 function Hero() {
   return <section className="bf-hero" id="home" aria-labelledby="hero-title">
-    <div className="bf-hero__photo" style={{ backgroundImage: `linear-gradient(90deg, rgba(10,18,18,.77) 0%, rgba(11,20,19,.48) 43%, rgba(11,20,19,.1) 100%), linear-gradient(0deg, rgba(10,18,18,.65), rgba(10,18,18,0) 39%), url('${PHOTO.hero}')` }} role="img" aria-label="A home decorated with warm holiday lights at dusk" />
+    <div className="bf-hero__photo" style={{ backgroundImage: `linear-gradient(90deg, rgba(4,10,12,.84) 0%, rgba(5,11,13,.62) 34%, rgba(5,11,13,.11) 76%, rgba(5,11,13,.05) 100%), linear-gradient(0deg, rgba(4,10,12,.54), rgba(4,10,12,0) 45%), url('${PHOTO.hero}')` }} role="img" aria-label="A home decorated with warm holiday lights at dusk" />
     <div className="bf-hero__content bf-container">
-      <p className="bf-eyebrow bf-eyebrow--light"><span className="bf-gold-line"></span> HOLIDAY LIGHT INSTALLATION · TEXAS HILL COUNTRY</p>
-      <h1 id="hero-title">A brighter home.<br /><em>Zero hassle.</em></h1>
-      <p className="bf-hero__intro">Custom holiday lights for Hill Country homes. We design, install, maintain, and remove your display—so you can enjoy the season.</p>
+      <p className="bf-eyebrow bf-eyebrow--light"><span className="bf-gold-line"></span> LUXURY HOLIDAY LIGHTING · AUSTIN & THE HILL COUNTRY</p>
+      <h1 id="hero-title">Make the season<br /><em>extraordinary.</em></h1>
+      <p className="bf-hero__intro">Beautifully designed Christmas lighting for homes across Lake Travis and the Texas Hill Country. We handle installation, in-season service, and removal. You enjoy the glow.</p>
       <div className="bf-hero__actions">
         <a className="bf-button bf-button--cream" href="#estimate">Get my free estimate <Arrow diagonal /></a>
         <a className="bf-hero__textlink" href="#gallery">Explore the gallery <Arrow /></a>
@@ -67,8 +68,8 @@ function Hero() {
       <div className="bf-hero__reassurance" aria-label="Why choose Bayfront"><span>Local Hill Country team</span><span>Insured installations</span><span>Full-service holiday lighting</span></div>
     </div>
     <div className="bf-hero__foot bf-container">
-      <span>01 — THE ART OF HOLIDAY LIGHT</span>
-      <span>MARBLE FALLS &nbsp; / &nbsp; HORSESHOE BAY &nbsp; / &nbsp; LAKE LBJ</span>
+      <span>THE ART OF HOLIDAY LIGHTING</span>
+      <span>LAKE TRAVIS &nbsp; / &nbsp; WEST AUSTIN &nbsp; / &nbsp; TEXAS HILL COUNTRY</span>
       <a href="#services" aria-label="Scroll to our services">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a>
     </div>
   </section>;
@@ -93,7 +94,7 @@ function Services() {
       <div className="bf-section-intro">
         <p className="bf-eyebrow">01 / WHAT WE DO</p>
         <div className="bf-section-intro__body">
-          <h2 id="services-title">Custom lights. <em>Beautiful results.</em></h2>
+          <h2 id="services-title">A stunning home. <em>Beautifully lit.</em></h2>
           <p>Rooflines, trees, and festive finishing touches—designed to fit your home.</p>
         </div>
       </div>
@@ -124,7 +125,7 @@ function Statement() {
 function Gallery() {
   return <section className="bf-gallery" id="gallery" aria-labelledby="gallery-title">
     <div className="bf-container">
-      <div className="bf-gallery__top"><div><p className="bf-eyebrow">02 / LIGHTING INSPIRATION</p><h2 id="gallery-title">A little holiday <em>wonder.</em></h2></div><p>Imagining what your home could become.</p></div>
+      <div className="bf-gallery__top"><div><p className="bf-eyebrow">02 / LIGHTING INSPIRATION</p><h2 id="gallery-title">Make an entrance. <em>Every season.</em></h2></div><p>Imagining what your home could become.</p></div>
       <div className="bf-gallery__grid">
         {PHOTO.gallery.slice(0,4).map((src, i) => <figure key={src} className={`bf-gallery__item bf-gallery__item--${i+1}`}><img src={src} alt={`Holiday lighting inspiration ${i+1}`} loading="lazy" /><figcaption>HOLIDAY INSPIRATION <span>0{i+1}</span></figcaption></figure>)}
       </div>
