@@ -10,9 +10,9 @@ const PHOTO = {
   landscape: '/tree-with-light1.png',
   wreath: '/wreath-on-house.jpeg',
   gallery: [
-    '/house-with-light7.jpeg',
-    '/house-with-light2.jpg',
-    '/wreath-on-house.jpeg',
+    '/New-house-1.png',
+    '/New-house-3.png',
+    '/New-house-4.png',
     '/house-with-light1.jpg',
     '/house-with-light3.jpg',
     '/house-with-light4.jpg',
