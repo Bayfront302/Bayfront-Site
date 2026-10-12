@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './site-modern.css';
-import { brandHeaderLogo, brandFullLogo } from './brand-logo-data.js';
 
 // Drop-in replacement for the existing Bayfront React/Vite site.
 // Image files are already in the existing repository's /public directory.
@@ -36,8 +35,9 @@ function Header() {
   const close = () => setOpen(false);
   return <header className="bf-header">
     <div className="bf-header__inner">
-      <a className="bf-brand bf-brand--header" href="#home" aria-label="Bayfront Lighting home" onClick={close}>
-        <img className="bf-brand__logo bf-brand__logo--header" src={brandHeaderLogo} alt="Bayfront Lighting" width="440" height="239" />
+      <a className="bf-brand" href="#home" aria-label="Bayfront Lighting home" onClick={close}>
+        <span className="bf-brand__main">BAYFRONT<span className="bf-brand__star">✳</span></span>
+        <span className="bf-brand__sub">LIGHTING</span>
       </a>
       <nav className={`bf-nav${open ? ' bf-nav--open' : ''}`} aria-label="Main navigation">
         <a href="#services" onClick={close}>Our services</a>
@@ -61,7 +61,7 @@ function Hero() {
       <h1 id="hero-title">A brighter home.<br /><em>Zero hassle.</em></h1>
       <p className="bf-hero__intro">Custom holiday lights for Hill Country homes. We design, install, maintain, and remove your display—so you can enjoy the season.</p>
       <div className="bf-hero__actions">
-        <a className="bf-button bf-button--cream" href="#estimate">Get My Free Estimate <Arrow diagonal /></a>
+        <a className="bf-button bf-button--cream" href="#estimate">Get my free estimate <Arrow diagonal /></a>
         <a className="bf-hero__textlink" href="#gallery">Explore the gallery <Arrow /></a>
       </div>
       <div className="bf-hero__reassurance" aria-label="Why choose Bayfront"><span>Local Hill Country team</span><span>Insured installations</span><span>Full-service holiday lighting</span></div>
@@ -210,7 +210,7 @@ function EstimateForm() {
 
 function Footer() {
   return <footer className="bf-footer"><div className="bf-container">
-    <div className="bf-footer__row"><a className="bf-brand bf-brand--footer" href="#home" aria-label="Bayfront Lighting home"><img className="bf-brand__logo bf-brand__logo--footer" src={brandFullLogo} alt="Bayfront Lighting — Holiday Illumination Specialists" width="540" height="430" loading="lazy" /></a><div className="bf-footer__links"><a href="#services">Services</a><a href="#gallery">Gallery</a><a href="#estimate">Free estimate</a><a href={FACEBOOK} target="_blank" rel="noopener noreferrer">Facebook ↗</a></div></div>
+    <div className="bf-footer__row"><a className="bf-brand bf-brand--footer" href="#home"><span className="bf-brand__main">BAYFRONT<span className="bf-brand__star">✳</span></span><span className="bf-brand__sub">LIGHTING</span></a><div className="bf-footer__links"><a href="#services">Services</a><a href="#gallery">Gallery</a><a href="#estimate">Free estimate</a><a href={FACEBOOK} target="_blank" rel="noopener noreferrer">Facebook ↗</a></div></div>
     <div className="bf-footer__bottom"><span>© {new Date().getFullYear()} BAYFRONT LIGHTING. ALL RIGHTS RESERVED.</span><span>HOLIDAY ILLUMINATION SPECIALISTS · TEXAS HILL COUNTRY</span></div>
   </div></footer>;
 }
