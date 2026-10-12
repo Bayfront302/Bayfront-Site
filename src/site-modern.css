@@ -258,9 +258,9 @@
 .bf-site { --ink:#0b1d35; --deep:#0a203a; --pine:#0d253d; --cream:#fffefa; --cream2:#f7f2e6; --gold:#e1aa30; }
 .bf-header { position:relative; background:#fffefa; border-bottom:1px solid #e9e0cb; color:#0b1d35; }
 .bf-header__inner { min-height:112px; height:112px; }
-.bf-brand--header { display:block; width:220px; flex-shrink:0; }
+.bf-brand--header { display:block; width:200px; flex-shrink:0; }
 .bf-brand__logo { display:block; height:auto; object-fit:contain; }
-.bf-brand__logo--header { width:220px; height:auto; }
+.bf-brand__logo--header { width:200px; height:auto; }
 .bf-brand__logo--footer { width:min(280px,100%); height:auto; }
 .bf-site .bf-nav a { color:#152b42; font-size:13px; font-weight:600; }
 .bf-site .bf-nav a:hover { color:#a16a00; }
@@ -269,7 +269,7 @@
 .bf-hero { background:#081c30; height:max(690px,calc(100svh - 112px)); min-height:650px; }
 .bf-hero__photo { filter:saturate(.9); }
 .bf-hero h1 em,.bf-statement h2 em { color:#f0c875; }
-.bf-site a.bf-button--cream, .bf-site .bf-button--cream { background:#f8e0a6; color:#0b1d35; font-weight:800; text-shadow:none; border:1px solid #e0bc65; box-shadow:0 6px 24px #0002; }
+.bf-site a.bf-button--cream, .bf-site .bf-button--cream { font-size:14px; background:#f8e0a6; color:#0b1d35; font-weight:800; text-shadow:none; border:1px solid #e0bc65; box-shadow:0 6px 24px #0002; }
 .bf-site a.bf-button--cream:hover,.bf-site .bf-button--cream:hover { background:#f2cc72; color:#07182b; }
 .bf-site a.bf-button--dark,.bf-site .bf-button--dark { background:#0b1d35; color:#fffefa; font-weight:800; text-shadow:none; }
 .bf-site a.bf-button--dark:hover,.bf-site .bf-button--dark:hover { background:#1f3c5b; color:#fffefa; }
