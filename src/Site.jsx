@@ -5,14 +5,14 @@ import './dark-theme.css';
 // Drop-in replacement for the existing Bayfront React/Vite site.
 // Image files are already in the existing repository's /public directory.
 const PHOTO = {
-  hero: '/New-house-1.png',
-  roof: '/New-house-2.png',
+  hero: '/New house 1.png',
+  roof: '/New house 2.png',
   landscape: '/tree-with-light1.png',
   wreath: '/wreath-on-house.jpeg',
   gallery: [
-    '/New-house-1.png',
-    '/New-house-3.png',
-    '/New-house-4.png',
+    '/New house 1.png',
+    '/New house 3.png',
+    '/New house 4.png',
     '/house-with-light1.jpg',
     '/house-with-light3.jpg',
     '/house-with-light4.jpg',
