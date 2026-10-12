@@ -251,3 +251,62 @@
  .bf-hero__foot { display:none; }
  .bf-hero__reassurance { margin-top:24px; }
 }
+
+
+/* 2026 Brand integration: authentic Bayfront logo, navy / gold / holiday accents.
+   Specificity intentionally wins against .bf-site a { color: inherit }. */
+.bf-site { --ink:#0b1d35; --deep:#0a203a; --pine:#0d253d; --cream:#fffefa; --cream2:#f7f2e6; --gold:#e1aa30; }
+.bf-header { position:relative; background:#fffefa; border-bottom:1px solid #e9e0cb; color:#0b1d35; }
+.bf-header__inner { min-height:112px; height:112px; }
+.bf-brand--header { display:block; width:220px; flex-shrink:0; }
+.bf-brand__logo { display:block; height:auto; object-fit:contain; }
+.bf-brand__logo--header { width:220px; height:auto; }
+.bf-brand__logo--footer { width:min(280px,100%); height:auto; }
+.bf-site .bf-nav a { color:#152b42; font-size:13px; font-weight:600; }
+.bf-site .bf-nav a:hover { color:#a16a00; }
+.bf-site .bf-header__cta { color:#0b1d35; background:#f2d185; border:1px solid #d5a535; font-weight:800; font-size:13px; }
+.bf-site .bf-header__cta:hover { background:#e2b453; color:#071b30; }
+.bf-hero { background:#081c30; height:max(690px,calc(100svh - 112px)); min-height:650px; }
+.bf-hero__photo { filter:saturate(.9); }
+.bf-hero h1 em,.bf-statement h2 em { color:#f0c875; }
+.bf-site a.bf-button--cream, .bf-site .bf-button--cream { background:#f8e0a6; color:#0b1d35; font-weight:800; text-shadow:none; border:1px solid #e0bc65; box-shadow:0 6px 24px #0002; }
+.bf-site a.bf-button--cream:hover,.bf-site .bf-button--cream:hover { background:#f2cc72; color:#07182b; }
+.bf-site a.bf-button--dark,.bf-site .bf-button--dark { background:#0b1d35; color:#fffefa; font-weight:800; text-shadow:none; }
+.bf-site a.bf-button--dark:hover,.bf-site .bf-button--dark:hover { background:#1f3c5b; color:#fffefa; }
+.bf-confidence { background:#f5efdf; border-bottom:1px solid #e7dac0; }
+.bf-confidence p span { color:#cc911d; }
+.bf-confidence p:first-child span { color:#bd3034; }
+.bf-confidence p:last-child span { color:#1c6a43; }
+.bf-service__meta, .bf-eyebrow { color:#997220; }
+.bf-eyebrow--light { color:#f9e2aa; }
+.bf-gallery { background:#f4efdf; }
+.bf-statement, .bf-estimate { background:#0b2038; }
+.bf-referral { background:#f3ead5; }
+.bf-faq { background:#fffefa; }
+.bf-footer { background:#071829; }
+.bf-brand--footer { width:250px; flex-shrink:0; background:#fffefa; padding:8px; box-shadow:0 4px 22px #0002; }
+.bf-footer__row { align-items:center; }
+.bf-site .bf-mobile-actions__quote { background:#0b1d35; color:#fff!important; }
+.bf-site .bf-mobile-actions__call { border-color:#0b1d35; color:#0b1d35!important; }
+.bf-site .bf-nav__mobile-phone { color:#0b1d35; }
+@media(max-width:1050px) {
+ .bf-header__inner { min-height:100px; height:100px; }
+ .bf-brand--header { width:190px; }
+ .bf-brand__logo--header { width:190px; }
+ .bf-hero { height:max(690px,calc(100svh - 100px)); }
+}
+@media(max-width:760px) {
+ .bf-header__inner { height:84px;min-height:84px; }
+ .bf-brand--header { width:151px; }
+ .bf-brand__logo--header { width:151px; }
+ .bf-menu span { background:#0b1d35; }
+ .bf-nav { top:84px; background:#fffefa; border-top:1px solid #e9e0cb; }
+ .bf-nav a { color:#0b1d35!important; }
+ .bf-hero { height:760px; }
+ .bf-footer__row { align-items:flex-start; }
+}
+@media(max-width:460px) {
+ .bf-brand--header { width:134px; }
+ .bf-brand__logo--header { width:134px; }
+ .bf-site .bf-header__cta { font-size:10px; }
+}
