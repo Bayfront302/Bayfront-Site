@@ -13,9 +13,9 @@ const PHOTO = {
     '/New house 1.png',
     '/New house 3.png',
     '/New house 4.png',
-    '/house-with-light1.jpg',
-    '/house-with-light1.jpg',
-    '/house-with-light1.jpg',
+    '/house-with-light2.jpg',
+    '/house-with-light2.jpg',
+    '/house-with-light2.jpg',
   ],
 };
 const PHONE = '(830) 220-7315';
