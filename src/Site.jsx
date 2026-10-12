@@ -1,717 +1,226 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
-import { FaEnvelope, FaFacebook, FaPhone } from "react-icons/fa";
+import React, { useEffect, useState } from 'react';
+import './site-modern.css';
 
-// -----------------------------------------------------------------------------
-// Theme tokens (dark, slate + amber)
-// -----------------------------------------------------------------------------
-const TOKENS = {
-  mainBg: "bg-gray-900",
-  sectionBg: "bg-gray-800",
-  cardBg: "bg-gray-900",
-  border: "border-gray-700",
-  text: "text-white",
-  muted: "text-gray-300",
-  accentBg: "bg-amber-400",
-  accentTextOn: "text-gray-900",
-  accentRing: "ring-amber-400",
-  heading: "font-serif",
+// Drop-in replacement for the existing Bayfront React/Vite site.
+// Image files are already in the existing repository's /public directory.
+const PHOTO = {
+  hero: '/house-with-light7.jpeg',
+  roof: '/house-with-light1.jpg',
+  landscape: '/tree-with-light1.png',
+  wreath: '/wreath-on-house.jpeg',
+  gallery: [
+    '/house-with-light7.jpeg',
+    '/house-with-light2.jpg',
+    '/wreath-on-house.jpeg',
+    '/house-with-light1.jpg',
+    '/house-with-light3.jpg',
+    '/house-with-light4.jpg',
+  ],
 };
+const PHONE = '(830) 220-7315';
+const EMAIL = 'info@bayfrontlighting.com';
+const FACEBOOK = 'https://www.facebook.com/profile.php/?id=61580332635472';
 
-// -----------------------------------------------------------------------------
-// Fonts (Inter for body, Merriweather for headings/logo) – inject once
-// -----------------------------------------------------------------------------
-const fontCss = `
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Merriweather:wght@700;900&display=swap');
-body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
-.font-serif { font-family: 'Merriweather', Georgia, Cambria, 'Times New Roman', Times, serif; }
-`;
-if (typeof document !== "undefined" && !document.getElementById("bayfront-fonts")) {
-  const style = document.createElement("style");
-  style.id = "bayfront-fonts";
-  style.innerHTML = fontCss;
-  document.head.appendChild(style);
+function Arrow({ diagonal = false }) {
+  return <span aria-hidden="true">{diagonal ? '↗' : '→'}</span>;
 }
 
-// -----------------------------------------------------------------------------
-// Constants
-// -----------------------------------------------------------------------------
-const FB_URL = "https://www.facebook.com/bayfrontlighting";
-const RUSH_START = "December 1st";
-const CUTOFF_DATE = "December 10th";
-const EMAIL = "info@bayfrontlighting.com";
-
-// -----------------------------------------------------------------------------
-// Context & helpers
-// -----------------------------------------------------------------------------
-const ThemeCtx = createContext({ tokens: TOKENS });
-const useTheme = () => useContext(ThemeCtx);
-
-function encodePaths(files) {
-  const out = [];
-  const seen = new Set();
-  for (const f of files || []) {
-    if (typeof f !== "string") continue;
-    const trimmed = f.trim();
-    if (!trimmed) continue;
-    const key = trimmed.toLowerCase();
-    if (seen.has(key)) continue;
-    seen.add(key);
-    const looksAbsolute =
-      /^\//.test(trimmed) || /^https?:/i.test(trimmed) || trimmed.startsWith("data:");
-    const withPrefix = looksAbsolute ? trimmed : "/" + trimmed;
-    out.push(encodeURI(withPrefix));
-  }
-  return out;
-}
-
-const BLANK_IMG =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NkYGD4DwABNQEA3zV8KQAAAABJRU5ErkJggg==";
-
-function computeSlides(list) {
-  const enc = encodePaths(list);
-  return enc.length > 0 ? enc : [BLANK_IMG];
-}
-
-function isGallery(hash) {
-  return typeof hash === "string" && hash.startsWith("#/gallery");
-}
-
-function useRoute() {
-  const initial =
-    typeof window !== "undefined" && window.location
-      ? window.location.hash || "#/"
-      : "#/";
-  const [route, setRoute] = useState(initial);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const onHash = () => setRoute(window.location.hash || "#/");
-    window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
-  }, []);
-  return route;
-}
-
-// helper to build a safe mailto link
-function mailtoHref(to, subject, body) {
-  const q = new URLSearchParams({ subject, body }).toString();
-  return `mailto:${to}?${q}`;
-}
-
-// -----------------------------------------------------------------------------
-// HeaderBar (shows all links even on gallery; section links work from either)
-// -----------------------------------------------------------------------------
-function HeaderBar() {
-  const { tokens } = useTheme();
+function Header() {
   const [open, setOpen] = useState(false);
-  const route = useRoute();
-  const inGallery = isGallery(route);
-  const base = inGallery ? "#/" : "#";
-
-  return (
-    <>
-      <header className={`sticky top-0 z-50 border-b ${tokens.border} ${TOKENS.cardBg}`}>
-        <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-          <a href="#/" className="flex flex-col items-center text-center">
-            <span className={`text-4xl ${tokens.heading} text-amber-400 drop-shadow`}>Bayfront Lighting</span>
-            <hr className="border-t border-gray-600 w-full my-1" />
-            <span className={`text-base ${tokens.muted} ${tokens.heading}`}>Holiday Illumination Specialists</span>
-          </a>
-
-          <nav className={`hidden md:flex items-center gap-6 ${tokens.muted}`}>
-            <a href={`${base}offerings`} className="hover:opacity-90">What We Offer</a>
-            <a href={`${base}estimate`} className="hover:opacity-90">Free Estimate</a>
-            <a href={`${base}about`} className="hover:opacity-90">About</a>
-            <a href="#/gallery" className="hover:opacity-90">Gallery</a>
-          </nav>
-
-          <button
-            className="md:hidden rounded-md px-3 py-2 ring-1 ring-gray-600 hover:bg-gray-700"
-            onClick={() => setOpen(o => !o)}
-            aria-label="Toggle menu"
-          >
-            ☰
-          </button>
-        </div>
-
-        {open && (
-          <div className={`md:hidden border-t ${tokens.border}`}>
-            <div className={`px-6 py-4 flex flex-col gap-3 ${tokens.muted}`}>
-              <a href={`${base}offerings`} onClick={() => setOpen(false)}>What We Offer</a>
-              <a href={`${base}estimate`} onClick={() => setOpen(false)}>Free Estimate</a>
-              <a href={`${base}about`} onClick={() => setOpen(false)}>About</a>
-              <a href="#/gallery" onClick={() => setOpen(false)}>Gallery</a>
-            </div>
-          </div>
-        )}
-      </header>
-
-      {/* 🎄 Animated lights divider (CSS-driven) */}
-      <div className="w-full bg-gray-900 py-3">
-        <div className="lights-strip">
-          <span className="bulb red"></span>
-          <span className="bulb green"></span>
-          <span className="bulb yellow"></span>
-          <span className="bulb blue"></span>
-          <span className="bulb red"></span>
-          <span className="bulb green"></span>
-          <span className="bulb yellow"></span>
-          <span className="bulb blue"></span>
-          <span className="bulb red"></span>
-          <span className="bulb green"></span>
-          <span className="bulb yellow"></span>
-          <span className="bulb blue"></span>
-        </div>
-      </div>
-    </>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Hero (slides + CTA button)
-// -----------------------------------------------------------------------------
-function Hero() {
-  const slideFiles = [
-    "wreath-on-house.jpeg",
-    "house-with-light7.jpeg",
-    "house-with-light2.jpg",
-    "house-with-light1.jpg",
-  ];
-  const slides = computeSlides(slideFiles);
-  const [i, setI] = useState(0);
-  const many = slides.length > 1;
-
   useEffect(() => {
-    if (!many) return;
-    const id = setInterval(() => setI((v) => (v + 1) % slides.length), 5000);
-    return () => clearInterval(id);
-  }, [many, slides.length]);
-
-  const next = () => many && setI((v) => (v + 1) % slides.length);
-  const prev = () => many && setI((v) => (v - 1 + slides.length) % slides.length);
-
-  return (
-    <section className={`relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center px-6 overflow-hidden`}>
-      {/* Slide layer */}
-      <div className="absolute inset-0 z-0">
-        {slides.map((src, idx) => (
-          <img
-            key={src + idx}
-            src={src}
-            alt="Bayfront Lighting background"
-            loading={idx === 0 ? "eager" : "lazy"}
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = BLANK_IMG;
-              e.currentTarget.classList.add("opacity-0");
-            }}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-              i === idx ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* Overlays */}
-      <div className="absolute inset-0 z-10 pointer-events-none">
-        <div className="absolute inset-0 bg-black/55" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/70 to-transparent" />
-      </div>
-
-      {/* Controls */}
-      {many && (
-        <>
-          <button
-            aria-label="Prev"
-            onClick={prev}
-            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900 z-20"
-          >
-            ‹
-          </button>
-          <button
-            aria-label="Next"
-            onClick={next}
-            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 text-gray-900 z-20"
-          >
-            ›
-          </button>
-        </>
-      )}
-
-      {/* Text + CTA */}
-      <div className="relative z-20">
-        <h1 className={`text-white text-4xl md:text-6xl font-bold leading-tight ${TOKENS.heading}`}>
-          <span className="text-red-400">Holiday</span>{" "}
-          <span className="text-green-400">lighting</span> without the hassle
-        </h1>
-        <p className={`mt-4 ${TOKENS.muted} text-lg md:text-xl`}>
-          Design, installation, in-season service, and end-of-season removal — we store your lights free.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-4 justify-center">
-          <a
-            href="#estimate"
-            className={`rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-6 py-4 shadow hover:opacity-90 text-lg`}
-          >
-            Get My Free Estimate
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Offerings
-// -----------------------------------------------------------------------------
-function Offerings() {
-  return (
-    <section id="offerings" className="mx-auto max-w-7xl px-6 py-16">
-      <div className="text-center">
-        <h2 className={`${TOKENS.heading} text-4xl md:text-5xl font-bold text-white mt-2`}>What We Offer</h2>
-        <p className={`mt-3 ${TOKENS.muted} max-w-2xl mx-auto text-lg`}>Design • Install • Service • Removal</p>
-      </div>
-      <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <OfferCard title="Design" text="Tailored plans for rooflines, trees, shrubs, and walkways." />
-        <OfferCard title="Installation" text="Premium C9 bulbs, pro clips, tidy cable routing." />
-        <OfferCard title="In-season service" text="If something fails, we fix it fast — guaranteed." />
-        <OfferCard title="Removal & storage" text="We remove and store at season's end for no extra charge." />
-      </div>
-    </section>
-  );
-}
-function OfferCard({ title, text }) {
-  return (
-    <div className={`rounded-xl p-6 shadow-sm ring-1 ${TOKENS.accentRing} ${TOKENS.cardBg}`}>
-      <div className={`text-base uppercase tracking-wide ${TOKENS.muted}`}>{title}</div>
-      <p className={`mt-3 text-base md:text-lg text-amber-400`}>{text}</p>
+    function closeOnEscape(e) { if (e.key === 'Escape') setOpen(false); }
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, []);
+  const close = () => setOpen(false);
+  return <header className="bf-header">
+    <div className="bf-header__inner">
+      <a className="bf-brand" href="#home" aria-label="Bayfront Lighting home" onClick={close}>
+        <span className="bf-brand__main">BAYFRONT<span className="bf-brand__star">✳</span></span>
+        <span className="bf-brand__sub">LIGHTING</span>
+      </a>
+      <nav className={`bf-nav${open ? ' bf-nav--open' : ''}`} aria-label="Main navigation">
+        <a href="#services" onClick={close}>Our services</a>
+        <a href="#gallery" onClick={close}>Gallery</a>
+        <a href="#about" onClick={close}>About us</a>
+        <a href="tel:+18302207315" className="bf-nav__mobile-phone" onClick={close}>Call {PHONE}</a>
+      </nav>
+      <a className="bf-header__cta" href="#estimate">Free estimate <Arrow diagonal /></a>
+      <button className="bf-menu" type="button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>
+        <span></span><span></span>
+      </button>
     </div>
-  );
+  </header>;
 }
 
-// -----------------------------------------------------------------------------
-// Referral Offer ($50 off)
-// -----------------------------------------------------------------------------
-function ReferralOffer() {
-  return (
-    <section className={`border-t ${TOKENS.border} ${TOKENS.sectionBg}`}>
-      <div className="mx-auto max-w-7xl px-6 py-8">
-        <div className="rounded-xl bg-gray-900/60 ring-1 ring-white/10 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h3 className={`${TOKENS.heading} text-2xl font-bold text-white`}>Refer a Neighbor — You Both Save 15%</h3>
-            <p className={`${TOKENS.muted} mt-2`}>
-              Share Bayfront Lighting with a friend nearby. If both projects are booked this season,{" "}
-              we’ll take <span className="text-amber-400 font-semibold">15% off</span> each invoice.
-            </p>
-            <p className="text-xs text-gray-400 mt-2">
-              *Valid for residential installs this season. One discount per household. Neighbor must be within our service area.
-            </p>
-          </div>
-          <a href="#estimate" className={`inline-flex justify-center items-center rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-5 py-3 shadow hover:opacity-90`}>
-            Get My Free Estimate
-          </a>
+function Hero() {
+  return <section className="bf-hero" id="home" aria-labelledby="hero-title">
+    <div className="bf-hero__photo" style={{ backgroundImage: `linear-gradient(90deg, rgba(10,18,18,.77) 0%, rgba(11,20,19,.48) 43%, rgba(11,20,19,.1) 100%), linear-gradient(0deg, rgba(10,18,18,.65), rgba(10,18,18,0) 39%), url('${PHOTO.hero}')` }} role="img" aria-label="A home decorated with warm holiday lights at dusk" />
+    <div className="bf-hero__content bf-container">
+      <p className="bf-eyebrow bf-eyebrow--light"><span className="bf-gold-line"></span> HOLIDAY LIGHT INSTALLATION · TEXAS HILL COUNTRY</p>
+      <h1 id="hero-title">A brighter home.<br /><em>Zero hassle.</em></h1>
+      <p className="bf-hero__intro">Custom holiday lights for Hill Country homes. We design, install, maintain, and remove your display—so you can enjoy the season.</p>
+      <div className="bf-hero__actions">
+        <a className="bf-button bf-button--cream" href="#estimate">Get my free estimate <Arrow diagonal /></a>
+        <a className="bf-hero__textlink" href="#gallery">Explore the gallery <Arrow /></a>
+      </div>
+      <div className="bf-hero__reassurance" aria-label="Why choose Bayfront"><span>Local Hill Country team</span><span>Insured installations</span><span>Full-service holiday lighting</span></div>
+    </div>
+    <div className="bf-hero__foot bf-container">
+      <span>01 — THE ART OF HOLIDAY LIGHT</span>
+      <span>MARBLE FALLS &nbsp; / &nbsp; HORSESHOE BAY &nbsp; / &nbsp; LAKE LBJ</span>
+      <a href="#services" aria-label="Scroll to our services">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a>
+    </div>
+  </section>;
+}
+
+function ConfidenceStrip() {
+  return <section className="bf-confidence" aria-label="What is included"><div className="bf-container bf-confidence__inner">
+    <p><span aria-hidden="true">✳</span> Custom design & installation</p>
+    <p><span aria-hidden="true">✳</span> In-season service included</p>
+    <p><span aria-hidden="true">✳</span> End-of-season removal</p>
+  </div></section>;
+}
+
+const services = [
+  { number: '01', name: 'Roofline lighting', image: PHOTO.roof, detail: 'Architectural lines brought to life with crisp, premium C9 lights.' },
+  { number: '02', name: 'Trees & landscape', image: PHOTO.landscape, detail: 'Beautifully wrapped trees, shrubs, and outdoor features.' },
+  { number: '03', name: 'Wreaths & accents', image: PHOTO.wreath, detail: 'Elegant finishing touches, thoughtfully placed for your home.' },
+];
+function Services() {
+  return <section className="bf-services" id="services" aria-labelledby="services-title">
+    <div className="bf-container">
+      <div className="bf-section-intro">
+        <p className="bf-eyebrow">01 / WHAT WE DO</p>
+        <div className="bf-section-intro__body">
+          <h2 id="services-title">Custom lights. <em>Beautiful results.</em></h2>
+          <p>Rooflines, trees, and festive finishing touches—designed to fit your home.</p>
         </div>
       </div>
-    </section>
-  );
+      <div className="bf-service-grid">
+        {services.map(s => <article className="bf-service" key={s.number}>
+          <div className="bf-service__image"><img src={s.image} alt={s.name} loading="lazy" /></div>
+          <div className="bf-service__meta"><span>{s.number} / SERVICE</span><span aria-hidden="true">↗</span></div>
+          <h3>{s.name}</h3><p>{s.detail}</p>
+        </article>)}
+      </div>
+    </div>
+  </section>;
 }
 
-// -----------------------------------------------------------------------------
-// CTA (Estimate) — Netlify Forms enabled
-// -----------------------------------------------------------------------------
-function CTA() {
-  const [sent, setSent] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
+function Statement() {
+  return <section className="bf-statement" id="about">
+    <div className="bf-container bf-statement__inner">
+      <div><p className="bf-eyebrow bf-eyebrow--light">THE BAYFRONT EXPERIENCE</p></div>
+      <div>
+        <h2>All the magic.<br /><em>None of the hassle.</em></h2>
+        <p>We handle the design, installation, in-season service, and removal. All you have to do is enjoy the glow.</p>
+        <a href="#estimate" className="bf-inline-link">Let's light up your home <Arrow diagonal /></a>
+      </div>
+    </div>
+  </section>;
+}
 
-  const encode = (data) =>
-    Object.keys(data)
-      .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(data[k]))
-      .join("&");
+function Gallery() {
+  return <section className="bf-gallery" id="gallery" aria-labelledby="gallery-title">
+    <div className="bf-container">
+      <div className="bf-gallery__top"><div><p className="bf-eyebrow">02 / LIGHTING INSPIRATION</p><h2 id="gallery-title">A little holiday <em>wonder.</em></h2></div><p>Imagining what your home could become.</p></div>
+      <div className="bf-gallery__grid">
+        {PHOTO.gallery.slice(0,4).map((src, i) => <figure key={src} className={`bf-gallery__item bf-gallery__item--${i+1}`}><img src={src} alt={`Holiday lighting inspiration ${i+1}`} loading="lazy" /><figcaption>HOLIDAY INSPIRATION <span>0{i+1}</span></figcaption></figure>)}
+      </div>
+    </div>
+  </section>;
+}
 
-  async function onSubmit(e) {
+function Process() {
+  const items = [
+    { num:'01', title:'Tell us your vision', copy:'Tell us where you live and how to reach you.' },
+    { num:'02', title:'We create your plan', copy:'We discuss the display you want and prepare your quote.' },
+    { num:'03', title:'Enjoy the glow', copy:'We install, maintain, and remove your lights.' },
+  ];
+  return <section className="bf-process">
+    <div className="bf-container"><p className="bf-eyebrow">03 / HOW IT WORKS</p><h2>Simple from <em>start to sparkle.</em></h2>
+    <div className="bf-process__grid">{items.map(item => <div key={item.num} className="bf-process__item"><span>{item.num}</span><h3>{item.title}</h3><p>{item.copy}</p></div>)}</div></div>
+  </section>;
+}
+
+function ReferralAndFAQ() {
+  const faqs = [
+    { question: 'What does holiday lighting cost?', answer: 'Pricing depends on the size of your property and your lighting plan. Request a free estimate for a quote tailored to your home.' },
+    { question: 'Do you provide the lights?', answer: 'Yes. Our designs use professional holiday lighting materials, including premium C9 roofline bulbs.' },
+    { question: 'What if a light goes out during the season?', answer: 'In-season service is included. Contact us and we’ll help make it right.' },
+    { question: 'Do you handle removal?', answer: 'Yes. End-of-season removal is part of our lighting service.' },
+  ];
+  return <section className="bf-faq" aria-labelledby="faq-title">
+    <div className="bf-container">
+      <div className="bf-referral"><div><p className="bf-eyebrow">A LITTLE EXTRA HOLIDAY CHEER</p><h2>Good neighbors. <em>Better holidays.</em></h2><p>Refer a neighbor and you both save 15% when both projects are booked this season.</p><p className="bf-referral__terms">Residential installs only. One discount per household. Referral must be within our service area.</p></div><a className="bf-button bf-button--dark" href="#estimate">Ask about the offer <Arrow diagonal /></a></div>
+      <div className="bf-faq__layout"><div><p className="bf-eyebrow">04 / GOOD TO KNOW</p><h2 id="faq-title">A few good <em>questions.</em></h2></div><div className="bf-faq__items">{faqs.map(item => <details key={item.question}><summary>{item.question}<span aria-hidden="true">+</span></summary><p>{item.answer}</p></details>)}</div></div>
+    </div>
+  </section>;
+}
+
+function EstimateForm() {
+  const [status, setStatus] = useState('idle');
+  const [error, setError] = useState('');
+  async function submit(e) {
     e.preventDefault();
-    setError("");
-    setLoading(true);
-
-    const fd = new FormData(e.currentTarget);  
-    const payload = {};
-    fd.forEach((v, k) => (payload[k] = String(v)));
-
+    if (status === 'sending') return;
+    const data = new FormData(e.currentTarget);
+    const encoded = new URLSearchParams();
+    encoded.set('form-name', 'estimate');
+    for (const [key,value] of data.entries()) encoded.set(key, String(value));
+    setStatus('sending'); setError('');
     try {
-      await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: encode({ "form-name": "estimate", ...payload }),
-      });
-
-     // ✅ Google Ads Conversion Event
-      if (window.gtag) {
-        window.gtag('event', 'conversion', {
-          send_to: 'AW-17611390609/ID3QCPyJmqQbEJH94c1B',
-          value: 1.0,
-          currency: 'USD'
-        });
-      }
-      
-      setSent(true);
-    } catch (err) {
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
+      const result = await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:encoded.toString() });
+      if (!result.ok) throw new Error(`HTTP ${result.status}`);
+      if (typeof window.gtag === 'function') window.gtag('event', 'conversion', { send_to:'AW-17611390609/ID3QCPyJmqQbEJH94c1B', value:1.0, currency:'USD' });
+      setStatus('sent');
+    } catch {
+      setStatus('idle'); setError('We couldn’t send your request. Please try again or call us directly.');
     }
   }
-
-  return (
-    <section id="estimate" className={`border-t ${TOKENS.border} ${TOKENS.sectionBg} text-lg`}>
-      <div className="mx-auto max-w-7xl px-6 py-16 grid md:grid-cols-2 gap-12 items-start">
-        {/* Left column: heading, badges, cutoff note, and BIG circle logo */}
-        <div>
-          <div className="text-center md:text-left">
-            <div className={`text-sm uppercase tracking-[.22em] ${TOKENS.muted}`}>Free estimate</div>
-            <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white mt-2`}>
-              Tell us about your property
-            </h2>
-            <p className={`mt-3 ${TOKENS.muted} max-w-xl`}>
-              We'll respond within one business day with next steps.
-            </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-2 rounded-full bg-gray-900/60 ring-1 ring-white/10 px-3 py-1 text-sm">
-                <span>✅</span>Fully Insured
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full bg-gray-900/60 ring-1 ring-white/10 px-3 py-1 text-sm">
-                <span>⚡</span>Rush installs start {RUSH_START}
-              </span>
-            </div>
-          </div>
-
-          <p className={`mt-4 ${TOKENS.muted} text-sm`}>
-            Cutoff for guaranteed installation is {CUTOFF_DATE}.
-          </p>
-
-          {/* Logo + Call Us */}
-          <div className="mt-8 flex flex-col items-center">
-            <div className="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 ring-2 ring-amber-400 shadow-lg shadow-black/40 bg-gray-900">
-              <img
-                src="/bayfront-logo.jpg"
-                alt="Bayfront Lighting logo"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            <div className="mt-6 text-center">
-              <p className="text-white font-semibold text-lg">
-                Or call or text us now to quickly schedule a free in-person quote
-              </p>
-              {/* ✅ Centered phone number */}
-              <p className="mt-2 text-2xl font-bold text-amber-400 text-center">
-                <a href="tel:+18302207315" className="hover:underline">
-                  (830) 220-7315
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Right column: Netlify form */}
-        {sent ? (
-          <div className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10">
-            <h3 className="text-white text-2xl font-bold">Thanks! Your request was sent.</h3>
-            <p className="text-gray-300 mt-2">
-              We’ll email you shortly. For urgent installs call (830) 220-7315.
-            </p>
-          </div>
-        ) : (
-          <form
-            name="estimate"
-            method="POST"
-            data-netlify="true"
-            netlify-honeypot="bot-field"
-            onSubmit={onSubmit}
-            className="bg-gray-900/60 rounded-xl p-6 ring-1 ring-white/10 space-y-4"
-          >
-            {/* Required for Netlify forms */}
-            <input type="hidden" name="form-name" value="estimate" />
-            <p className="hidden">
-              <label>Don’t fill this out: <input name="bot-field" /></label>
-            </p>
-
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Name</label>
-              <input
-                name="name"
-                required
-                placeholder="John Smith"
-                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Email</label>
-              <input
-                name="email"
-                type="email"
-                required
-                placeholder="you@example.com"
-                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Phone (optional)</label>
-              <input
-                name="phone"
-                type="tel"
-                placeholder="(123) 456-7890"
-                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Address / Area</label>
-              <input
-                name="address"
-                placeholder="123 Main St, Hill Country"
-                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Details</label>
-              <textarea
-                name="details"
-                rows="3"
-                placeholder="Two-story house, about 60ft of roofline"
-                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Notes</label>
-              <textarea
-                name="notes"
-                rows="3"
-                placeholder="Any special requests, color preferences, trees or shrubs to include..."
-                className="w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-white"
-              />
-            </div>
-
-            {error && <p className="text-red-400 text-sm">{error}</p>}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className={`w-full rounded-md ${TOKENS.accentBg} ${TOKENS.accentTextOn} font-semibold px-4 py-3 disabled:opacity-50`}
-            >
-              {loading ? "Sending…" : "Get My Free Estimate"}
-            </button>
-          </form>
-        )}
+  return <section className="bf-estimate" id="estimate" aria-labelledby="estimate-title">
+    <div className="bf-container bf-estimate__grid">
+      <div className="bf-estimate__copy"><p className="bf-eyebrow bf-eyebrow--light">LET'S MAKE SOMETHING BEAUTIFUL</p>
+        <h2 id="estimate-title">Your brightest<br /><em>season starts here.</em></h2>
+        <p>It only takes a moment. Share your contact details and we’ll follow up about your free, no-obligation quote.</p>
+        <div className="bf-estimate__contacts"><a href="tel:+18302207315">{PHONE} <Arrow diagonal /></a><a href={`mailto:${EMAIL}`}>{EMAIL} <Arrow diagonal /></a></div>
+        <span className="bf-estimate__location">PROUDLY SERVING THE TEXAS HILL COUNTRY</span>
       </div>
-    </section>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// FAQ (simple, accessible <details> accordions)
-// -----------------------------------------------------------------------------
-function FAQ() {
-  const QA = [
-    {
-      q: "How much does holiday lighting cost?",
-      a: "Pricing depends on roofline length, complexity, and yard features. Most homes fall between $500–$2,000 installed. Every job includes design, install, in-season service, removal, and free storage."
-    },
-    {
-      q: "Do you provide the lights?",
-      a: "Yes. We install premium commercial C9 bulbs and professional clips/timers for the best look and reliability."
-    },
-    {
-      q: "What happens if a bulb goes out?",
-      a: "In-season service is included. If something fails, we fix it fast—no extra charge."
-    },
-    {
-      q: "Do you remove and store the lights?",
-      a: "Yes. We remove your lights at season’s end and store them for you at no extra cost."
-    },
-  ];
-
-  return (
-    <section className="mx-auto max-w-7xl px-6 py-16">
-      <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white text-center`}>FAQs</h2>
-      <div className="mt-8 grid gap-4">
-        {QA.map(({ q, a }, idx) => (
-          <details key={idx} className={`rounded-lg ${TOKENS.cardBg} ring-1 ring-white/10 p-4`}>
-            <summary className="cursor-pointer select-none font-semibold text-white">
-              {q}
-            </summary>
-            <p className={`mt-2 ${TOKENS.muted}`}>{a}</p>
+      {status === 'sent' ? <div className="bf-estimate__success" role="status"><span aria-hidden="true">✳</span><h3>Thank you!</h3><p>Your estimate request has been submitted. We’ll be in touch soon.</p><a href="tel:+18302207315">Need us sooner? Call {PHONE}</a></div>
+      : <form className="bf-form" name="estimate" method="POST" data-netlify="true" netlify-honeypot="bot-field" onSubmit={submit}>
+          <input type="hidden" name="form-name" value="estimate" />
+          <p className="bf-honeypot"><label>Leave blank: <input name="bot-field" tabIndex="-1" autoComplete="off" /></label></p>
+          <p className="bf-form__intro">GET YOUR FREE, NO-OBLIGATION QUOTE <span>About 30 seconds</span></p>
+          <label>YOUR NAME <input name="name" required placeholder="Full name" autoComplete="name" /></label>
+          <label>PHONE NUMBER <input name="phone" type="tel" inputMode="tel" required placeholder="(830) 000-0000" autoComplete="tel" /></label>
+          <label>CITY OR PROPERTY ZIP CODE <input name="address" required placeholder="Marble Falls, TX" autoComplete="address-level2" /></label>
+          <details className="bf-form__optional"><summary>Want to add an email or project details? <span aria-hidden="true">+</span></summary>
+            <label>EMAIL (OPTIONAL) <input name="email" type="email" placeholder="you@example.com" autoComplete="email" /></label>
+            <label>LIGHTING PLANS (OPTIONAL) <select name="service" defaultValue=""><option value="">Not sure yet</option><option>Roofline lighting</option><option>Trees & landscape</option><option>Wreaths & accents</option><option>Full-property design</option></select></label>
+            <label>ANYTHING ELSE? (OPTIONAL) <textarea name="notes" rows="3" placeholder="Roofline, trees, color ideas..." /></label>
           </details>
-        ))}
-      </div>
-    </section>
-  );
+          {error && <p className="bf-form__error" role="alert">{error}</p>}
+          <button className="bf-button bf-button--dark" type="submit" disabled={status==='sending'}>{status==='sending' ? 'Sending your request…' : 'Request my free estimate'} <Arrow diagonal /></button>
+          <p className="bf-form__fineprint">No obligation. We only use your details to respond about your estimate.</p>
+        </form>}
+    </div>
+  </section>;
 }
 
-// -----------------------------------------------------------------------------
-// About (Contact has email, FB, phone with brand-color hovers)
-// -----------------------------------------------------------------------------
-
-function About() {
-  const subject = "Free Estimate Request — Bayfront Lighting";
-  const body = [
-    "Hi Bayfront Lighting,",
-    "",
-    "I'd like a free estimate for holiday lighting.",
-    "Name:",
-    "Address/Area:",
-    "Phone (optional):",
-    "Details (roofline length, trees/shrubs, color preferences):",
-    "",
-    "Thanks!",
-  ].join("\n");
-
-  // Use a direct profile ID link so it's always accessible
-  const FB_URL = "https://www.facebook.com/profile.php/?id=61580332635472";
-
-  return (
-    <section id="about" className="mx-auto max-w-7xl px-6 py-16">
-      <div className="grid md:grid-cols-2 gap-8 items-start">
-        {/* Left: About text */}
-        <div>
-          <h2 className={`${TOKENS.heading} text-3xl md:text-4xl font-bold text-white`}>
-            About
-          </h2>
-          <p className={`${TOKENS.muted} mt-4 max-w-3xl`}>
-            Local, insured, and focused on clean installs with premium LEDs.
-            We handle everything: design, installation, quick service, and
-            removal/storage.
-          </p>
-        </div>
-
-        {/* Right: Contact block */}
-        <div className="md:text-right">
-          <h3 className={`${TOKENS.heading} text-2xl font-bold text-white`}>Contact</h3>
-          <div className="mt-3 space-y-3">
-            {/* Email */}
-            <p>
-              <a
-                href={mailtoHref(EMAIL, subject, body)}
-                className="inline-flex items-center gap-2 text-amber-400 hover:text-[#DD4B39] transition-colors duration-200"
-              >
-                <FaEnvelope size={20} /> {EMAIL}
-              </a>
-            </p>
-
-            {/* Facebook */}
-            <p>
-              <a
-                href={FB_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-amber-400 hover:text-[#1877F2] transition-colors duration-200"
-              >
-                <FaFacebook size={20} /> Bayfront Lighting
-              </a>
-            </p>
-
-            {/* Phone */}
-            <p>
-              <a
-                href="tel:+18302207315"
-                className="inline-flex items-center gap-2 text-amber-400 hover:text-[#10B981] transition-colors duration-200"
-              >
-                <FaPhone size={20} /> (830) 220-7315
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Footer (THIS WAS MISSING BEFORE — caused the crash)
-// -----------------------------------------------------------------------------
 function Footer() {
-  return (
-    <footer className="border-t border-gray-700 py-8 text-center text-gray-400">
-      <div className="mx-auto max-w-7xl px-6">
-        © {new Date().getFullYear()} Bayfront Lighting. All rights reserved.
-      </div>
-    </footer>
-  );
+  return <footer className="bf-footer"><div className="bf-container">
+    <div className="bf-footer__row"><a className="bf-brand bf-brand--footer" href="#home"><span className="bf-brand__main">BAYFRONT<span className="bf-brand__star">✳</span></span><span className="bf-brand__sub">LIGHTING</span></a><div className="bf-footer__links"><a href="#services">Services</a><a href="#gallery">Gallery</a><a href="#estimate">Free estimate</a><a href={FACEBOOK} target="_blank" rel="noopener noreferrer">Facebook ↗</a></div></div>
+    <div className="bf-footer__bottom"><span>© {new Date().getFullYear()} BAYFRONT LIGHTING. ALL RIGHTS RESERVED.</span><span>HOLIDAY ILLUMINATION SPECIALISTS · TEXAS HILL COUNTRY</span></div>
+  </div></footer>;
 }
 
-// -----------------------------------------------------------------------------
-// Gallery Page
-// -----------------------------------------------------------------------------
-function GalleryPage() {
-  const slides = computeSlides([
-    "house-with-light1.jpg",
-    "house-with-light2.jpg",
-    "house-with-light3.jpg",
-    "house-with-light4.jpg",
-    "house-with-light9.jpeg",
-    "bush-with-light1.jpeg",
-    "bush-with-light2.jpeg",
-    "house-with-light7.jpeg",
-    "wreath-on-house.jpeg",
-    "house-with-light5.jpeg",
-    "house-with-light6.jpeg",
-    "house-with-light8.jpeg",
-    "tree-with-light1.png",
-  ]);
-  return (
-    <main className={`${TOKENS.text}`}>
-      <HeaderBar />
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <h1 className={`${TOKENS.heading} text-4xl md:text-5xl font-bold`}>Gallery</h1>
-        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {slides.map((src, i) => (
-            <img
-              key={src + i}
-              src={src}
-              alt=""
-              className="w-full h-56 object-cover rounded-lg ring-1 ring-white/10"
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = BLANK_IMG;
-                e.currentTarget.classList.add("opacity-50");
-              }}
-            />
-          ))}
-        </div>
-      </section>
-      <Footer />
-    </main>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Home Page
-// -----------------------------------------------------------------------------
-function HomePage() {
-  return (
-    <main className={`${TOKENS.text}`}>
-      <HeaderBar />
-      <Hero />
-      <Offerings />
-      <ReferralOffer />
-      <CTA />
-      <FAQ />
-      <About />
-      <Footer />
-    </main>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Root
-// -----------------------------------------------------------------------------
 export default function Site() {
-  const route = useRoute();
-  return (
-    <ThemeCtx.Provider value={{ tokens: TOKENS }}>
-      {isGallery(route) ? <GalleryPage /> : <HomePage />}
-    </ThemeCtx.Provider>
-  );
+  useEffect(() => {
+    if (window.location.hash === '#/gallery' || window.location.hash === '#/gallery/') {
+      window.history.replaceState(null, '', '#gallery');
+      requestAnimationFrame(() => document.getElementById('gallery')?.scrollIntoView());
+    }
+  }, []);
+  return <div className="bf-site"><Header /><main><Hero /><ConfidenceStrip /><Services /><Gallery /><Statement /><Process /><EstimateForm /><ReferralAndFAQ /></main><Footer /><nav className="bf-mobile-actions" aria-label="Quick contact"><a href="tel:+18302207315" className="bf-mobile-actions__call">Call now</a><a href="#estimate" className="bf-mobile-actions__quote">Get a free estimate <Arrow diagonal /></a></nav></div>;
 }
