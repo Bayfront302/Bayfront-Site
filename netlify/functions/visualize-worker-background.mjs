@@ -1,4 +1,4 @@
-import { isEnabled, releaseQuota, signJob, store, STYLES, validSignature } from "./_visualize-common.mjs";
+import { isEnabled, releaseQuota, signJob, store, STYLES, validSignature } from "../shared/visualize-common.mjs";
 
 // Netlify background function: image editing may exceed the 60-second synchronous limit.
 export const config = { background: true };
