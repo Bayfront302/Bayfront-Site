@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { isEnabled, response, reserveQuota, releaseQuota, signJob, store, STYLES, validJobId } from "./_visualize-common.mjs";
+import { isEnabled, response, reserveQuota, releaseQuota, signJob, store, STYLES, validJobId } from "../shared/visualize-common.mjs";
 
 const MAX_INPUT_BYTES = 3_200_000;
 const RESULT_LIFETIME_MS = 28 * 60 * 60 * 1000;
