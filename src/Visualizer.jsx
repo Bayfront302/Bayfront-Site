@@ -4,6 +4,10 @@ import "./visualizer.css";
 const ENDPOINT = "/.netlify/functions/visualize";
 const USED_KEY = "bayfront-visualizer-used-v1";
 const PENDING_KEY = "bayfront-visualizer-pending-v1";
+// Let staff test different lighting styles on deploy previews, while keeping the
+// one-free-preview-per-device restriction for the production website.
+const IS_DEPLOY_PREVIEW = typeof window !== "undefined" &&
+  /^deploy-preview-\d+--[a-z0-9-]+\.netlify\.app$/i.test(window.location.hostname);
 
 const STYLES = [
   { id: "classic", title: "Classic warm white", note: "Refined, timeless rooflines and soft tree accents", number: "01" },
@@ -47,7 +51,10 @@ export default function Visualizer() {
   const [resultUrl, setResultUrl] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
   const [error, setError] = useState("");
-  const [used, setUsed] = useState(() => { try { return localStorage.getItem(USED_KEY) === "1"; } catch { return false; } });
+  const [used, setUsed] = useState(() => {
+    if (IS_DEPLOY_PREVIEW) return false;
+    try { return localStorage.getItem(USED_KEY) === "1"; } catch { return false; }
+  });
   const isMounted = useRef(true);
 
   useEffect(() => {
@@ -76,9 +83,9 @@ export default function Visualizer() {
           setResultUrl(data.imageUrl);
           setDownloadUrl(data.downloadUrl);
           setStatus("ready");
-          setUsed(true);
+          setUsed(!IS_DEPLOY_PREVIEW);
           try {
-            localStorage.setItem(USED_KEY, "1");
+            if (!IS_DEPLOY_PREVIEW) localStorage.setItem(USED_KEY, "1");
             sessionStorage.removeItem(PENDING_KEY);
             const chosen = STYLES.find(item => item.id === style)?.title || "Custom holiday lighting";
             sessionStorage.setItem("bayfront-visualizer-style", chosen);
@@ -125,6 +132,8 @@ export default function Visualizer() {
     e.preventDefault();
     if (!available || !file || !consent || used || status === "working" || status === "uploading") return;
     setError("");
+    setResultUrl("");
+    setDownloadUrl("");
     setStatus("uploading");
     try {
       const prepared = await resizeForUpload(file);
@@ -164,7 +173,7 @@ export default function Visualizer() {
             <small>JPG, PNG or WebP · Up to 14 MB</small>
           </label>
 
-          <div className="bf-visualizer__step bf-visualizer__step--styles"><span>02</span><div><h3>Choose your look</h3><p>One complimentary AI preview per device.</p></div></div>
+          <div className="bf-visualizer__step bf-visualizer__step--styles"><span>02</span><div><h3>Choose your look</h3><p>{IS_DEPLOY_PREVIEW ? "Testing mode · Up to 3 previews per network daily, subject to the site's daily cap." : "One complimentary AI preview per device."}</p></div></div>
           <div className="bf-visualizer__styles" role="radiogroup" aria-label="Holiday lighting style">
             {STYLES.map(item => <label key={item.id} className={"bf-visualizer__style" + (style === item.id ? " bf-visualizer__style--selected" : "")}>
               <input type="radio" name="lighting-style" value={item.id} checked={style === item.id} onChange={() => setStyle(item.id)} disabled={used || status === "working" || status === "uploading"} />
@@ -181,8 +190,9 @@ export default function Visualizer() {
 
           {error && <p className="bf-visualizer__error" role="alert">{error}</p>}
           {available === false && <p className="bf-visualizer__offline">Free previews are being prepared. Our installation estimate service is open now.</p>}
+          {used && !IS_DEPLOY_PREVIEW && <p className="bf-visualizer__offline">You've already used your complimentary preview on this device. To explore more designs, request a custom estimate.</p>}
           <button className="bf-visualizer__generate" type="submit" disabled={!available || !file || !consent || used || status === "uploading" || status === "working"}>
-            {status === "uploading" ? "Preparing your photo…" : status === "working" ? "Designing your lights…" : used ? "Your free preview is complete" : available === false ? "Preview coming soon" : "Visualize my home  ↗"}
+            {status === "uploading" ? "Preparing your photo…" : status === "working" ? "Designing your lights…" : used ? "Your free preview is complete" : available === false ? "Preview coming soon" : status === "ready" && IS_DEPLOY_PREVIEW ? "Try another lighting style ↗" : "Visualize my home  ↗"}
           </button>
           <p className="bf-visualizer__fineprint">No account required. This is an AI illustration, not an installation quote. Uploaded photos are used for processing and automatically deleted; generated previews are temporarily available for download.</p>
         </form>
