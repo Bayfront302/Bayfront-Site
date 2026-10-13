@@ -77,7 +77,13 @@ export default function Visualizer() {
           setDownloadUrl(data.downloadUrl);
           setStatus("ready");
           setUsed(true);
-          try { localStorage.setItem(USED_KEY, "1"); sessionStorage.removeItem(PENDING_KEY); } catch {}
+          try {
+            localStorage.setItem(USED_KEY, "1");
+            sessionStorage.removeItem(PENDING_KEY);
+            const chosen = STYLES.find(item => item.id === style)?.title || "Custom holiday lighting";
+            sessionStorage.setItem("bayfront-visualizer-style", chosen);
+            window.dispatchEvent(new CustomEvent("bayfront-visualizer-ready", { detail: chosen }));
+          } catch {}
         } else if (data.status === "error" || !r.ok) {
           setError(data.message || data.error || "We couldn't complete the preview. Please try again.");
           setStatus("error");
