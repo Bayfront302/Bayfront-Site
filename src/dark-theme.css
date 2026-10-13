@@ -187,3 +187,9 @@
  .bf-site .bf-gallery__item figcaption {font-size:7px;}
 }
 @media(prefers-reduced-motion:reduce){.bf-site * {scroll-behavior:auto!important;}}
+
+/* Transparent Bayfront Lighting logo in the website header */
+.bf-site .bf-header .bf-brand {display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.bf-site .bf-header .bf-brand__logo {display:block;width:188px;height:auto;max-height:90px;object-fit:contain;}
+@media (max-width: 900px) {.bf-site .bf-header .bf-brand__logo {width:154px;max-height:78px;}}
+@media (max-width: 540px) {.bf-site .bf-header .bf-brand__logo {width:124px;max-height:68px;}}
