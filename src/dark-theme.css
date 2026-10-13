@@ -188,19 +188,20 @@
 }
 @media(prefers-reduced-motion:reduce){.bf-site * {scroll-behavior:auto!important;}}
 
-/* Larger, transparent Bayfront logo without the small tagline. */
+/* Larger transparent Bayfront header logo, without the small tagline */
 .bf-site .bf-header .bf-brand {display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.bf-site .bf-header__inner {height:112px;min-height:112px;}
-.bf-site .bf-header .bf-brand__logo {display:block;width:232px;height:auto;max-height:114px;object-fit:contain;}
+.bf-site .bf-header__inner {height:148px;min-height:148px;}
+.bf-site .bf-header .bf-brand__logo {display:block;width:325px;height:146px;max-height:146px;object-fit:contain;}
 @media (max-width: 1050px) {
- .bf-site .bf-header__inner {height:98px;min-height:98px;}
- .bf-site .bf-header .bf-brand__logo {width:200px;max-height:97px;}
+ .bf-site .bf-header__inner {height:128px;min-height:128px;}
+ .bf-site .bf-header .bf-brand__logo {width:272px;height:125px;max-height:125px;}
 }
 @media (max-width: 760px) {
- .bf-site .bf-header__inner {height:90px;min-height:90px;}
- .bf-site .bf-nav {top:90px;}
- .bf-site .bf-header .bf-brand__logo {width:154px;max-height:87px;}
+ .bf-site .bf-header__inner {height:105px;min-height:105px;}
+ .bf-site .bf-nav {top:105px;}
+ .bf-site .bf-header .bf-brand__logo {width:194px;height:103px;max-height:103px;}
+ .bf-site .bf-hero__content {padding-top:150px;}
 }
 @media (max-width: 390px) {
- .bf-site .bf-header .bf-brand__logo {width:139px;max-height:81px;}
+ .bf-site .bf-header .bf-brand__logo {width:172px;height:100px;max-height:100px;}
 }
