@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Visualizer from './Visualizer.jsx';
 import './site-modern.css';
 import './dark-theme.css';
 
@@ -40,6 +41,7 @@ function Header() {
         <img className="bf-brand__logo" src="/bayfront-header-logo.svg?v=20261013-compact" alt="Bayfront Lighting" />
       </a>
       <nav className={`bf-nav${open ? ' bf-nav--open' : ''}`} aria-label="Main navigation">
+        <a href="#visualizer" onClick={close}>Visualize your home</a>
         <a href="#services" onClick={close}>Our services</a>
         <a href="#gallery" onClick={close}>Gallery</a>
         <a href="#about" onClick={close}>About us</a>
@@ -62,7 +64,7 @@ function Hero() {
       <p className="bf-hero__intro">Beautifully designed Christmas lighting for homes across Lake Travis and the Texas Hill Country. We handle installation, in-season service, and removal. You enjoy the glow.</p>
       <div className="bf-hero__actions">
         <a className="bf-button bf-button--cream" href="#estimate">Get my free estimate <Arrow diagonal /></a>
-        <a className="bf-hero__textlink" href="#gallery">Explore the gallery <Arrow /></a>
+        <a className="bf-hero__textlink" href="#visualizer">Preview my home <Arrow /></a>
       </div>
       <div className="bf-hero__reassurance" aria-label="Why choose Bayfront"><span>Local Hill Country team</span><span>Insured installations</span><span>Full-service holiday lighting</span></div>
     </div>
@@ -210,7 +212,7 @@ function EstimateForm() {
 
 function Footer() {
   return <footer className="bf-footer"><div className="bf-container">
-    <div className="bf-footer__row"><a className="bf-brand bf-brand--footer" href="#home"><span className="bf-brand__main">BAYFRONT<span className="bf-brand__star">✳</span></span><span className="bf-brand__sub">LIGHTING</span></a><div className="bf-footer__links"><a href="#services">Services</a><a href="#gallery">Gallery</a><a href="#estimate">Free estimate</a><a href={FACEBOOK} target="_blank" rel="noopener noreferrer">Facebook ↗</a></div></div>
+    <div className="bf-footer__row"><a className="bf-brand bf-brand--footer" href="#home"><span className="bf-brand__main">BAYFRONT<span className="bf-brand__star">✳</span></span><span className="bf-brand__sub">LIGHTING</span></a><div className="bf-footer__links"><a href="#visualizer">Visualizer</a><a href="#services">Services</a><a href="#gallery">Gallery</a><a href="#estimate">Free estimate</a><a href={FACEBOOK} target="_blank" rel="noopener noreferrer">Facebook ↗</a></div></div>
     <div className="bf-footer__bottom"><span>© {new Date().getFullYear()} BAYFRONT LIGHTING. ALL RIGHTS RESERVED.</span><span>HOLIDAY ILLUMINATION SPECIALISTS · TEXAS HILL COUNTRY</span></div>
   </div></footer>;
 }
@@ -222,5 +224,5 @@ export default function Site() {
       requestAnimationFrame(() => document.getElementById('gallery')?.scrollIntoView());
     }
   }, []);
-  return <div className="bf-site"><Header /><main><Hero /><ConfidenceStrip /><Services /><Gallery /><Statement /><Process /><EstimateForm /><ReferralAndFAQ /></main><Footer /><nav className="bf-mobile-actions" aria-label="Quick contact"><a href="tel:+18302207315" className="bf-mobile-actions__call">Call now</a><a href="#estimate" className="bf-mobile-actions__quote">Get a free estimate <Arrow diagonal /></a></nav></div>;
+  return <div className="bf-site"><Header /><main><Hero /><ConfidenceStrip /><Visualizer /><Services /><Gallery /><Statement /><Process /><EstimateForm /><ReferralAndFAQ /></main><Footer /><nav className="bf-mobile-actions" aria-label="Quick contact"><a href="tel:+18302207315" className="bf-mobile-actions__call">Call now</a><a href="#estimate" className="bf-mobile-actions__quote">Get a free estimate <Arrow diagonal /></a></nav></div>;
 }
