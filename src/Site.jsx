@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Visualizer from './Visualizer.jsx';
 import './site-modern.css';
 import './dark-theme.css';
 
@@ -40,6 +41,7 @@ function Header() {
         <img className="bf-brand__logo" src="/bayfront-header-logo.svg?v=20261013-compact" alt="Bayfront Lighting" />
       </a>
       <nav className={`bf-nav${open ? ' bf-nav--open' : ''}`} aria-label="Main navigation">
+        <a href="#visualizer" onClick={close}>Visualize your home</a>
         <a href="#services" onClick={close}>Our services</a>
         <a href="#gallery" onClick={close}>Gallery</a>
         <a href="#about" onClick={close}>About us</a>
@@ -62,7 +64,7 @@ function Hero() {
       <p className="bf-hero__intro">Beautifully designed Christmas lighting for homes across Lake Travis and the Texas Hill Country. We handle installation, in-season service, and removal. You enjoy the glow.</p>
       <div className="bf-hero__actions">
         <a className="bf-button bf-button--cream" href="#estimate">Get my free estimate <Arrow diagonal /></a>
-        <a className="bf-hero__textlink" href="#gallery">Explore the gallery <Arrow /></a>
+        <a className="bf-hero__textlink" href="#visualizer">Preview my home <Arrow /></a>
       </div>
       <div className="bf-hero__reassurance" aria-label="Why choose Bayfront"><span>Local Hill Country team</span><span>Insured installations</span><span>Full-service holiday lighting</span></div>
     </div>
@@ -162,6 +164,25 @@ function ReferralAndFAQ() {
 function EstimateForm() {
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
+  const [previewStyle, setPreviewStyle] = useState(() => {
+    try { return sessionStorage.getItem('bayfront-visualizer-style') || ''; } catch { return ''; }
+  });
+  const [notes, setNotes] = useState(() => {
+    try {
+      const style = sessionStorage.getItem('bayfront-visualizer-style');
+      return style ? 'I created a Bayfront AI lighting preview in the style: ' + style + '.' : '';
+    } catch { return ''; }
+  });
+  useEffect(() => {
+    function onPreview(event) {
+      const style = event.detail;
+      if (typeof style !== 'string') return;
+      setPreviewStyle(style);
+      setNotes(current => current.trim() ? current : 'I created a Bayfront AI lighting preview in the style: ' + style + '.');
+    }
+    window.addEventListener('bayfront-visualizer-ready', onPreview);
+    return () => window.removeEventListener('bayfront-visualizer-ready', onPreview);
+  }, []);
   async function submit(e) {
     e.preventDefault();
     if (status === 'sending') return;
@@ -190,15 +211,16 @@ function EstimateForm() {
       {status === 'sent' ? <div className="bf-estimate__success" role="status"><span aria-hidden="true">✳</span><h3>Thank you!</h3><p>Your estimate request has been submitted. We’ll be in touch soon.</p><a href="tel:+18302207315">Need us sooner? Call {PHONE}</a></div>
       : <form className="bf-form" name="estimate" method="POST" data-netlify="true" netlify-honeypot="bot-field" onSubmit={submit}>
           <input type="hidden" name="form-name" value="estimate" />
+          <input type="hidden" name="visualizerStyle" value={previewStyle} />
           <p className="bf-honeypot"><label>Leave blank: <input name="bot-field" tabIndex="-1" autoComplete="off" /></label></p>
           <p className="bf-form__intro">GET YOUR FREE, NO-OBLIGATION QUOTE <span>About 30 seconds</span></p>
           <label>YOUR NAME <input name="name" required placeholder="Full name" autoComplete="name" /></label>
           <label>PHONE NUMBER <input name="phone" type="tel" inputMode="tel" required placeholder="(830) 000-0000" autoComplete="tel" /></label>
           <label>CITY OR PROPERTY ZIP CODE <input name="address" required placeholder="Marble Falls, TX" autoComplete="address-level2" /></label>
-          <details className="bf-form__optional"><summary>Want to add an email or project details? <span aria-hidden="true">+</span></summary>
+          <details className="bf-form__optional" open={previewStyle ? true : undefined}><summary>Want to add an email or project details? <span aria-hidden="true">+</span></summary>
             <label>EMAIL (OPTIONAL) <input name="email" type="email" placeholder="you@example.com" autoComplete="email" /></label>
             <label>LIGHTING PLANS (OPTIONAL) <select name="service" defaultValue=""><option value="">Not sure yet</option><option>Roofline lighting</option><option>Trees & landscape</option><option>Wreaths & accents</option><option>Full-property design</option></select></label>
-            <label>ANYTHING ELSE? (OPTIONAL) <textarea name="notes" rows="3" placeholder="Roofline, trees, color ideas..." /></label>
+            <label>ANYTHING ELSE? (OPTIONAL) <textarea name="notes" rows="3" placeholder="Roofline, trees, color ideas..." value={notes} onChange={e => setNotes(e.target.value)} /></label>
           </details>
           {error && <p className="bf-form__error" role="alert">{error}</p>}
           <button className="bf-button bf-button--dark" type="submit" disabled={status==='sending'}>{status==='sending' ? 'Sending your request…' : 'Request my free estimate'} <Arrow diagonal /></button>
@@ -210,7 +232,7 @@ function EstimateForm() {
 
 function Footer() {
   return <footer className="bf-footer"><div className="bf-container">
-    <div className="bf-footer__row"><a className="bf-brand bf-brand--footer" href="#home"><span className="bf-brand__main">BAYFRONT<span className="bf-brand__star">✳</span></span><span className="bf-brand__sub">LIGHTING</span></a><div className="bf-footer__links"><a href="#services">Services</a><a href="#gallery">Gallery</a><a href="#estimate">Free estimate</a><a href={FACEBOOK} target="_blank" rel="noopener noreferrer">Facebook ↗</a></div></div>
+    <div className="bf-footer__row"><a className="bf-brand bf-brand--footer" href="#home"><span className="bf-brand__main">BAYFRONT<span className="bf-brand__star">✳</span></span><span className="bf-brand__sub">LIGHTING</span></a><div className="bf-footer__links"><a href="#visualizer">Visualizer</a><a href="#services">Services</a><a href="#gallery">Gallery</a><a href="#estimate">Free estimate</a><a href={FACEBOOK} target="_blank" rel="noopener noreferrer">Facebook ↗</a></div></div>
     <div className="bf-footer__bottom"><span>© {new Date().getFullYear()} BAYFRONT LIGHTING. ALL RIGHTS RESERVED.</span><span>HOLIDAY ILLUMINATION SPECIALISTS · TEXAS HILL COUNTRY</span></div>
   </div></footer>;
 }
@@ -222,5 +244,5 @@ export default function Site() {
       requestAnimationFrame(() => document.getElementById('gallery')?.scrollIntoView());
     }
   }, []);
-  return <div className="bf-site"><Header /><main><Hero /><ConfidenceStrip /><Services /><Gallery /><Statement /><Process /><EstimateForm /><ReferralAndFAQ /></main><Footer /><nav className="bf-mobile-actions" aria-label="Quick contact"><a href="tel:+18302207315" className="bf-mobile-actions__call">Call now</a><a href="#estimate" className="bf-mobile-actions__quote">Get a free estimate <Arrow diagonal /></a></nav></div>;
+  return <div className="bf-site"><Header /><main><Hero /><ConfidenceStrip /><Visualizer /><Services /><Gallery /><Statement /><Process /><EstimateForm /><ReferralAndFAQ /></main><Footer /><nav className="bf-mobile-actions" aria-label="Quick contact"><a href="tel:+18302207315" className="bf-mobile-actions__call">Call now</a><a href="#estimate" className="bf-mobile-actions__quote">Get a free estimate <Arrow diagonal /></a></nav></div>;
 }
