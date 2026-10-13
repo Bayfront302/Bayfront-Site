@@ -37,7 +37,7 @@ function Header() {
   return <header className="bf-header">
     <div className="bf-header__inner">
       <a className="bf-brand" href="#home" aria-label="Bayfront Lighting home" onClick={close}>
-        <img className="bf-brand__logo" src="/bayfront-header-logo.svg" alt="Bayfront Lighting" />
+        <img className="bf-brand__logo" src="/bayfront-header-logo.svg?v=20261013-large" alt="Bayfront Lighting" />
       </a>
       <nav className={`bf-nav${open ? ' bf-nav--open' : ''}`} aria-label="Main navigation">
         <a href="#services" onClick={close}>Our services</a>
