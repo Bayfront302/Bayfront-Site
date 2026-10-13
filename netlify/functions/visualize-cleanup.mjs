@@ -1,4 +1,4 @@
-import { store } from "./_visualize-common.mjs";
+import { store } from "../shared/visualize-common.mjs";
 
 // Netlify runs this every four hours to remove temporary photos, preview images,
 // expired jobs, and old rate-limit records.
