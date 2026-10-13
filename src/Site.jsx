@@ -164,6 +164,25 @@ function ReferralAndFAQ() {
 function EstimateForm() {
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
+  const [previewStyle, setPreviewStyle] = useState(() => {
+    try { return sessionStorage.getItem('bayfront-visualizer-style') || ''; } catch { return ''; }
+  });
+  const [notes, setNotes] = useState(() => {
+    try {
+      const style = sessionStorage.getItem('bayfront-visualizer-style');
+      return style ? 'I created a Bayfront AI lighting preview in the style: ' + style + '.' : '';
+    } catch { return ''; }
+  });
+  useEffect(() => {
+    function onPreview(event) {
+      const style = event.detail;
+      if (typeof style !== 'string') return;
+      setPreviewStyle(style);
+      setNotes(current => current.trim() ? current : 'I created a Bayfront AI lighting preview in the style: ' + style + '.');
+    }
+    window.addEventListener('bayfront-visualizer-ready', onPreview);
+    return () => window.removeEventListener('bayfront-visualizer-ready', onPreview);
+  }, []);
   async function submit(e) {
     e.preventDefault();
     if (status === 'sending') return;
@@ -192,15 +211,16 @@ function EstimateForm() {
       {status === 'sent' ? <div className="bf-estimate__success" role="status"><span aria-hidden="true">✳</span><h3>Thank you!</h3><p>Your estimate request has been submitted. We’ll be in touch soon.</p><a href="tel:+18302207315">Need us sooner? Call {PHONE}</a></div>
       : <form className="bf-form" name="estimate" method="POST" data-netlify="true" netlify-honeypot="bot-field" onSubmit={submit}>
           <input type="hidden" name="form-name" value="estimate" />
+          <input type="hidden" name="visualizerStyle" value={previewStyle} />
           <p className="bf-honeypot"><label>Leave blank: <input name="bot-field" tabIndex="-1" autoComplete="off" /></label></p>
           <p className="bf-form__intro">GET YOUR FREE, NO-OBLIGATION QUOTE <span>About 30 seconds</span></p>
           <label>YOUR NAME <input name="name" required placeholder="Full name" autoComplete="name" /></label>
           <label>PHONE NUMBER <input name="phone" type="tel" inputMode="tel" required placeholder="(830) 000-0000" autoComplete="tel" /></label>
           <label>CITY OR PROPERTY ZIP CODE <input name="address" required placeholder="Marble Falls, TX" autoComplete="address-level2" /></label>
-          <details className="bf-form__optional"><summary>Want to add an email or project details? <span aria-hidden="true">+</span></summary>
+          <details className="bf-form__optional" open={previewStyle ? true : undefined}><summary>Want to add an email or project details? <span aria-hidden="true">+</span></summary>
             <label>EMAIL (OPTIONAL) <input name="email" type="email" placeholder="you@example.com" autoComplete="email" /></label>
             <label>LIGHTING PLANS (OPTIONAL) <select name="service" defaultValue=""><option value="">Not sure yet</option><option>Roofline lighting</option><option>Trees & landscape</option><option>Wreaths & accents</option><option>Full-property design</option></select></label>
-            <label>ANYTHING ELSE? (OPTIONAL) <textarea name="notes" rows="3" placeholder="Roofline, trees, color ideas..." /></label>
+            <label>ANYTHING ELSE? (OPTIONAL) <textarea name="notes" rows="3" placeholder="Roofline, trees, color ideas..." value={notes} onChange={e => setNotes(e.target.value)} /></label>
           </details>
           {error && <p className="bf-form__error" role="alert">{error}</p>}
           <button className="bf-button bf-button--dark" type="submit" disabled={status==='sending'}>{status==='sending' ? 'Sending your request…' : 'Request my free estimate'} <Arrow diagonal /></button>
