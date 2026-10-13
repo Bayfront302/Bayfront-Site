@@ -186,7 +186,7 @@ export default function Visualizer() {
             <figure><img src={beforeUrl} alt="Original photograph of your home" /><figcaption>YOUR HOME / BEFORE</figcaption></figure>
             {resultUrl ? <figure><img src={resultUrl} alt={"AI illustration of your home with " + STYLES.find(x => x.id === style)?.title + " holiday lights"} /><figcaption>YOUR LIGHTING PREVIEW / AFTER</figcaption></figure>
               : <div className="bf-visualizer__pending"><span aria-hidden="true">✳</span><strong>{status === "working" || status === "uploading" ? "Creating your holiday look" : "Your holiday lighting preview"}</strong><p>{status === "working" ? "Our AI is carefully adding lighting to your home's rooflines and landscaping. This may take a couple of minutes." : "Choose your style and create your complimentary preview."}</p></div>}
-          </div> : <div className="bf-visualizer__placeholder">
+          </div> : resultUrl ? <figure className="bf-visualizer__solo"><img src={resultUrl} alt="Your AI holiday lighting preview" /><figcaption>YOUR LIGHTING PREVIEW</figcaption></figure> : <div className="bf-visualizer__placeholder">
             <span className="bf-visualizer__placeholder-mark" aria-hidden="true">✳</span>
             <p>YOUR HOME, REIMAGINED</p>
             <h3>A little light.<br /><em>A lot of wonder.</em></h3>
