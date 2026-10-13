@@ -26,6 +26,8 @@ export default async function worker(request) {
     const ext = job.mime === "image/png" ? "png" : job.mime === "image/webp" ? "webp" : "jpg";
     const data = new FormData();
     data.append("model", process.env.VISUALIZER_IMAGE_MODEL || "gpt-image-1.5");
+    // Retain the actual home layout and architectural details as faithfully as possible.
+    data.append("input_fidelity", "high");
     data.append("image", new Blob([bytes], { type: job.mime }), "customer-home." + ext);
     data.append("size", "auto");
     data.append("quality", "medium");
