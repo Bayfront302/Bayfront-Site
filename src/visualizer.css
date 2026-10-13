@@ -93,3 +93,72 @@
  .bf-site .bf-visualizer__placeholder h3 {font-size:45px;}
  .bf-site .bf-visualizer__showcase-bottom {font-size:9px;letter-spacing:.04em;}
 }
+
+
+/* Wide-photo visualizer: give landscape house imagery the full content width.
+   Preserve each uploaded/generated photo without cutting off rooflines or yards. */
+.bf-site .bf-visualizer__layout {
+  grid-template-columns:minmax(0,1fr);
+  gap:38px;
+  align-items:start;
+}
+.bf-site .bf-visualizer__form {
+  width:min(100%,780px);
+  justify-self:center;
+}
+.bf-site .bf-visualizer__showcase {
+  width:100%;
+  min-width:0;
+}
+.bf-site .bf-visualizer__compare {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  align-items:start;
+  min-height:0;
+  gap:18px;
+}
+.bf-site .bf-visualizer__compare figure,
+.bf-site .bf-visualizer__pending {
+  min-height:0;
+  width:100%;
+  aspect-ratio:16/10;
+}
+.bf-site .bf-visualizer__compare figure {
+  border:1px solid rgba(226,184,110,.23);
+}
+.bf-site .bf-visualizer__compare img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+}
+.bf-site .bf-visualizer__pending {min-height:0;}
+.bf-site .bf-visualizer__solo {min-height:0;aspect-ratio:16/9;max-height:820px;}
+.bf-site .bf-visualizer__solo img {min-height:0;width:100%;height:100%;object-fit:contain;}
+.bf-site .bf-visualizer__placeholder {min-height:450px;}
+.bf-site .bf-visualizer__fullsize {
+  position:absolute;
+  top:14px;
+  right:14px;
+  z-index:2;
+  background:rgba(3,10,10,.82);
+  border:1px solid rgba(240,215,174,.55);
+  padding:10px 14px;
+  color:#fff9ee;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.02em;
+  text-decoration:none;
+}
+.bf-site .bf-visualizer__fullsize:hover {background:#e4b66f;color:#142020;}
+@media(max-width:830px) {
+  .bf-site .bf-visualizer__layout {grid-template-columns:minmax(0,1fr);}
+  .bf-site .bf-visualizer__form {width:100%;}
+  .bf-site .bf-visualizer__compare {gap:12px;}
+  .bf-site .bf-visualizer__compare figure,.bf-site .bf-visualizer__pending {min-height:0;}
+}
+@media(max-width:620px) {
+  .bf-site .bf-visualizer__compare {grid-template-columns:minmax(0,1fr);}
+  .bf-site .bf-visualizer__compare figure,.bf-site .bf-visualizer__pending {aspect-ratio:16/10;min-height:0;}
+  .bf-site .bf-visualizer__solo {aspect-ratio:16/10;}
+  .bf-site .bf-visualizer__placeholder {min-height:370px;}
+}
